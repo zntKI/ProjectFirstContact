@@ -66,8 +66,8 @@ class GameScene extends Scene {
   }
   
   @Override
-  public void draw(int wwidth, int wheight) {
-    image(backgroundImage, 0, 0, wwidth, wheight);
+  public void draw() {
+    image(backgroundImage, 0, 0);
     for(Clickable object : clickables) {
       object.draw();
     }

@@ -10,14 +10,14 @@ void settings() {
 }
 
 void setup() {
-  Scene scene01 = new GameScene("GameIntroScreen", "data/train_example.png");
+  Scene scene01 = new GameScene("GameIntroScreen", "data/mountains_bg_long.png");
   sceneManager.addScene(scene01);
 }
 
 void draw() {
   currScene = sceneManager.getCurrentScene();
   
-  currScene.draw(screenWidth, screenHeight);
+  currScene.draw();
   if (currScene instanceof GameScene) {
     ((GameScene)currScene).updateScene();
   }

@@ -5,7 +5,7 @@ abstract class Scene {
     this.sceneName = sceneName;
   }
   
-  protected abstract void draw(int wwidth, int wheight);
+  protected abstract void draw();
   
   protected String getSceneName() {
     return this.sceneName;

@@ -9,9 +9,9 @@ class MovieScene extends Scene {
   }
 
   @Override
-    public void draw(int wwidth, int wheight) {
+    public void draw() {
     videoToPlay.play();
-    image(videoToPlay, 0, 0, wwidth, wheight);
+    image(videoToPlay, 0, 0);
   }
 
   public void movieEvent(Movie m) {
