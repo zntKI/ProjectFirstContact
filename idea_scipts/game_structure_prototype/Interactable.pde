@@ -3,8 +3,8 @@ abstract class Interactable extends GameObject {
   protected PImage gameObjectImageHover;
   protected boolean mouseIsHovering;
 
-  protected Interactable (String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile) {
-    super(identifier, x, y, owidth, oheight, gameObjectImageFile);
+  protected Interactable (String identifier, int x, int y, String gameObjectImageFile) {
+    super(identifier, x, y, gameObjectImageFile);
     hasHoverImage = false;
     mouseIsHovering = false;
   }

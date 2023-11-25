@@ -1,5 +1,8 @@
 class GameScene extends Scene {
-  private PImage backgroundImage;
+  private Background background;
+  private Background trainImage;
+  private Player player;
+  
   private ArrayList<Clickable> clickables;
   private ArrayList<Collectable> collectables;
 
@@ -8,9 +11,11 @@ class GameScene extends Scene {
   private ArrayList<Collectable> recentlyAddedCollectables;
   private ArrayList<Collectable> markedForDeathCollectables;
 
-  public GameScene (String sceneName, String backgroundImageFile) {
+  public GameScene (String sceneName, String backgroundImageFile, String trainImageFile, Player player) {
     super(sceneName);
-    this.backgroundImage = loadImage(backgroundImageFile);
+    this.background = new Background(backgroundImageFile);
+    this.trainImage = new Background(trainImageFile);
+    this.player = player;
     
     clickables = new ArrayList<Clickable>();
     collectables = new ArrayList<Collectable>();
@@ -67,13 +72,19 @@ class GameScene extends Scene {
   
   @Override
   public void draw() {
-    image(backgroundImage, 0, 0);
+    background(255);
+    
+    image(background.getImage(), background.getX(), background.getY());
+    image(trainImage.getImage(), trainImage.getX(), trainImage.getY());
+    
     for(Clickable object : clickables) {
       object.draw();
     }
     for(Collectable object : collectables) {
       object.draw();
     }
+    
+    player.draw();
   }
   
   public void mouseMoved() {
@@ -92,5 +103,13 @@ class GameScene extends Scene {
     for(Collectable object : collectables) {
       object.mouseClicked();
     }
+  }
+  
+  public Background getBg() {
+    return background;
+  }
+  
+  public Background getTrainImage() {
+    return trainImage;
   }
 }

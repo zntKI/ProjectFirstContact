@@ -6,13 +6,13 @@ abstract class GameObject {
   private String identifier;
   protected PImage gameObjectImage;
 
-  protected GameObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile) {
+  protected GameObject(String identifier, int x, int y, String gameObjectImageFile) {
     this.identifier = identifier;
     this.x = x;
     this.y = y;
-    this.owidth = owidth;
-    this.oheight = oheight;
     this.gameObjectImage = loadImage(gameObjectImageFile);
+    this.owidth = this.gameObjectImage.width;
+    this.oheight = this.gameObjectImage.height;
   }
 
   protected abstract void draw();
