@@ -1,4 +1,4 @@
-class Background { //<>//
+class Background {
   private int x, y;
   private PImage imageFile;
 
@@ -14,16 +14,8 @@ class Background { //<>//
     this.moveOffset = this.moveSpeed;
   }
 
-  public int getX() {
-    return x;
-  }
-
-  public int getY() {
-    return y;
-  }
-
-  public PImage getImage() {
-    return imageFile;
+  public void draw() {
+    image(imageFile, x, y);
   }
 
   public int getMoveSpeed() {
@@ -33,7 +25,7 @@ class Background { //<>//
   public void updatePos(boolean isPositive) {
     moveOffset = isPositive ? moveSpeed : -moveSpeed;
     
-    if (x % width == 0) {
+    if (x != 0 && x % width == 0) {
       x = 0;
     }
     

@@ -45,7 +45,7 @@ class SceneManager {
   private void updateMovementManager(Scene scene) {
     if (scene instanceof GameScene) {
       GameScene gameScene = ((GameScene)scene);
-      movementManager.updateImages(gameScene.getBgSky(), gameScene.getBgMountain(), gameScene.getTrainImage());
+      movementManager.updateTrainImage(gameScene.getTrainImage());
     }
   }
 }

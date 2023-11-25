@@ -1,6 +1,14 @@
 int screenWidth = 1920;
 int screenHeight = 1080;
 
+String bgSkyFilePath = "data/sky-bg-long.png";
+String bgMountainsFilePath = "data/mountains_bg_long.png";
+String tracksFilePath = "data/tracks-bg-long.png";
+String train01FilePath = "data/Train-01.png";
+Background bgSky;
+Background bgMountain;
+Background tracksImage;
+
 Player player;
 MovementManager movementManager;
 SceneManager sceneManager;
@@ -12,12 +20,16 @@ void settings() {
 }
 
 void setup() {
+  bgSky = new Background(bgSkyFilePath, 3);
+  bgMountain = new Background(bgMountainsFilePath, 10);
+  tracksImage = new Background(tracksFilePath, 20);
+  
   player = new Player("Player", screenWidth / 2, screenHeight * 3/4, "data/player_example.png");
-  movementManager = new MovementManager(player, screenWidth);
+  movementManager = new MovementManager(player, screenWidth, bgSky, bgMountain, tracksImage);
 
   sceneManager = new SceneManager(movementManager);
 
-  Scene scene01 = new GameScene("GameIntroScreen", "data/sky-bg-long.png", "data/mountains_bg_long.png", "data/Train-01.png", player);
+  Scene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player);
   sceneManager.addScene(scene01);
 }
 

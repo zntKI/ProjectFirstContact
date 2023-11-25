@@ -2,6 +2,7 @@ class MovementManager {
   private Player player;
   private Background bgSky;
   private Background bgMountain;
+  private Background tracksImage;
   private Background trainImage;
 
   private int centreCircleRadius = 300;
@@ -14,21 +15,25 @@ class MovementManager {
   private int accBgOffset;
 
 
-  public MovementManager (Player player, int screenWidth) {
+  public MovementManager (Player player, int screenWidth, Background bgSky, Background bgMountain, Background tracksImage) {
     this.player = player;
-
+    this.bgSky = bgSky;
+    this.bgMountain = bgMountain;
+    this.tracksImage = tracksImage;
+    
     screenCentrePointLeft = screenWidth / 2 - centreCircleRadius;
     screenCentrePointRight = screenWidth / 2 + centreCircleRadius;
   }
 
   public void updateMovement() {
-    //TODO: make the player turn when changing directions(more art!)
+    //TODO: make the player turn when changing directions(more art!, also tell the artist to make the backgrounds of width 2 * 1920, not 3 * 1920, and make the images the actual width and height of the subject in them(fix the train))
     //      make the trainBg move until you have reached the end of the scene
     //
     //      make the player be able to move if you only click outside of him?
 
     bgSky.updatePos(false);
     bgMountain.updatePos(false);
+    tracksImage.updatePos(false);
 
     if (mousePressed && mouseButton == RIGHT) {
 
@@ -48,7 +53,7 @@ class MovementManager {
     }
   }
 
-  public void mouseReleased() {
+  public void mouseReleased() { //<>//
     shouldFinishMovement = true;
 
     if (mouseX >= screenCentrePointLeft &&
@@ -64,12 +69,12 @@ class MovementManager {
         : screenCentrePointLeft;
       //distance to move the bg
       distance = abs(mouseXTemp - circleSide);
+      
+      accBgOffset = 0;
     }
   }
 
-  public void updateImages(Background bgSky, Background bgMountain, Background trainImage) {
-    this.bgSky = bgSky;
-    this.bgMountain = bgMountain;
+  public void updateTrainImage(Background trainImage) {
     this.trainImage = trainImage;
   }
 }
