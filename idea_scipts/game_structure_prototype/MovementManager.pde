@@ -1,6 +1,7 @@
 class MovementManager {
   private Player player;
-  private Background bg;
+  private Background bgSky;
+  private Background bgMountain;
   private Background trainImage;
 
   private int centreCircleRadius = 300;
@@ -21,6 +22,14 @@ class MovementManager {
   }
 
   public void updateMovement() {
+    //TODO: make the player turn when changing directions(more art!)
+    //      make the trainBg move until you have reached the end of the scene
+    //
+    //      make the player be able to move if you only click outside of him?
+
+    bgSky.updatePos(false);
+    bgMountain.updatePos(false);
+
     if (mousePressed && mouseButton == RIGHT) {
 
       if (!player.shouldMoveWhenMousePressed(screenCentrePointLeft, screenCentrePointRight)) {
@@ -28,10 +37,11 @@ class MovementManager {
       }
     } else if (shouldFinishMovement) {
 
-      if (mouseXTemp >= screenCentrePointLeft &&
-        mouseXTemp <= screenCentrePointRight) {
+      if (mouseXTemp >= screenCentrePointLeft && mouseXTemp <= screenCentrePointRight) {
+
         shouldFinishMovement = player.shouldFinishMovementWithinCenter(mouseXTemp, pXTemp);
       } else if (!player.shouldFinishMovementOutsideCenter(screenCentrePointLeft, screenCentrePointRight, mouseXTemp, pXTemp)) {
+
         shouldFinishMovement = trainImage.updatePosClicked(mouseXTemp, pXTemp, distance, accBgOffset);
         accBgOffset = shouldFinishMovement ? accBgOffset + trainImage.getMoveSpeed() : 0;
       }
@@ -57,11 +67,9 @@ class MovementManager {
     }
   }
 
-  public void updateBg(Background bg) {
-    this.bg = bg;
-  }
-
-  public void updateTrainImage(Background trainImage) {
+  public void updateImages(Background bgSky, Background bgMountain, Background trainImage) {
+    this.bgSky = bgSky;
+    this.bgMountain = bgMountain;
     this.trainImage = trainImage;
   }
 }

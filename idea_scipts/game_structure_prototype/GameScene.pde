@@ -1,5 +1,6 @@
 class GameScene extends Scene {
-  private Background background;
+  private Background bgSky;
+  private Background bgMountain;
   private Background trainImage;
   private Player player;
   
@@ -11,10 +12,11 @@ class GameScene extends Scene {
   private ArrayList<Collectable> recentlyAddedCollectables;
   private ArrayList<Collectable> markedForDeathCollectables;
 
-  public GameScene (String sceneName, String backgroundImageFile, String trainImageFile, Player player) {
+  public GameScene (String sceneName, String backgroundSkyImageFile, String backgroundMountainImageFile, String trainImageFile, Player player) {
     super(sceneName);
-    this.background = new Background(backgroundImageFile);
-    this.trainImage = new Background(trainImageFile);
+    this.bgSky = new Background(backgroundSkyImageFile, 3);
+    this.bgMountain = new Background(backgroundMountainImageFile, 10);
+    this.trainImage = new Background(trainImageFile, 4);
     this.player = player;
     
     clickables = new ArrayList<Clickable>();
@@ -74,7 +76,8 @@ class GameScene extends Scene {
   public void draw() {
     background(255);
     
-    image(background.getImage(), background.getX(), background.getY());
+    image(bgSky.getImage(), bgSky.getX(), bgSky.getY());
+    image(bgMountain.getImage(), bgMountain.getX(), bgMountain.getY());
     image(trainImage.getImage(), trainImage.getX(), trainImage.getY());
     
     for(Clickable object : clickables) {
@@ -105,8 +108,12 @@ class GameScene extends Scene {
     }
   }
   
-  public Background getBg() {
-    return background;
+  public Background getBgSky() {
+    return bgSky;
+  }
+  
+  public Background getBgMountain() {
+    return bgMountain;
   }
   
   public Background getTrainImage() {

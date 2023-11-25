@@ -17,7 +17,7 @@ void setup() {
 
   sceneManager = new SceneManager(movementManager);
 
-  Scene scene01 = new GameScene("GameIntroScreen", "data/mountains_bg_long.png", "data/Train-01.png", player);
+  Scene scene01 = new GameScene("GameIntroScreen", "data/sky-bg-long.png", "data/mountains_bg_long.png", "data/Train-01.png", player);
   sceneManager.addScene(scene01);
 }
 
