@@ -26,7 +26,7 @@ void setup() {
   bgMountain = new NormalBackground(bgMountainsFilePath, 10);
   tracksImage = new NormalBackground(tracksFilePath, 20);
 
-  player = new Player("Player", screenWidth / 2, screenHeight * 3/4, "data/player_example.png");
+  player = new Player("Player", screenWidth / 2, screenHeight * 3/4, "data/player_example.png", "data/player_example_other_dir.png");
   movementManager = new MovementManager(player, screenWidth, bgSky, bgMountain, tracksImage);
 
   sceneManager = new SceneManager(movementManager);

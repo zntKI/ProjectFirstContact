@@ -1,9 +1,12 @@
 class Player extends GameObject {
   private int moveSpeed = 4;
   private int moveOffset = moveSpeed;
+  private PImage turnedPlayer;
+  private boolean isTurned = false;
 
-  public Player (String identifier, int x, int y, String gameObjectImageFile) {
+  public Player (String identifier, int x, int y, String gameObjectImageFile, String turnedObjectImageFile) {
     super(identifier, x, y, gameObjectImageFile);
+    this.turnedPlayer = loadImage(turnedObjectImageFile);
 
     //TODO: Delete that when art is nicely done
     owidth = owidth / 4;
@@ -17,8 +20,18 @@ class Player extends GameObject {
 
   @Override
     public void draw() {
+    if(moveOffset < 0){
+      isTurned = true;
+    }else if(moveOffset > 0){
+      isTurned = false;
+    }
+    
     imageMode(CENTER);
-    image(gameObjectImage, x, y, owidth, oheight);
+    if(isTurned){
+      image(turnedPlayer, x, y, owidth, oheight);
+    }else if(!isTurned){
+      image(gameObjectImage, x, y, owidth, oheight);
+    }
     imageMode(CORNER);
   }
 
