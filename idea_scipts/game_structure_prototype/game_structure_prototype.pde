@@ -57,6 +57,13 @@ void mouseMoved() {
   }
 }
 
+void mousePressed() {
+  currScene = sceneManager.getCurrentScene();
+  if (currScene instanceof GameScene) {
+    ((GameScene)currScene).mousePressed();
+  }
+}
+
 void mouseClicked() {
   if (mouseButton == LEFT) {
     currScene = sceneManager.getCurrentScene();

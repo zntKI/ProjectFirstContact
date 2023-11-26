@@ -72,15 +72,21 @@ class GameScene extends Scene { //<>//
     for (Clickable object : clickables) {
       if (object.mouseMoved()) {
         cursorIndex = 1;
+        break;
       }
     }
     for (Collectable object : collectables) {
       if (object.mouseMoved()) {
         cursorIndex = 2;
+        break;
       }
     }
 
     cursor(cursorType.getCursorImage(cursorIndex));
+  }
+  
+  public void mousePressed() {
+    cursor(cursorType.getCursorImage(0));
   }
 
   public void mouseClicked() {
