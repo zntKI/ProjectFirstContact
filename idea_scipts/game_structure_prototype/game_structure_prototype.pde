@@ -13,6 +13,8 @@ Player player;
 MovementManager movementManager;
 SceneManager sceneManager;
 
+CursorType cursorType;
+
 Scene currScene;
 
 void settings() {
@@ -23,13 +25,15 @@ void setup() {
   bgSky = new NormalBackground(bgSkyFilePath, 3);
   bgMountain = new NormalBackground(bgMountainsFilePath, 10);
   tracksImage = new NormalBackground(tracksFilePath, 20);
-  
+
   player = new Player("Player", screenWidth / 2, screenHeight * 3/4, "data/player_example.png");
   movementManager = new MovementManager(player, screenWidth, bgSky, bgMountain, tracksImage);
 
   sceneManager = new SceneManager(movementManager);
+  
+  cursorType = new CursorType();
 
-  GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player);
+  GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player, cursorType);
   sceneManager.addScene(scene01);
   Clickable bartender = new Clickable("Bartender", screenWidth * 3/4, screenHeight * 3/4, "data/bartender-placeholder.png");
   scene01.addClickable(bartender);
@@ -54,9 +58,11 @@ void mouseMoved() {
 }
 
 void mouseClicked() {
-  currScene = sceneManager.getCurrentScene();
-  if (currScene instanceof GameScene) {
-    ((GameScene)currScene).mouseClicked();
+  if (mouseButton == LEFT) {
+    currScene = sceneManager.getCurrentScene();
+    if (currScene instanceof GameScene) {
+      ((GameScene)currScene).mouseClicked();
+    }
   }
 }
 

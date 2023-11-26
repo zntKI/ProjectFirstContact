@@ -5,7 +5,7 @@ class MovementManager { //<>//
   private NormalBackground tracksImage;
   private TrainBackground trainImage;
 
-  private int centreCircleRadius = 300;
+  private int centreCircleRadius = 100;
   private int screenCentrePointLeft, screenCentrePointRight;
 
   private boolean shouldFinishMovement = false;
