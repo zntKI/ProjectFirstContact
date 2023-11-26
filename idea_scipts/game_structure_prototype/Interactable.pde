@@ -16,11 +16,17 @@ abstract class Interactable extends GameObject {
 
   @Override
     protected void draw() {
-    if (mouseIsHovering && hasHoverImage) {
+    imageMode(CENTER);
+    if (mouseIsHovering && hasHoverImage) { //<>//
       image(gameObjectImageHover, x, y, owidth, oheight);
     } else {
       image(gameObjectImage, x, y, owidth, oheight);
     }
+    imageMode(CORNER);
+  }
+  
+  public void updatePos(int speed) {
+    x += speed;
   }
 
   protected void mouseMoved() {

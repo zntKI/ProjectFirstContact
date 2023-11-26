@@ -1,11 +1,11 @@
-class Background {
-  private int x, y;
-  private PImage imageFile;
+abstract class Background {
+  protected int x, y;
+  protected PImage imageFile;
 
-  private int moveSpeed;
-  private int moveOffset;
+  protected int moveSpeed;
+  protected int moveOffset;
 
-  public Background (String imageFilePath, int moveSpeed) {
+  protected Background (String imageFilePath, int moveSpeed) {
     imageFile = loadImage(imageFilePath);
     x = 0;
     y = 0;
@@ -22,39 +22,5 @@ class Background {
     return moveSpeed;
   }
 
-  public void updatePos(boolean isPositive) {
-    moveOffset = isPositive ? moveSpeed : -moveSpeed;
-    
-    if (x != 0 && x % width == 0) {
-      x = 0;
-    }
-    
-    if (x + moveOffset < -width) {
-      x += -(width + x);
-    } else {
-      x += moveOffset;
-    }
-  }
-
-  public boolean updatePosClicked(int mouseXTemp, int pXTemp, int distance, int accBgOffset) {
-    if (mouseXTemp > pXTemp) {
-      if (accBgOffset + moveSpeed < distance) {
-        x -= moveSpeed;
-        accBgOffset += moveSpeed;
-        return true;
-      } else {
-        x -= (accBgOffset + moveSpeed) - distance;
-        return false;
-      }
-    } else {
-      if (accBgOffset + moveSpeed < distance) {
-        x += moveSpeed;
-        accBgOffset += moveSpeed;
-        return true;
-      } else {
-        x += (accBgOffset + moveSpeed) - distance;
-        return false;
-      }
-    }
-  }
+  public abstract void updatePos(boolean isPositive);
 }

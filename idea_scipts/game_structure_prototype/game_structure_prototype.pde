@@ -5,9 +5,9 @@ String bgSkyFilePath = "data/sky-bg-long.png";
 String bgMountainsFilePath = "data/mountains_bg_long.png";
 String tracksFilePath = "data/tracks-bg-long.png";
 String train01FilePath = "data/Train-01.png";
-Background bgSky;
-Background bgMountain;
-Background tracksImage;
+NormalBackground bgSky;
+NormalBackground bgMountain;
+NormalBackground tracksImage;
 
 Player player;
 MovementManager movementManager;
@@ -20,17 +20,19 @@ void settings() {
 }
 
 void setup() {
-  bgSky = new Background(bgSkyFilePath, 3);
-  bgMountain = new Background(bgMountainsFilePath, 10);
-  tracksImage = new Background(tracksFilePath, 20);
+  bgSky = new NormalBackground(bgSkyFilePath, 3);
+  bgMountain = new NormalBackground(bgMountainsFilePath, 10);
+  tracksImage = new NormalBackground(tracksFilePath, 20);
   
   player = new Player("Player", screenWidth / 2, screenHeight * 3/4, "data/player_example.png");
   movementManager = new MovementManager(player, screenWidth, bgSky, bgMountain, tracksImage);
 
   sceneManager = new SceneManager(movementManager);
 
-  Scene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player);
+  GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player);
   sceneManager.addScene(scene01);
+  Clickable bartender = new Clickable("Bartender", screenWidth * 3/4, screenHeight * 3/4, "data/bartender-placeholder.png");
+  scene01.addClickable(bartender);
 }
 
 void draw() {

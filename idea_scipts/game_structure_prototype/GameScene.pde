@@ -1,77 +1,46 @@
 class GameScene extends Scene {
-  private Background bgSky;
-  private Background bgMountain;
-  private Background tracksImage;
-  private Background trainImage;
+  private NormalBackground bgSky;
+  private NormalBackground bgMountain;
+  private NormalBackground tracksImage;
+  private TrainBackground trainImage;
   private Player player;
   
   private ArrayList<Clickable> clickables;
   private ArrayList<Collectable> collectables;
 
-  private ArrayList<Clickable> recentlyAddedClickables;
-  private ArrayList<Clickable> markedForDeathClickables;
-  private ArrayList<Collectable> recentlyAddedCollectables;
-  private ArrayList<Collectable> markedForDeathCollectables;
-
-  public GameScene (String sceneName, Background bgSky, Background bgMountain, Background tracksImage, String trainImageFile, Player player) {
+  public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String trainImageFile, Player player) {
     super(sceneName);
     this.bgSky = bgSky;
     this.bgMountain = bgMountain;
     this.tracksImage = tracksImage;
-    this.trainImage = new Background(trainImageFile, 4);
+    this.trainImage = new TrainBackground(trainImageFile, 4);
     this.player = player;
     
     clickables = new ArrayList<Clickable>();
     collectables = new ArrayList<Collectable>();
-    
-    markedForDeathClickables = new ArrayList<Clickable>();
-    recentlyAddedClickables = new ArrayList<Clickable>();
-    markedForDeathCollectables = new ArrayList<Collectable>();
-    recentlyAddedCollectables = new ArrayList<Collectable>();
   }
 
   public void addClickable(Clickable object) {
-    recentlyAddedClickables.add(object);
+    clickables.add(object);
+    trainImage.addClickable(object);
   }
   
   public void removeClickable(Clickable object) {
-    markedForDeathClickables.add(object);
+    clickables.remove(object);
+    trainImage.removeClickable(object);
   }
   
   public void addCollectable(Collectable object) {
-    recentlyAddedCollectables.add(object);
+    collectables.add(object);
+    trainImage.addCollectable(object);
   }
   
   public void removeCollectable(Collectable object) {
-    markedForDeathCollectables.add(object);
+    collectables.remove(object);
+    trainImage.removeCollectable(object);
   }
 
   public void updateScene() {
-    if (markedForDeathClickables.size() > 0) {
-      for (Clickable object : markedForDeathClickables) {
-        clickables.remove(object);
-      }
-      markedForDeathClickables  = new ArrayList<Clickable>();
-    }
-    if (recentlyAddedClickables.size() > 0) {
-      for (Clickable object : recentlyAddedClickables) {
-        clickables.add(object);
-      }
-      recentlyAddedClickables  = new ArrayList<Clickable>();
-    }
-    
-    if (markedForDeathCollectables.size() > 0) {
-      for (Collectable object : markedForDeathCollectables) {
-        collectables.remove(object);
-      }
-      markedForDeathCollectables  = new ArrayList<Collectable>();
-    }
-    if (recentlyAddedCollectables.size() > 0) {
-      for (Collectable object : recentlyAddedCollectables) {
-        collectables.add(object);
-      }
-      recentlyAddedCollectables  = new ArrayList<Collectable>();
-    }
   }
   
   @Override
@@ -111,7 +80,7 @@ class GameScene extends Scene {
     }
   }
   
-  public Background getTrainImage() {
+  public TrainBackground getTrainImage() {
     return trainImage;
   }
 }

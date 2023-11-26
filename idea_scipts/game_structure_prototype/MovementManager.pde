@@ -1,9 +1,9 @@
-class MovementManager {
+class MovementManager { //<>//
   private Player player;
-  private Background bgSky;
-  private Background bgMountain;
-  private Background tracksImage;
-  private Background trainImage;
+  private NormalBackground bgSky;
+  private NormalBackground bgMountain;
+  private NormalBackground tracksImage;
+  private TrainBackground trainImage;
 
   private int centreCircleRadius = 300;
   private int screenCentrePointLeft, screenCentrePointRight;
@@ -15,12 +15,12 @@ class MovementManager {
   private int accBgOffset;
 
 
-  public MovementManager (Player player, int screenWidth, Background bgSky, Background bgMountain, Background tracksImage) {
+  public MovementManager (Player player, int screenWidth, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage) {
     this.player = player;
     this.bgSky = bgSky;
     this.bgMountain = bgMountain;
     this.tracksImage = tracksImage;
-    
+
     screenCentrePointLeft = screenWidth / 2 - centreCircleRadius;
     screenCentrePointRight = screenWidth / 2 + centreCircleRadius;
   }
@@ -53,7 +53,7 @@ class MovementManager {
     }
   }
 
-  public void mouseReleased() { //<>//
+  public void mouseReleased() {
     shouldFinishMovement = true;
 
     if (mouseX >= screenCentrePointLeft &&
@@ -69,12 +69,12 @@ class MovementManager {
         : screenCentrePointLeft;
       //distance to move the bg
       distance = abs(mouseXTemp - circleSide);
-      
+
       accBgOffset = 0;
     }
   }
 
-  public void updateTrainImage(Background trainImage) {
+  public void updateTrainImage(TrainBackground trainImage) {
     this.trainImage = trainImage;
   }
 }
