@@ -1,4 +1,4 @@
-class GameScene extends Scene { //<>// //<>//
+class GameScene extends Scene { //<>// //<>// //<>//
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
@@ -21,7 +21,7 @@ class GameScene extends Scene { //<>// //<>//
   boolean shouldTakeMoveInput = true;
 
   CursorType cursorType;
-  
+
   Inventory inventory;
 
   public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String trainImageFile, Player player, CursorType cursorType, Inventory inventory) {
@@ -36,7 +36,7 @@ class GameScene extends Scene { //<>// //<>//
     collectables = new ArrayList<Collectable>();
 
     this.cursorType = cursorType;
-    
+
     this.inventory = inventory;
 
     screenCentrePointLeft = screenWidth / 2 - centreCircleRadius;
@@ -75,7 +75,7 @@ class GameScene extends Scene { //<>// //<>//
     bgMountain.draw();
     tracksImage.draw();
     trainImage.draw();
-    
+
     Collectable collectableGrabbed = inventory.draw();
 
     Clickable clickableInDialogue = null;
@@ -86,7 +86,7 @@ class GameScene extends Scene { //<>// //<>//
       }
       object.draw();
     }
-    for (Collectable object : collectables) { //<>//
+    for (Collectable object : collectables) {
       object.draw();
     }
 
@@ -99,7 +99,7 @@ class GameScene extends Scene { //<>// //<>//
     }
   }
 
-  
+
   private void updateMovement() {
     //TODO: make the player turn when changing directions(more art!, also tell the artist to make the backgrounds of width 2 * 1920, not 3 * 1920, and make the images the actual width and height of the subject in them(fix the train))
     //      make the trainBg move until you have reached the end of the scene
@@ -112,11 +112,13 @@ class GameScene extends Scene { //<>// //<>//
 
     if (shouldTakeMoveInput) {
       if (mousePressed && mouseButton == RIGHT) {
+        player.updateIsMoving(true);
 
         if (!player.shouldMoveWhenMousePressed(screenCentrePointLeft, screenCentrePointRight)) {
           trainImage.updatePos(mouseX < player.getX());
         }
       } else if (shouldFinishMovement) {
+        player.updateIsMoving(true);
 
         if (mouseXTemp >= screenCentrePointLeft && mouseXTemp <= screenCentrePointRight) {
 
@@ -126,6 +128,8 @@ class GameScene extends Scene { //<>// //<>//
           shouldFinishMovement = trainImage.updatePosClicked(mouseXTemp, pXTemp, distance, accBgOffset);
           accBgOffset = shouldFinishMovement ? accBgOffset + trainImage.getMoveSpeed() : 0;
         }
+      } else {
+        player.updateIsMoving(false);
       }
     }
   }

@@ -1,17 +1,30 @@
 class Player extends GameObject {
+
   private int moveSpeed = 4;
   private int moveOffset = moveSpeed;
-  private PImage turnedPlayer;
-  private boolean isTurned = false;
+  private int tempMoveOffsetIfZero = moveOffset;
+  
+  private boolean isMoving = false;
 
-  public Player (String identifier, int x, int y, String gameObjectImageFile, String turnedObjectImageFile) {
-    super(identifier, x, y, gameObjectImageFile);
-    this.turnedPlayer = loadImage(turnedObjectImageFile);
+  private boolean isLookingLeft = false;
 
-    //TODO: Delete that when art is nicely done
-    owidth = owidth / 4;
-    oheight = oheight / 4;
-    this.y -= oheight / 2;
+  int spriteArraysLength = 4;
+  PImage[] playerIdleLeftSprites = new PImage[spriteArraysLength];
+  PImage[] playerIdleRightSprites = new PImage[spriteArraysLength];
+  PImage[] playerWalkLeftSprites = new PImage[spriteArraysLength];
+  PImage[] playerWalkRightSprites = new PImage[spriteArraysLength];
+  int countFrame = 0;
+
+  public Player (String identifier, int x, int y, String[] playerIdleLeftSprites, String[] playerIdleRightSprites, String[] playerWalkLeftSprites,
+    String[] playerWalkRightSprites) {
+    super(identifier, x, y, playerIdleRightSprites[0]);
+
+    for (int i = 0; i < playerIdleLeftSprites.length; i++) {
+      this.playerIdleLeftSprites[i] = loadImage(playerIdleLeftSprites[i]); //<>//
+      this.playerIdleRightSprites[i] = loadImage(playerIdleRightSprites[i]);
+      this.playerWalkLeftSprites[i] = loadImage(playerWalkLeftSprites[i]);
+      this.playerWalkRightSprites[i] = loadImage(playerWalkRightSprites[i]);
+    }
   }
 
   public int getX() {
@@ -20,19 +33,27 @@ class Player extends GameObject {
 
   @Override
     public void draw() {
-    if (moveOffset < 0) {
-      isTurned = true;
-    } else if (moveOffset > 0) {
-      isTurned = false;
-    }
-
     imageMode(CENTER);
-    if (isTurned) {
-      image(turnedPlayer, x, y, owidth, oheight);
-    } else if (!isTurned) {
-      image(gameObjectImage, x, y, owidth, oheight);
+    if (isMoving) {
+      isLookingLeft = moveOffset < 0 ? true : false;
+
+      if (isLookingLeft) {
+        image(playerWalkLeftSprites[countFrame], x, y, owidth, oheight);
+      } else {
+        image(playerWalkRightSprites[countFrame], x, y, owidth, oheight);
+      }
+    } else {
+      if (isLookingLeft) {
+        image(playerIdleLeftSprites[countFrame], x, y, owidth, oheight);
+      } else {
+        image(playerIdleRightSprites[countFrame], x, y, owidth, oheight);
+      }
     }
     imageMode(CORNER);
+    
+    if (frameCount % 15 == 0) {
+      countFrame = countFrame + 1 > spriteArraysLength - 1 ? 0 : countFrame + 1;
+    }
   }
 
   //Movement code down:
@@ -48,10 +69,12 @@ class Player extends GameObject {
       return true;
     } else {
       //Move the player until he reaches the centre's boundrais
+      tempMoveOffsetIfZero = moveOffset;
       moveOffset = mouseX > x && x < screenCentrePointRight ? moveSpeed
         : (mouseX < x && x > screenCentrePointLeft ? -moveSpeed : 0);
 
       if (moveOffset == 0) {
+        moveOffset = tempMoveOffsetIfZero;
         return false;
       }
 
@@ -85,14 +108,23 @@ class Player extends GameObject {
   }
 
   public boolean shouldFinishMovementOutsideCenter(int screenCentrePointLeft, int screenCentrePointRight, int mouseXTemp, int pXTemp) {
+    tempMoveOffsetIfZero = moveOffset;
     moveOffset = x > screenCentrePointLeft && x < screenCentrePointRight && mouseXTemp > pXTemp ? moveSpeed
       : (x > screenCentrePointLeft && x < screenCentrePointRight && mouseXTemp < pXTemp ? -moveSpeed : 0);
 
     if (moveOffset == 0) {
+      moveOffset = tempMoveOffsetIfZero;
       return false;
     }
 
     x += moveOffset;
     return true;
+  }
+
+  public void updateIsMoving(boolean flag) {
+    if (isMoving != flag) {
+      countFrame = 0;
+    }
+    isMoving = flag;
   }
 }
