@@ -3,6 +3,11 @@ class NormalBackground extends Background {
   public NormalBackground (String imageFilePath, int moveSpeed) {
     super(imageFilePath, moveSpeed);
   }
+  
+  public NormalBackground (String imageFilePath, int moveSpeed, int y) {
+    super(imageFilePath, moveSpeed);
+    this.y -= y;
+  }
 
   @Override
     public void updatePos(boolean isPositive) {

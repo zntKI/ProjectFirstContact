@@ -2,9 +2,11 @@ int screenWidth = 1920;
 int screenHeight = 1080;
 
 String bgSkyFilePath = "data/bgs/sky-bg-long.png";
-String bgMountainsFilePath = "data/bgs/mountains_bg_long.png";
+String bgMountainsFilePath = "data/bgs/mountains-bg-long.png";
 String tracksFilePath = "data/bgs/tracks-bg-long.png";
 String train01FilePath = "data/bgs/Train-01.png";
+String train02FilePath = "data/bgs/Train-02.png";
+String train03FilePath = "data/bgs/Train-03.png";
 NormalBackground bgSky;
 NormalBackground bgMountain;
 NormalBackground tracksImage;
@@ -29,9 +31,9 @@ void settings() {
 }
 
 void setup() {
-  bgSky = new NormalBackground(bgSkyFilePath, 3);
-  bgMountain = new NormalBackground(bgMountainsFilePath, 10);
-  tracksImage = new NormalBackground(tracksFilePath, 20);
+  bgSky = new NormalBackground(bgSkyFilePath, 1);
+  bgMountain = new NormalBackground(bgMountainsFilePath, 5, 150);
+  tracksImage = new NormalBackground(tracksFilePath, 30);
 
   player = new Player("Player", screenWidth / 2, screenHeight * 3/4, playerSpritesIdleLeft, playerSpritesIdleRight, playerSpritesWalkLeft, playerSpritesWalkRight); //<>//
 
@@ -41,9 +43,10 @@ void setup() {
   
   inventory = new Inventory();
 
-  GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player, cursorType, inventory);
+  GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train03FilePath, player, cursorType, inventory);
   sceneManager.addScene(scene01);
-  Clickable bartender = new Clickable("Bartender", screenWidth * 3/4, screenHeight * 3/4, "data/clickables/bartender-placeholder.png",
+  
+  Clickable bartender = new Clickable("Bartender", screenWidth * 3/4, screenHeight * 3/4, "data/clickables/bartender-l.png",
                                       new String[]{ "I would like to order a donut", "You look pretty", "I'd rather talk to the officer" });
   scene01.addClickable(bartender);
   Collectable donut = new Collectable("Donut", width/4, height/2, "data/collectables/donut.png");

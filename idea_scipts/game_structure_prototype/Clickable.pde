@@ -12,6 +12,8 @@ class Clickable extends Interactable {
 
   public Clickable (String identifier, int x, int y, String gameObjectImageFile, String[] dialogueOptions) {
     super(identifier, x, y, gameObjectImageFile);
+    this.y -= oheight / 4;
+    
     dialogueOptionsAreaHeight = (dialogueOptions.length * textSize) + ((dialogueOptions.length - 1) + 2) * spaceBetweenText;
     dialogueOptionsAreaY = height - dialogueOptionsAreaHeight;
 
@@ -20,11 +22,6 @@ class Clickable extends Interactable {
       dialogueOptionButtons.add(new DialogueOption(dialogueOptions[i], spaceBeforeText,
         dialogueOptionsAreaY + (i + 1) * spaceBetweenText + (i * textSize), textSize));
     }
-
-    //TODO: Delete that when art is nicely done
-    owidth = owidth / 4;
-    oheight = oheight / 4;
-    this.y -= oheight / 2;
   }
 
   public boolean getIsInDialogue() {

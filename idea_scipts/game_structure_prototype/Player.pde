@@ -18,6 +18,7 @@ class Player extends GameObject {
   public Player (String identifier, int x, int y, String[] playerIdleLeftSprites, String[] playerIdleRightSprites, String[] playerWalkLeftSprites,
     String[] playerWalkRightSprites) {
     super(identifier, x, y, playerIdleRightSprites[0]);
+    this.y -= oheight / 4;
 
     for (int i = 0; i < playerIdleLeftSprites.length; i++) {
       this.playerIdleLeftSprites[i] = loadImage(playerIdleLeftSprites[i]); //<>//

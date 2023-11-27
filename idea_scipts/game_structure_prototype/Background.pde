@@ -1,5 +1,5 @@
 abstract class Background {
-  protected int x, y;
+  protected int x = 0, y = 0;
   protected PImage imageFile;
 
   protected int moveSpeed;
@@ -7,8 +7,6 @@ abstract class Background {
 
   protected Background (String imageFilePath, int moveSpeed) {
     imageFile = loadImage(imageFilePath);
-    x = 0;
-    y = 0;
 
     this.moveSpeed = moveSpeed;
     this.moveOffset = this.moveSpeed;

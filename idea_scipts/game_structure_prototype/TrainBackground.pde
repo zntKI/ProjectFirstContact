@@ -4,6 +4,7 @@ class TrainBackground extends Background {
 
   public TrainBackground (String imageFilePath, int moveSpeed) {
     super(imageFilePath, moveSpeed);
+    y = height - imageFile.height - 50;
 
     clickables = new ArrayList<Clickable>();
     collectables = new ArrayList<Collectable>();
