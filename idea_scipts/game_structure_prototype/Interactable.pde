@@ -14,16 +14,7 @@ abstract class Interactable extends GameObject {
     hasHoverImage = true;
   }
 
-  @Override
-    protected void draw() {
-    imageMode(CENTER);
-    if (mouseIsHovering && hasHoverImage) {
-      image(gameObjectImageHover, x, y, owidth, oheight);
-    } else {
-      image(gameObjectImage, x, y, owidth, oheight);
-    }
-    imageMode(CORNER);
-  }
+  protected abstract void draw();
 
   public void updatePos(int speed) {
     x += speed;

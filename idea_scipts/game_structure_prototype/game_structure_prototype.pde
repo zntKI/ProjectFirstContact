@@ -33,13 +33,12 @@ void setup() {
 
   GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player, cursorType);
   sceneManager.addScene(scene01);
-  Clickable bartender = new Clickable("Bartender", screenWidth * 3/4, screenHeight * 3/4, "data/bartender-placeholder.png");
+  Clickable bartender = new Clickable("Bartender", screenWidth * 3/4, screenHeight * 3/4, "data/bartender-placeholder.png",
+                                      new String[]{ "I would like to order a donut", "You look pretty", "I'd rather talk to the officer" });
   scene01.addClickable(bartender);
 }
 
 void draw() {
-  //sceneManager.movementManager.updateMovement();
-
   currScene = sceneManager.getCurrentScene();
 
   currScene.draw();
