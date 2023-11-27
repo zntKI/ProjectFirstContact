@@ -21,8 +21,10 @@ class GameScene extends Scene { //<>// //<>//
   boolean shouldTakeMoveInput = true;
 
   CursorType cursorType;
+  
+  Inventory inventory;
 
-  public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String trainImageFile, Player player, CursorType cursorType) {
+  public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String trainImageFile, Player player, CursorType cursorType, Inventory inventory) {
     super(sceneName);
     this.bgSky = bgSky;
     this.bgMountain = bgMountain;
@@ -34,6 +36,8 @@ class GameScene extends Scene { //<>// //<>//
     collectables = new ArrayList<Collectable>();
 
     this.cursorType = cursorType;
+    
+    this.inventory = inventory;
 
     screenCentrePointLeft = screenWidth / 2 - centreCircleRadius;
     screenCentrePointRight = screenWidth / 2 + centreCircleRadius;
@@ -71,6 +75,8 @@ class GameScene extends Scene { //<>// //<>//
     bgMountain.draw();
     tracksImage.draw();
     trainImage.draw();
+    
+    Collectable collectableGrabbed = inventory.draw();
 
     Clickable clickableInDialogue = null;
     for (Clickable object : clickables) {
@@ -80,7 +86,7 @@ class GameScene extends Scene { //<>// //<>//
       }
       object.draw();
     }
-    for (Collectable object : collectables) {
+    for (Collectable object : collectables) { //<>//
       object.draw();
     }
 
@@ -88,8 +94,12 @@ class GameScene extends Scene { //<>// //<>//
       clickableInDialogue.draw();
     }
     player.draw();
+    if (collectableGrabbed != null) {
+      collectableGrabbed.draw();
+    }
   }
 
+  
   private void updateMovement() {
     //TODO: make the player turn when changing directions(more art!, also tell the artist to make the backgrounds of width 2 * 1920, not 3 * 1920, and make the images the actual width and height of the subject in them(fix the train))
     //      make the trainBg move until you have reached the end of the scene
@@ -171,10 +181,15 @@ class GameScene extends Scene { //<>// //<>//
         break;
       }
     }
-    for (Collectable object : collectables) {
+    for (int i = 0; i < collectables.size(); i++) {
+      Collectable object = collectables.get(i);
       if (object.mouseClicked()) {
+        removeCollectable(object);
+        object.updatePosInventory(inventory.getXPosForNext(), inventory.getItemsSize());
+        inventory.addToInventory(object);
         break;
       }
     }
+    inventory.mouseClicked();
   }
 }

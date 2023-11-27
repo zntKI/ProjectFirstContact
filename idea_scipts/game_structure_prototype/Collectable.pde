@@ -1,14 +1,20 @@
 class Collectable extends Interactable {
+  private boolean isGrabbed = false;
 
   public Collectable (String identifier, int x, int y, String gameObjectImageFile) {
     super(identifier, x, y, gameObjectImageFile);
+  }
+  
+  public boolean getIsGrabbed() {
+    return isGrabbed;
   }
 
   @Override
     public void draw() {
     imageMode(CENTER);
-    if (mouseIsHovering && hasHoverImage) {
-      image(gameObjectImageHover, x, y, owidth, oheight);
+    if (isGrabbed) {
+      image(gameObjectImage, x, y, owidth * 1.2, oheight * 1.2);
+      image(gameObjectImage, mouseX, mouseY, owidth, oheight);
     } else {
       image(gameObjectImage, x, y, owidth, oheight);
     }
@@ -16,7 +22,22 @@ class Collectable extends Interactable {
   }
 
   @Override
-  public boolean mouseClicked() {
+    public boolean mouseClicked() {
+    if ((mouseX > x - owidth / 2 && mouseX < x + owidth / 2)
+      && (mouseY > y - oheight / 2 && mouseY < y + oheight / 2)) {
+      return true;
+    }
     return false;
+  }
+
+  public void updatePosInventory(int x, int size) {
+    this.x = x;
+    this.y = size / 2;
+    this.owidth = size;
+    this.oheight = owidth;
+  }
+
+  public void updateIsGrabbed(boolean flag) {
+    isGrabbed = flag;
   }
 }

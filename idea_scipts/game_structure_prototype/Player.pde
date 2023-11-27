@@ -35,6 +35,7 @@ class Player extends GameObject {
     imageMode(CORNER);
   }
 
+  //Movement code down:
   public boolean shouldMoveWhenMousePressed(int screenCentrePointLeft, int screenCentrePointRight) {
     if (mouseX >= screenCentrePointLeft &&
       mouseX <= screenCentrePointRight) {

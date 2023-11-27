@@ -14,6 +14,8 @@ SceneManager sceneManager;
 
 CursorType cursorType;
 
+Inventory inventory;
+
 Scene currScene;
 
 void settings() {
@@ -30,12 +32,20 @@ void setup() {
   sceneManager = new SceneManager();
 
   cursorType = new CursorType();
+  
+  inventory = new Inventory();
 
-  GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player, cursorType);
+  GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player, cursorType, inventory);
   sceneManager.addScene(scene01);
   Clickable bartender = new Clickable("Bartender", screenWidth * 3/4, screenHeight * 3/4, "data/bartender-placeholder.png",
                                       new String[]{ "I would like to order a donut", "You look pretty", "I'd rather talk to the officer" });
   scene01.addClickable(bartender);
+  Collectable donut = new Collectable("Donut", width/4, height/2, "data/donut.png");
+  Collectable gun = new Collectable("Gun", width/2, height/2, "data/gun.png");
+  Collectable broom = new Collectable("Broom", width/4 * 3, height/2, "data/broom.png");
+  scene01.addCollectable(donut);
+  scene01.addCollectable(gun);
+  scene01.addCollectable(broom);
 }
 
 void draw() {
