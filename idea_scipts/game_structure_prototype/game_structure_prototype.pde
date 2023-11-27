@@ -10,7 +10,6 @@ NormalBackground bgMountain;
 NormalBackground tracksImage;
 
 Player player;
-MovementManager movementManager;
 SceneManager sceneManager;
 
 CursorType cursorType;
@@ -27,10 +26,9 @@ void setup() {
   tracksImage = new NormalBackground(tracksFilePath, 20);
 
   player = new Player("Player", screenWidth / 2, screenHeight * 3/4, "data/player_example.png", "data/player_example_other_dir.png");
-  movementManager = new MovementManager(player, screenWidth, bgSky, bgMountain, tracksImage);
 
-  sceneManager = new SceneManager(movementManager);
-  
+  sceneManager = new SceneManager();
+
   cursorType = new CursorType();
 
   GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train01FilePath, player, cursorType);
@@ -40,7 +38,7 @@ void setup() {
 }
 
 void draw() {
-  sceneManager.movementManager.updateMovement();
+  //sceneManager.movementManager.updateMovement();
 
   currScene = sceneManager.getCurrentScene();
 
@@ -51,14 +49,12 @@ void draw() {
 }
 
 void mouseMoved() {
-  currScene = sceneManager.getCurrentScene();
   if (currScene instanceof GameScene) {
     ((GameScene)currScene).mouseMoved();
   }
 }
 
 void mousePressed() {
-  currScene = sceneManager.getCurrentScene();
   if (currScene instanceof GameScene) {
     ((GameScene)currScene).mousePressed();
   }
@@ -66,7 +62,6 @@ void mousePressed() {
 
 void mouseClicked() {
   if (mouseButton == LEFT) {
-    currScene = sceneManager.getCurrentScene();
     if (currScene instanceof GameScene) {
       ((GameScene)currScene).mouseClicked();
     }
@@ -74,8 +69,8 @@ void mouseClicked() {
 }
 
 void mouseReleased() {
-  if (mouseButton == RIGHT) {
-    sceneManager.movementManager.mouseReleased();
+  if (mouseButton == RIGHT && currScene instanceof GameScene) {
+    ((GameScene)currScene).mouseReleased();
   }
 }
 

@@ -9,10 +9,15 @@ class Clickable extends Interactable {
     this.y -= oheight / 2;
   }
 
-  public void mouseClicked() {
+  @Override
+    public boolean mouseClicked() {
     if ((mouseX > x - owidth / 2 && mouseX < x + owidth / 2)
       && (mouseY > y - oheight / 2 && mouseY < y + oheight / 2)) {
-      println("Clicked!");
+        
+        
+      return true;
     }
+
+    return false;
   }
 }

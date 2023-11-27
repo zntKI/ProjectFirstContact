@@ -39,5 +39,5 @@ abstract class Interactable extends GameObject {
     return mouseIsHovering;
   }
 
-  protected abstract void mouseClicked();
+  protected abstract boolean mouseClicked();
 }

@@ -20,16 +20,16 @@ class Player extends GameObject {
 
   @Override
     public void draw() {
-    if(moveOffset < 0){
+    if (moveOffset < 0) {
       isTurned = true;
-    }else if(moveOffset > 0){
+    } else if (moveOffset > 0) {
       isTurned = false;
     }
-    
+
     imageMode(CENTER);
-    if(isTurned){
+    if (isTurned) {
       image(turnedPlayer, x, y, owidth, oheight);
-    }else if(!isTurned){
+    } else if (!isTurned) {
       image(gameObjectImage, x, y, owidth, oheight);
     }
     imageMode(CORNER);
@@ -82,15 +82,15 @@ class Player extends GameObject {
       return false;
     }
   }
-  
+
   public boolean shouldFinishMovementOutsideCenter(int screenCentrePointLeft, int screenCentrePointRight, int mouseXTemp, int pXTemp) {
     moveOffset = x > screenCentrePointLeft && x < screenCentrePointRight && mouseXTemp > pXTemp ? moveSpeed
-                : (x > screenCentrePointLeft && x < screenCentrePointRight && mouseXTemp < pXTemp ? -moveSpeed : 0);
-                
+      : (x > screenCentrePointLeft && x < screenCentrePointRight && mouseXTemp < pXTemp ? -moveSpeed : 0);
+
     if (moveOffset == 0) {
       return false;
     }
-    
+
     x += moveOffset;
     return true;
   }

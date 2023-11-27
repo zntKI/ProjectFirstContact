@@ -5,13 +5,9 @@ class SceneManager {
   private HashMap<String, Scene> scenes;
   private Stack<Scene> scenesStack;
 
-  private MovementManager movementManager;
-
-  public SceneManager(MovementManager movementManager) {
+  public SceneManager() {
     scenes = new HashMap<String, Scene>();
     scenesStack = new Stack<Scene>();
-
-    this.movementManager = movementManager;
   }
 
   public void addScene(Scene scene) {
@@ -19,7 +15,6 @@ class SceneManager {
     if (scenesStack.size() == 0)
     {
       scenesStack.push(scene);
-      updateMovementManager(scene);
     }
   }
 
@@ -27,7 +22,6 @@ class SceneManager {
     if (scenes.containsKey(sceneName)) {
       Scene scene = scenes.get(sceneName);
       scenesStack.push(scene);
-      updateMovementManager(scene);
     } else {
       throw new Exception("Scene not found with name: "+ sceneName + "." +
         "Make sure it was added to the sceneManager.");
@@ -40,12 +34,5 @@ class SceneManager {
 
   public Scene getCurrentScene() {
     return scenesStack.peek();
-  }
-
-  private void updateMovementManager(Scene scene) {
-    if (scene instanceof GameScene) {
-      GameScene gameScene = ((GameScene)scene);
-      movementManager.updateTrainImage(gameScene.getTrainImage());
-    }
   }
 }

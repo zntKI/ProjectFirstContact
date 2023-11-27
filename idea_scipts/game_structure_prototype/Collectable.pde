@@ -4,6 +4,8 @@ class Collectable extends Interactable {
     super(identifier, x, y, gameObjectImageFile);
   }
 
-  public void mouseClicked() {
+  @Override
+  public boolean mouseClicked() {
+    return false;
   }
 }
