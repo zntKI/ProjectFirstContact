@@ -1,9 +1,9 @@
-class Player extends GameObject {
+class Player extends GameObject { //<>//
 
   private int moveSpeed = 4;
   private int moveOffset = moveSpeed;
   private int tempMoveOffsetIfZero = moveOffset;
-  
+
   private boolean isMoving = false;
 
   private boolean isLookingLeft = false;
@@ -21,7 +21,7 @@ class Player extends GameObject {
     this.y -= oheight / 4;
 
     for (int i = 0; i < playerIdleLeftSprites.length; i++) {
-      this.playerIdleLeftSprites[i] = loadImage(playerIdleLeftSprites[i]); //<>//
+      this.playerIdleLeftSprites[i] = loadImage(playerIdleLeftSprites[i]);
       this.playerIdleRightSprites[i] = loadImage(playerIdleRightSprites[i]);
       this.playerWalkLeftSprites[i] = loadImage(playerWalkLeftSprites[i]);
       this.playerWalkRightSprites[i] = loadImage(playerWalkRightSprites[i]);
@@ -51,7 +51,7 @@ class Player extends GameObject {
       }
     }
     imageMode(CORNER);
-    
+
     if (frameCount % 15 == 0) {
       countFrame = countFrame + 1 > spriteArraysLength - 1 ? 0 : countFrame + 1;
     }
@@ -120,6 +120,42 @@ class Player extends GameObject {
 
     x += moveOffset;
     return true;
+  }
+
+  public void updatePosWhenTrainReachedBoundaries() {
+    if (x > 0 && x < width)
+      x += moveOffset;
+  }
+
+  public boolean finishPreviousMovementMouseClicked(int mouseXTemp) {
+    if (mouseXTemp < x) {
+      if (x - moveSpeed >= mouseXTemp) {
+        x -= moveSpeed;
+        moveOffset = -moveSpeed;
+        return true;
+      } else {
+        x = mouseXTemp;
+        moveOffset = -moveSpeed;
+        return false;
+      }
+    } else if (mouseXTemp > x) {
+      if (x + moveSpeed <= mouseXTemp) {
+        x += moveSpeed;
+        moveOffset = moveSpeed;
+        return true;
+      } else {
+        x = mouseXTemp;
+        moveOffset = moveSpeed;
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  public void finishPreviousMovementMouseDown() {
+    moveOffset = mouseX < x ? -moveSpeed : moveSpeed;
+    x += moveOffset;
   }
 
   public void updateIsMoving(boolean flag) {

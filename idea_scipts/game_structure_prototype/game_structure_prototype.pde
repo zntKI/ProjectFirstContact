@@ -35,7 +35,7 @@ void setup() {
   bgMountain = new NormalBackground(bgMountainsFilePath, 5, 150);
   tracksImage = new NormalBackground(tracksFilePath, 30);
 
-  player = new Player("Player", screenWidth / 2, screenHeight * 3/4, playerSpritesIdleLeft, playerSpritesIdleRight, playerSpritesWalkLeft, playerSpritesWalkRight); //<>//
+  player = new Player("Player", screenWidth / 2, screenHeight * 3/4, playerSpritesIdleLeft, playerSpritesIdleRight, playerSpritesWalkLeft, playerSpritesWalkRight);
 
   sceneManager = new SceneManager();
 

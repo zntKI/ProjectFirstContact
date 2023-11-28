@@ -4,10 +4,19 @@ class TrainBackground extends Background {
 
   public TrainBackground (String imageFilePath, int moveSpeed) {
     super(imageFilePath, moveSpeed);
+    x = x - (imageFile.width - width) / 2;
     y = height - imageFile.height - 50;
 
     clickables = new ArrayList<Clickable>();
     collectables = new ArrayList<Collectable>();
+  }
+  
+  public int getX() {
+    return x;
+  }
+  
+  public int getWidth() {
+    return imageFile.width;
   }
 
   public void addClickable(Clickable object) {
@@ -71,5 +80,16 @@ class TrainBackground extends Background {
     for (Collectable collectable : collectables) {
       collectable.updatePos(speed);
     }
+  }
+  
+  public boolean hasReachedTrainBoundaries() {
+    if (x >= 0) {
+      x = 0;
+      return true;
+    } else if (x <= 0 - (imageFile.width - width)) {
+      x = 0 - (imageFile.width - width);
+      return true;
+    }
+    return false;
   }
 }

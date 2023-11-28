@@ -1,4 +1,4 @@
-class GameScene extends Scene { //<>// //<>// //<>//
+class GameScene extends Scene { //<>//
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
@@ -13,12 +13,13 @@ class GameScene extends Scene { //<>// //<>// //<>//
   private int screenCentrePointLeft, screenCentrePointRight;
 
   private boolean shouldFinishMovement = false;
+  private boolean shouldFinishMovementEnd = false;
   private int pXTemp;
   private int mouseXTemp;
   private int distance;
   private int accBgOffset;
 
-  boolean shouldTakeMoveInput = true;
+  private boolean shouldTakeMoveInput = true;
 
   CursorType cursorType;
 
@@ -111,10 +112,40 @@ class GameScene extends Scene { //<>// //<>// //<>//
     tracksImage.updatePos(false);
 
     if (shouldTakeMoveInput) {
-      if (mousePressed && mouseButton == RIGHT) {
+      if (trainImage.hasReachedTrainBoundaries()) {
+        if (shouldFinishMovement) {
+          shouldFinishMovement = mouseXTemp < player.getX() ? player.finishPreviousMovementMouseClicked(mouseXTemp + accBgOffset)
+            : player.finishPreviousMovementMouseClicked(mouseXTemp - accBgOffset);
+        } else if (mousePressed && mouseButton == RIGHT) {
+          player.updateIsMoving(true);
+
+          player.finishPreviousMovementMouseDown();
+          if (trainImage.getX() == 0 && mouseX > player.getX() && player.getX() >= screenCentrePointRight) {
+            trainImage.updatePos(false);
+          } else if (trainImage.getX() == 0 - (trainImage.getWidth() - width) && mouseX < player.getX() && player.getX() <= screenCentrePointLeft) {
+            trainImage.updatePos(true);
+          }
+        } else if (shouldFinishMovementEnd) {
+          player.updateIsMoving(true);
+
+          if ((trainImage.getX() == 0 && mouseX < screenCentrePointRight) || (trainImage.getX() == 0 - (trainImage.getWidth() - width) && mouseX > screenCentrePointLeft)) {
+            shouldFinishMovementEnd = player.finishPreviousMovementMouseClicked(mouseXTemp);
+          } else {
+            shouldFinishMovementEnd = trainImage.getX() == 0 && mouseX > screenCentrePointRight ? player.finishPreviousMovementMouseClicked(screenCentrePointRight)
+              : player.finishPreviousMovementMouseClicked(screenCentrePointLeft);
+            if (!shouldFinishMovementEnd) {
+              trainImage.updatePos(trainImage.getX() != 0);
+              shouldFinishMovement = true;
+            }
+          }
+        } else {
+          player.updateIsMoving(false);
+        }
+      } else if (mousePressed && mouseButton == RIGHT) {
         player.updateIsMoving(true);
 
         if (!player.shouldMoveWhenMousePressed(screenCentrePointLeft, screenCentrePointRight)) {
+
           trainImage.updatePos(mouseX < player.getX());
         }
       } else if (shouldFinishMovement) {
@@ -124,7 +155,6 @@ class GameScene extends Scene { //<>// //<>// //<>//
 
           shouldFinishMovement = player.shouldFinishMovementWithinCenter(mouseXTemp, pXTemp);
         } else if (!player.shouldFinishMovementOutsideCenter(screenCentrePointLeft, screenCentrePointRight, mouseXTemp, pXTemp)) {
-
           shouldFinishMovement = trainImage.updatePosClicked(mouseXTemp, pXTemp, distance, accBgOffset);
           accBgOffset = shouldFinishMovement ? accBgOffset + trainImage.getMoveSpeed() : 0;
         }
@@ -135,23 +165,30 @@ class GameScene extends Scene { //<>// //<>// //<>//
   }
 
   public void mouseReleased() {
-    shouldFinishMovement = true;
+    if (trainImage.hasReachedTrainBoundaries()) {
+      shouldFinishMovementEnd = true;
 
-    if (mouseX >= screenCentrePointLeft &&
-      mouseX <= screenCentrePointRight) {
-      //Player should move towards that point
       pXTemp = player.getX();
       mouseXTemp = mouseX;
     } else {
-      mouseXTemp = mouseX;
-      pXTemp = player.getX();
+      shouldFinishMovement = true;
 
-      int circleSide = mouseXTemp > screenCentrePointRight ? screenCentrePointRight
-        : screenCentrePointLeft;
-      //distance to move the bg
-      distance = abs(mouseXTemp - circleSide);
+      if (mouseX >= screenCentrePointLeft &&
+        mouseX <= screenCentrePointRight) {
+        //Player should move towards that point
+        pXTemp = player.getX();
+        mouseXTemp = mouseX;
+      } else {
+        mouseXTemp = mouseX;
+        pXTemp = player.getX();
 
-      accBgOffset = 0;
+        int circleSide = mouseXTemp > screenCentrePointRight ? screenCentrePointRight
+          : screenCentrePointLeft;
+        //distance to move the bg
+        distance = abs(mouseXTemp - circleSide);
+
+        accBgOffset = 0;
+      }
     }
   }
 
