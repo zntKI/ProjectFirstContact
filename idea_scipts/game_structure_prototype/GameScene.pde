@@ -25,7 +25,7 @@ class GameScene extends Scene { //<>//
   CursorType cursorType;
 
   Inventory inventory;
-  
+
   SoundManager soundManager;
 
   public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String trainImageFile, Player player, CursorType cursorType, Inventory inventory, SoundManager soundManager) {
@@ -43,7 +43,7 @@ class GameScene extends Scene { //<>//
     this.cursorType = cursorType;
 
     this.inventory = inventory;
-    
+
     this.soundManager = soundManager;
 
     screenCentrePointLeft = screenWidth / 2 - centreCircleRadius;
@@ -69,13 +69,13 @@ class GameScene extends Scene { //<>//
     collectables.remove(object);
     trainImage.removeCollectable(object);
   }
-  
-  public void addObjective(Objective object){
+
+  public void addObjective(Objective object) {
     objectives.add(object);
     trainImage.addObjective(object);
   }
-  
-  public void removeObjective(Objective object){
+
+  public void removeObjective(Objective object) {
     objectives.remove(object);
     trainImage.removeObjective(object);
   }
@@ -106,8 +106,8 @@ class GameScene extends Scene { //<>//
     for (Collectable object : collectables) {
       object.draw();
     }
-    
-    for(Objective object : objectives){
+
+    for (Objective object : objectives) {
       object.draw();
     }
 
@@ -133,28 +133,31 @@ class GameScene extends Scene { //<>//
 
     if (shouldTakeMoveInput) {
       if (trainImage.hasReachedTrainBoundaries()) {
+        int playerX = player.getX();
+        int trainX = trainImage.getX();
+        int trainWidth = trainImage.getWidth();
         if (shouldFinishMovement) {
-          shouldFinishMovement = mouseXTemp < player.getX() ? player.finishPreviousMovementMouseClicked(mouseXTemp + accBgOffset)
-            : player.finishPreviousMovementMouseClicked(mouseXTemp - accBgOffset);
+          shouldFinishMovement = mouseXTemp < playerX ? player.shouldFinishMovementWhenTrainEdge(mouseXTemp + accBgOffset)
+            : player.shouldFinishMovementWhenTrainEdge(mouseXTemp - accBgOffset);
         } else if (mousePressed && mouseButton == RIGHT) {
           player.updateIsMoving(true);
 
-          player.finishPreviousMovementMouseDown();
-          if (trainImage.getX() == 0 && mouseX > player.getX() && player.getX() >= screenCentrePointRight) {
+          player.moveToMouseWhenTrainEdge();
+          if (trainX == 0 && mouseX > playerX && playerX >= screenCentrePointRight) {
             trainImage.updatePos(false);
-          } else if (trainImage.getX() == 0 - (trainImage.getWidth() - width) && mouseX < player.getX() && player.getX() <= screenCentrePointLeft) {
+          } else if (trainX == 0 - (trainWidth - width) && mouseX < playerX && playerX <= screenCentrePointLeft) {
             trainImage.updatePos(true);
           }
         } else if (shouldFinishMovementEnd) {
           player.updateIsMoving(true);
 
-          if ((trainImage.getX() == 0 && mouseX < screenCentrePointRight) || (trainImage.getX() == 0 - (trainImage.getWidth() - width) && mouseX > screenCentrePointLeft)) {
-            shouldFinishMovementEnd = player.finishPreviousMovementMouseClicked(mouseXTemp);
+          if ((trainX == 0 && mouseXTemp <= screenCentrePointRight) || (trainX == 0 - (trainWidth - width) && mouseXTemp >= screenCentrePointLeft)) {
+            shouldFinishMovementEnd = player.shouldFinishMovementWhenTrainEdge(mouseXTemp);
           } else {
-            shouldFinishMovementEnd = trainImage.getX() == 0 && mouseX > screenCentrePointRight ? player.finishPreviousMovementMouseClicked(screenCentrePointRight)
-              : player.finishPreviousMovementMouseClicked(screenCentrePointLeft);
+            shouldFinishMovementEnd = trainX == 0 && mouseXTemp > screenCentrePointRight ? player.shouldFinishMovementWhenTrainEdge(screenCentrePointRight)
+              : player.shouldFinishMovementWhenTrainEdge(screenCentrePointLeft);
             if (!shouldFinishMovementEnd) {
-              trainImage.updatePos(trainImage.getX() != 0);
+              trainImage.updatePos(trainX != 0);
               shouldFinishMovement = true;
             }
           }
@@ -166,7 +169,7 @@ class GameScene extends Scene { //<>//
 
         if (!player.shouldMoveWhenMousePressed(screenCentrePointLeft, screenCentrePointRight)) {
 
-          trainImage.updatePos(mouseX < player.getX());
+          trainImage.updatePos(mouseX < player.getX()); //<>//
         }
       } else if (shouldFinishMovement) {
         player.updateIsMoving(true);
@@ -190,12 +193,16 @@ class GameScene extends Scene { //<>//
 
       pXTemp = player.getX();
       mouseXTemp = mouseX;
+      int circleSide = mouseXTemp > screenCentrePointRight ? screenCentrePointRight
+        : screenCentrePointLeft;
+      distance = abs(mouseXTemp - circleSide);
+
+      accBgOffset = 0;
     } else {
       shouldFinishMovement = true;
 
       if (mouseX >= screenCentrePointLeft &&
         mouseX <= screenCentrePointRight) {
-        //Player should move towards that point
         pXTemp = player.getX();
         mouseXTemp = mouseX;
       } else {
@@ -204,7 +211,6 @@ class GameScene extends Scene { //<>//
 
         int circleSide = mouseXTemp > screenCentrePointRight ? screenCentrePointRight
           : screenCentrePointLeft;
-        //distance to move the bg
         distance = abs(mouseXTemp - circleSide);
 
         accBgOffset = 0;
@@ -242,7 +248,7 @@ class GameScene extends Scene { //<>//
         break;
       }
     }
-    
+
     for (int i = 0; i < collectables.size(); i++) {
       Collectable object = collectables.get(i);
       if (object.mouseClicked()) {
@@ -253,12 +259,12 @@ class GameScene extends Scene { //<>//
         break;
       }
     }
-    
+
     inventory.mouseClicked();
-    
-    for (int i = 0; i < objectives.size(); i++){
+
+    for (int i = 0; i < objectives.size(); i++) {
       Objective object = objectives.get(i);
-      if(object.mouseClicked() && inventory.currentItemGrabbed == object.identifierCheck){
+      if (object.mouseClicked() && inventory.currentItemGrabbed == object.identifierCheck) {
         object.playSound();
         removeCollectable(inventory.lastGrabbedItem);
         inventory.removeFromInventory(inventory.lastGrabbedItem);

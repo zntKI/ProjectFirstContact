@@ -5,7 +5,6 @@ class Objective extends Interactable {
   
   public Objective (PApplet parent, String identifier, int x, int y, String gameObjectImageFile, String identifierCheck, String interactSound) {
     super(identifier, x, y, gameObjectImageFile);
-    mouseIsHovering = false;
     this.identifierCheck = identifierCheck;
     this.interactSound = new SoundFile(parent, interactSound);
   }

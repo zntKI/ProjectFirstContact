@@ -90,6 +90,9 @@ class TrainBackground extends Background {
     for (Collectable collectable : collectables) {
       collectable.updatePos(speed);
     }
+    for (Objective objective : objectives) {
+      objective.updatePos(speed);
+    }
   }
   
   public boolean hasReachedTrainBoundaries() {

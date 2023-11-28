@@ -7,8 +7,8 @@ abstract class Interactable extends GameObject {
   }
 
   protected abstract void draw();
-
-  public void updatePos(int speed) {
+  
+  protected void updatePos(int speed) {
     x += speed;
   }
 

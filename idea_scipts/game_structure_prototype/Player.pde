@@ -122,38 +122,36 @@ class Player extends GameObject { //<>//
     return true;
   }
 
-  public void updatePosWhenTrainReachedBoundaries() {
-    if (x > 0 && x < width)
-      x += moveOffset;
-  }
-
-  public boolean finishPreviousMovementMouseClicked(int mouseXTemp) {
+  public boolean shouldFinishMovementWhenTrainEdge(int mouseXTemp) {
+    boolean flag;
     if (mouseXTemp < x) {
       if (x - moveSpeed >= mouseXTemp) {
         x -= moveSpeed;
-        moveOffset = -moveSpeed;
-        return true;
+        flag = true;
       } else {
         x = mouseXTemp;
-        moveOffset = -moveSpeed;
-        return false;
+        flag = false;
       }
+      moveOffset = -moveSpeed;
+      return flag;
     } else if (mouseXTemp > x) {
       if (x + moveSpeed <= mouseXTemp) {
         x += moveSpeed;
         moveOffset = moveSpeed;
-        return true;
+        flag = true;
       } else {
         x = mouseXTemp;
         moveOffset = moveSpeed;
-        return false;
+        flag = false;
       }
+      moveOffset = moveSpeed;
+      return flag;
     } else {
       return false;
     }
   }
 
-  public void finishPreviousMovementMouseDown() {
+  public void moveToMouseWhenTrainEdge() {
     moveOffset = mouseX < x ? -moveSpeed : moveSpeed;
     x += moveOffset;
   }
