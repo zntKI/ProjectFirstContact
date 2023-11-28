@@ -40,6 +40,10 @@ class TrainBackground extends Background {
   public void addObjective(Objective object){
     objectives.add(object);
   }
+  
+  public void removeObjective(Objective object){
+    objectives.remove(object);
+  }
 
   @Override
     public void updatePos(boolean isPositive) {

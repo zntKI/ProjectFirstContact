@@ -31,6 +31,10 @@ class Inventory {
   public void addToInventory(Collectable item) { //<>//
     inventoryItems.add(item);
   }
+  
+  public void removeFromInventory(Collectable item){
+    inventoryItems.remove(item);
+  }
 
   public int getXPosForNext() {
     return spaceBetweenItems * (inventoryItems.size() + 1) + itemsSize * inventoryItems.size() + itemsSize / 2;

@@ -74,6 +74,11 @@ class GameScene extends Scene { //<>//
     objectives.add(object);
     trainImage.addObjective(object);
   }
+  
+  public void removeObjective(Objective object){
+    objectives.remove(object);
+    trainImage.removeObjective(object);
+  }
 
   public void updateScene() {
     updateMovement();
@@ -255,6 +260,9 @@ class GameScene extends Scene { //<>//
       Objective object = objectives.get(i);
       if(object.mouseClicked() && inventory.currentItemGrabbed == object.identifierCheck){
         object.playSound();
+        removeCollectable(inventory.lastGrabbedItem);
+        inventory.removeFromInventory(inventory.lastGrabbedItem);
+        removeObjective(object);
       }
     }
   }
