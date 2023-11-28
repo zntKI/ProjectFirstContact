@@ -1,6 +1,7 @@
 class TrainBackground extends Background {
   private ArrayList<Clickable> clickables;
   private ArrayList<Collectable> collectables;
+  private ArrayList<Objective> objectives;
 
   public TrainBackground (String imageFilePath, int moveSpeed) {
     super(imageFilePath, moveSpeed);
@@ -9,6 +10,7 @@ class TrainBackground extends Background {
 
     clickables = new ArrayList<Clickable>();
     collectables = new ArrayList<Collectable>();
+    objectives = new ArrayList<Objective>();
   }
   
   public int getX() {
@@ -33,6 +35,10 @@ class TrainBackground extends Background {
 
   public void removeCollectable(Collectable object) {
     collectables.remove(object);
+  }
+  
+  public void addObjective(Objective object){
+    objectives.add(object);
   }
 
   @Override

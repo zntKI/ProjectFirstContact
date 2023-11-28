@@ -3,7 +3,7 @@ abstract class GameObject {
   protected int y;
   protected int owidth;
   protected int oheight;
-  private String identifier;
+  protected String identifier;
   protected PImage gameObjectImage;
 
   protected GameObject(String identifier, int x, int y, String gameObjectImageFile) {

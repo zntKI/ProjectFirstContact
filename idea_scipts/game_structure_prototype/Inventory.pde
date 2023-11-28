@@ -5,6 +5,7 @@ class Inventory {
   private int spaceBetweenItems = itemsSize / 5;
 
   private Collectable lastGrabbedItem = null;
+  private String currentItemGrabbed = "none";
 
   public Inventory () {
     inventoryItems = new ArrayList<Collectable>();
@@ -45,9 +46,11 @@ class Inventory {
           lastGrabbedItem.updateIsGrabbed(false);
         }
         lastGrabbedItem = object;
+        currentItemGrabbed = object.identifier;
       } else if (isClicked && isGrabbed) {
         object.updateIsGrabbed(false);
         lastGrabbedItem = null;
+        currentItemGrabbed = "none";
       }
     }
   }

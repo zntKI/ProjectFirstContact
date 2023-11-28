@@ -1,3 +1,5 @@
+import processing.sound.*;
+
 int screenWidth = 1920;
 int screenHeight = 1080;
 
@@ -19,6 +21,7 @@ String[] playerSpritesWalkRight = new String[] { "data/player/walk-r1.png", "dat
 
 Player player;
 SceneManager sceneManager;
+SoundManager soundManager;
 
 CursorType cursorType;
 
@@ -38,23 +41,29 @@ void setup() {
   player = new Player("Player", screenWidth / 2, screenHeight * 3/4, playerSpritesIdleLeft, playerSpritesIdleRight, playerSpritesWalkLeft, playerSpritesWalkRight);
 
   sceneManager = new SceneManager();
+  
+  soundManager = new SoundManager(this, "data/sound/dreamexpdemo.wav", "data/sound/firstcontacttrain.wav", "data/sound/firstcontactclick.wav", "data/sound/Opening_locker.wav", "data/sound/Pistol_Sound_short.mp3");
 
   cursorType = new CursorType();
   
   inventory = new Inventory();
 
-  GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train03FilePath, player, cursorType, inventory);
+  GameScene scene01 = new GameScene("GameIntroScreen", bgSky, bgMountain, tracksImage, train03FilePath, player, cursorType, inventory, soundManager);
   sceneManager.addScene(scene01);
   
   Clickable bartender = new Clickable("Bartender", screenWidth * 3/4, screenHeight * 3/4, "data/clickables/bartender-l.png",
                                       new String[]{ "I would like to order a donut", "You look pretty", "I'd rather talk to the officer" });
   scene01.addClickable(bartender);
+  
   Collectable donut = new Collectable("Donut", width/4, height/2, "data/collectables/donut.png");
   Collectable gun = new Collectable("Gun", width/2, height/2, "data/collectables/gun.png");
   Collectable broom = new Collectable("Broom", width/4 * 3, height/2, "data/collectables/broom.png");
   scene01.addCollectable(donut);
   scene01.addCollectable(gun);
   scene01.addCollectable(broom);
+  
+  Objective bird = new Objective(this, "Bird", screenWidth * 1/2, screenHeight * 1/2, "data/clickables/bird.png", "Gun", "data/sound/Pistol_Sound_short.mp3");
+  scene01.addObjective(bird);
 }
 
 void draw() {

@@ -7,6 +7,7 @@ class GameScene extends Scene { //<>//
 
   private ArrayList<Clickable> clickables;
   private ArrayList<Collectable> collectables;
+  private ArrayList<Objective> objectives;
 
   //Movement variables
   private int centreCircleRadius = 100;
@@ -24,8 +25,10 @@ class GameScene extends Scene { //<>//
   CursorType cursorType;
 
   Inventory inventory;
+  
+  SoundManager soundManager;
 
-  public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String trainImageFile, Player player, CursorType cursorType, Inventory inventory) {
+  public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String trainImageFile, Player player, CursorType cursorType, Inventory inventory, SoundManager soundManager) {
     super(sceneName);
     this.bgSky = bgSky;
     this.bgMountain = bgMountain;
@@ -35,10 +38,13 @@ class GameScene extends Scene { //<>//
 
     clickables = new ArrayList<Clickable>();
     collectables = new ArrayList<Collectable>();
+    objectives = new ArrayList<Objective>();
 
     this.cursorType = cursorType;
 
     this.inventory = inventory;
+    
+    this.soundManager = soundManager;
 
     screenCentrePointLeft = screenWidth / 2 - centreCircleRadius;
     screenCentrePointRight = screenWidth / 2 + centreCircleRadius;
@@ -62,6 +68,11 @@ class GameScene extends Scene { //<>//
   public void removeCollectable(Collectable object) {
     collectables.remove(object);
     trainImage.removeCollectable(object);
+  }
+  
+  public void addObjective(Objective object){
+    objectives.add(object);
+    trainImage.addObjective(object);
   }
 
   public void updateScene() {
@@ -88,6 +99,10 @@ class GameScene extends Scene { //<>//
       object.draw();
     }
     for (Collectable object : collectables) {
+      object.draw();
+    }
+    
+    for(Objective object : objectives){
       object.draw();
     }
 
@@ -222,15 +237,25 @@ class GameScene extends Scene { //<>//
         break;
       }
     }
+    
     for (int i = 0; i < collectables.size(); i++) {
       Collectable object = collectables.get(i);
       if (object.mouseClicked()) {
         removeCollectable(object);
         object.updatePosInventory(inventory.getXPosForNext(), inventory.getItemsSize());
         inventory.addToInventory(object);
+        soundManager.playPickup();
         break;
       }
     }
+    
     inventory.mouseClicked();
+    
+    for (int i = 0; i < objectives.size(); i++){
+      Objective object = objectives.get(i);
+      if(object.mouseClicked() && inventory.currentItemGrabbed == object.identifierCheck){
+        object.playSound();
+      }
+    }
   }
 }
