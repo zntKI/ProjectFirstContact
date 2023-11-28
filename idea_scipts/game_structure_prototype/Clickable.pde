@@ -53,8 +53,8 @@ class Clickable extends Interactable {
   }
 
   @Override
-    public boolean mouseClicked() {
-    if (mouseIsHovering) {
+    public boolean mouseClicked(int playerX, int clickRange) {
+    if (mouseIsHovering && isAbleToBeClicked(playerX, clickRange)) {
       isInDialogue = true;
       return true;
     }

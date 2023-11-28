@@ -5,7 +5,6 @@ class Inventory {
   private int spaceBetweenItems = itemsSize / 5;
 
   private Collectable lastGrabbedItem = null;
-  private String currentItemGrabbed = "none";
 
   public Inventory () {
     inventoryItems = new ArrayList<Collectable>();
@@ -13,6 +12,17 @@ class Inventory {
 
   public int getItemsSize() {
     return itemsSize;
+  }
+  
+  public Collectable getCurrentItemGrabbed() {
+    return lastGrabbedItem;
+  }
+  
+  public boolean canPickUpItem() {
+    if (inventoryItems.size() == 0 || lastGrabbedItem == null) {
+      return true;
+    }
+    return false;
   }
 
   public Collectable draw() { //<>//
@@ -33,7 +43,13 @@ class Inventory {
   }
   
   public void removeFromInventory(Collectable item){
+    int count = 0;
+    for (int i = inventoryItems.indexOf(item) + 1; i < inventoryItems.size(); i++) { //<>//
+      inventoryItems.get(i).updatePosInventory(item.getX() + count * (itemsSize + spaceBetweenItems), itemsSize);
+      count++;
+    }
     inventoryItems.remove(item);
+    lastGrabbedItem = null;
   }
 
   public int getXPosForNext() {
@@ -42,7 +58,7 @@ class Inventory {
 
   public void mouseClicked() {
     for (Collectable object : inventoryItems) {
-      boolean isClicked = object.mouseClicked();
+      boolean isClicked = object.mouseClickedInventory();
       boolean isGrabbed = object.getIsGrabbed();
       if (isClicked && !isGrabbed) {
         object.updateIsGrabbed(true);
@@ -50,12 +66,19 @@ class Inventory {
           lastGrabbedItem.updateIsGrabbed(false);
         }
         lastGrabbedItem = object;
-        currentItemGrabbed = object.identifier;
       } else if (isClicked && isGrabbed) {
         object.updateIsGrabbed(false);
         lastGrabbedItem = null;
-        currentItemGrabbed = "none";
       }
     }
+  }
+  
+  public boolean mouseMoved() {
+    for (Collectable object : inventoryItems) {
+      if (object.mouseMoved() || object.getIsGrabbed()) {
+        return true;
+      }
+    }
+    return false;
   }
 }

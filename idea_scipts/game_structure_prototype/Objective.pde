@@ -1,12 +1,16 @@
 class Objective extends Interactable {
-  String identifierCheck;
+  String collectableIdentifier;
   
   SoundFile interactSound;
   
-  public Objective (PApplet parent, String identifier, int x, int y, String gameObjectImageFile, String identifierCheck, String interactSound) {
+  public Objective (String identifier, int x, int y, String gameObjectImageFile, String collectableIdentifier, PApplet parent, String interactSound) {
     super(identifier, x, y, gameObjectImageFile);
-    this.identifierCheck = identifierCheck;
+    this.collectableIdentifier = collectableIdentifier;
     this.interactSound = new SoundFile(parent, interactSound);
+  }
+  
+  public String getCollectableIdentifier() {
+    return collectableIdentifier;
   }
   
   public void draw() {
@@ -15,15 +19,16 @@ class Objective extends Interactable {
     imageMode(CORNER);
   }
   
-  public void playSound(){
+  public void playSound() {
     interactSound.play();
   }
   
-  public boolean mouseClicked() {
+  @Override
+  public boolean mouseClicked(int playerX, int clickRange) {
     if((mouseX > x - owidth / 2 && mouseX < x + owidth / 2)
-      && (mouseY > y - oheight / 2 && mouseY < y + oheight / 2)){
+      && (mouseY > y - oheight / 2 && mouseY < y + oheight / 2) && isAbleToBeClicked(playerX, clickRange)) {
       return true;
-    } else{
+    } else {
       return false;
     }
   }

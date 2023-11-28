@@ -11,6 +11,12 @@ abstract class Interactable extends GameObject {
   protected void updatePos(int speed) {
     x += speed;
   }
+  
+  protected boolean isAbleToBeClicked(int pX, int clickRange) {
+    if (abs(x - pX) < clickRange) //<>//
+      return true;
+    return false;
+  }
 
   protected boolean mouseMoved() {
     mouseIsHovering = false;
@@ -22,5 +28,5 @@ abstract class Interactable extends GameObject {
     return mouseIsHovering;
   }
 
-  protected abstract boolean mouseClicked();
+  protected abstract boolean mouseClicked(int playerX, int clickRange);
 }

@@ -8,6 +8,14 @@ class Collectable extends Interactable {
   public boolean getIsGrabbed() {
     return isGrabbed;
   }
+  
+  public String getIdentifier() {
+    return identifier;
+  }
+  
+  public int getX() {
+    return x;
+  }
 
   @Override
     public void draw() {
@@ -22,7 +30,15 @@ class Collectable extends Interactable {
   }
 
   @Override
-    public boolean mouseClicked() {
+    public boolean mouseClicked(int playerX, int clickRange) {
+    if ((mouseX > x - owidth / 2 && mouseX < x + owidth / 2)
+      && (mouseY > y - oheight / 2 && mouseY < y + oheight / 2) && isAbleToBeClicked(playerX, clickRange)) {
+      return true;
+    }
+    return false;
+  }
+  
+  public boolean mouseClickedInventory() {
     if ((mouseX > x - owidth / 2 && mouseX < x + owidth / 2)
       && (mouseY > y - oheight / 2 && mouseY < y + oheight / 2)) {
       return true;

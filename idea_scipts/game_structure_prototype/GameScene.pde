@@ -21,6 +21,8 @@ class GameScene extends Scene { //<>//
   private int accBgOffset;
 
   private boolean shouldTakeMoveInput = true;
+  
+  int clickRange = 200;
 
   CursorType cursorType;
 
@@ -169,7 +171,7 @@ class GameScene extends Scene { //<>//
 
         if (!player.shouldMoveWhenMousePressed(screenCentrePointLeft, screenCentrePointRight)) {
 
-          trainImage.updatePos(mouseX < player.getX()); //<>//
+          trainImage.updatePos(mouseX < player.getX());
         }
       } else if (shouldFinishMovement) {
         player.updateIsMoving(true);
@@ -233,6 +235,9 @@ class GameScene extends Scene { //<>//
         break;
       }
     }
+    if (inventory.mouseMoved()) {
+      cursorIndex = 1;
+    }
 
     cursor(cursorType.getCursorImage(cursorIndex));
   }
@@ -242,8 +247,9 @@ class GameScene extends Scene { //<>//
   }
 
   public void mouseClicked() {
+    int playerX = player.getX();
     for (Clickable object : clickables) {
-      if (object.mouseClicked()) {
+      if (object.mouseClicked(playerX, clickRange)) { //<>//
         shouldTakeMoveInput = false;
         break;
       }
@@ -251,7 +257,7 @@ class GameScene extends Scene { //<>//
 
     for (int i = 0; i < collectables.size(); i++) {
       Collectable object = collectables.get(i);
-      if (object.mouseClicked()) {
+      if (object.mouseClicked(playerX, clickRange) && inventory.canPickUpItem()) {
         removeCollectable(object);
         object.updatePosInventory(inventory.getXPosForNext(), inventory.getItemsSize());
         inventory.addToInventory(object);
@@ -264,10 +270,13 @@ class GameScene extends Scene { //<>//
 
     for (int i = 0; i < objectives.size(); i++) {
       Objective object = objectives.get(i);
-      if (object.mouseClicked() && inventory.currentItemGrabbed == object.identifierCheck) {
+      Collectable itemToCheck = inventory.getCurrentItemGrabbed();
+      if (itemToCheck == null)
+        break;
+      if (object.mouseClicked(playerX, clickRange) && itemToCheck.getIdentifier() == object.getCollectableIdentifier()) {
         object.playSound();
-        removeCollectable(inventory.lastGrabbedItem);
-        inventory.removeFromInventory(inventory.lastGrabbedItem);
+        removeCollectable(itemToCheck);
+        inventory.removeFromInventory(itemToCheck);
         removeObjective(object);
       }
     }

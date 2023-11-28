@@ -62,7 +62,7 @@ void setup() {
   scene01.addCollectable(gun);
   scene01.addCollectable(broom);
   
-  Objective bird = new Objective(this, "Bird", screenWidth * 1/2, screenHeight * 1/2, "data/clickables/bird.png", "Gun", "data/sound/Pistol_Sound_short.mp3");
+  Objective bird = new Objective("Bird", screenWidth * 1/2, screenHeight * 1/2, "data/clickables/bird.png", "Gun", this, "data/sound/Pistol_Sound_short.mp3");
   scene01.addObjective(bird);
 }
 
