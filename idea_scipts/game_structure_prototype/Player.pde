@@ -56,6 +56,10 @@ class Player extends GameObject { //<>//
       countFrame = countFrame + 1 > spriteArraysLength - 1 ? 0 : countFrame + 1;
     }
   }
+  
+  public void updatePosEndOfScreen(boolean left) {
+    x = left ? 0 + 200 : width - 200;
+  }
 
   //Movement code down:
   public boolean shouldMoveWhenMousePressed(int screenCentrePointLeft, int screenCentrePointRight) {

@@ -52,6 +52,24 @@ class TrainBackground extends Background {
 
     updateObjectsPos(moveOffset);
   }
+  
+  public void updatePosEndScreen(boolean left) {
+    int xTemp = x;
+    x = left ? 0 : 0 - (imageFile.width - width);
+    updateObjectsPosEndScreen(x - xTemp);
+  }
+  
+  private void updateObjectsPosEndScreen(int offset) {
+    for (Clickable clickable : clickables) {
+      clickable.updatePos(offset);
+    }
+    for (Collectable collectable : collectables) {
+      collectable.updatePos(offset);
+    }
+    for (Objective objective : objectives) {
+      objective.updatePos(offset);
+    }
+  }
 
   public boolean updatePosClicked(int mouseXTemp, int pXTemp, int distance, int accBgOffset) {
     if (mouseXTemp > pXTemp) {

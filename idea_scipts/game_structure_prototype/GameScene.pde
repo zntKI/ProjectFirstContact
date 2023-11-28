@@ -85,6 +85,10 @@ class GameScene extends Scene { //<>//
   public void updateScene() {
     updateMovement();
   }
+  
+  public void updateTrainCoordinates(boolean left) {
+    trainImage.updatePosEndScreen(left);
+  }
 
   @Override
     public void draw() {

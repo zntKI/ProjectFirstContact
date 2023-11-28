@@ -43,7 +43,7 @@ void setup() {
   soundManager = new SoundManager(this, "data/sound/dreamexpdemo.wav", "data/sound/firstcontacttrain.wav", "data/sound/firstcontactclick.wav");
   cursorType = new CursorType();
 
-  sceneManager = new SceneManager();
+  sceneManager = new SceneManager(player);
 
   GameScene scene01 = new GameScene("Wagon01", bgSky, bgMountain, tracksImage, train02FilePath, player, cursorType, inventory, soundManager);
   Clickable horseGuy = new Clickable("HorseGuy", screenWidth * 1/4, screenHeight * 3/4, "data/clickables/horse.png", new String[]{});
@@ -64,7 +64,7 @@ void setup() {
   GameScene scene03 = new GameScene("Wagon03", bgSky, bgMountain, tracksImage, train02FilePath, player, cursorType, inventory, soundManager);
   Objective bird = new Objective("Bird", screenWidth * 1/2, screenHeight * 1/2, "data/objectives/bird.png", "Gun", this, "data/sound/Pistol_Sound_short.mp3");
   scene03.addObjective(bird);
-  
+
   GameScene scene04 = new GameScene("Wagon04", bgSky, bgMountain, tracksImage, train01FilePath, player, cursorType, inventory, soundManager);
   Clickable oldLady = new Clickable("OldLady", screenWidth * 1/4, screenHeight * 3/4, "data/clickables/granny-l.png", new String[]{});
   Clickable lumberjack = new Clickable("Lumberjack", screenWidth * 3/4, screenHeight * 3/4, "data/clickables/lumberjack-l.png", new String[]{});
@@ -74,7 +74,7 @@ void setup() {
   //Collectable woodenPlanks = new Collectable("WoodenPlanks", screenWidth * 3/4 - 200, screenHeight * 3/4, "data/collectables/money.png");
   scene04.addCollectable(money);
   //scene04.addCollectable(woodenPlanks);
-  
+
   GameScene scene05 = new GameScene("Wagon05", bgSky, bgMountain, tracksImage, train03FilePath, player, cursorType, inventory, soundManager);
   Clickable kid1 = new Clickable("Kid1", 0 + 100, screenHeight * 3/4, "data/clickables/kid1-r.png", new String[]{});
   Clickable kid2 = new Clickable("Kid2", 0 + 200, screenHeight * 3/4, "data/clickables/kid2-l.png", new String[]{});
@@ -93,16 +93,17 @@ void setup() {
   //Objective glass = new Objective("Glass", screenWidth * 3/4 + 200, screenHeight * 3/4, "data/objectives/bird.png", "Broom", this, "");
   scene05.addObjective(locker);
   //scene05.addObjective(glass);
-  
+
   sceneManager.addScene(scene01);
   sceneManager.addScene(scene02);
   sceneManager.addScene(scene03);
   sceneManager.addScene(scene04);
   sceneManager.addScene(scene05);
+  currScene = sceneManager.goToScene("Wagon03");
 }
 
 void draw() {
-  currScene = sceneManager.getCurrentScene();
+  currScene = sceneManager.updateState();
 
   currScene.draw();
   if (currScene instanceof GameScene) {
@@ -137,7 +138,6 @@ void mouseReleased() {
 }
 
 void movieEvent(Movie m) {
-  currScene = sceneManager.getCurrentScene();
   if (currScene instanceof MovieScene) {
     ((MovieScene)currScene).movieEvent(m);
   } else {

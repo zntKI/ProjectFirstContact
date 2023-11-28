@@ -2,37 +2,38 @@ import java.util.Stack;
 import java.util.HashMap;
 
 class SceneManager {
-  private HashMap<String, Scene> scenes;
-  private Stack<Scene> scenesStack;
+  private DoublyLinkedList scenes;
+  private Player player;
 
-  public SceneManager() {
-    scenes = new HashMap<String, Scene>();
-    scenesStack = new Stack<Scene>();
+  public SceneManager(Player player) {
+    scenes = new DoublyLinkedList();
+    this.player = player;
   }
 
   public void addScene(Scene scene) {
-    scenes.put(scene.getSceneName(), scene);
-    if (scenesStack.size() == 0)
-    {
-      scenesStack.push(scene);
+    scenes.addNode(scene);
+  }
+  
+  public Scene updateState() {
+    int playerX = player.getX();
+    if (playerX <= 100) {
+      scenes.goToPrevious();
+      player.updatePosEndOfScreen(false);
+    } else if (playerX >= width - 100) {
+      scenes.goToNext();
+      player.updatePosEndOfScreen(true);
     }
+    return scenes.getCurrentScene();
   }
 
-  public void goToScene(String sceneName) throws Exception {
-    if (scenes.containsKey(sceneName)) {
-      Scene scene = scenes.get(sceneName);
-      scenesStack.push(scene);
+  public Scene goToScene(String sceneName) {
+    Scene sceneToFind = scenes.getScene(sceneName);
+    if (sceneToFind != null) {
+      return sceneToFind;
     } else {
-      throw new Exception("Scene not found with name: "+ sceneName + "." +
+      println("Scene not found with name: "+ sceneName + "." +
         "Make sure it was added to the sceneManager.");
+      return null;
     }
-  }
-
-  public void goToPreviousScene() {
-    scenesStack.pop();
-  }
-
-  public Scene getCurrentScene() {
-    return scenesStack.peek();
   }
 }
