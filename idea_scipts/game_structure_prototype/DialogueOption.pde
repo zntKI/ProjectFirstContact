@@ -1,4 +1,4 @@
-class DialogueOption { //<>//
+class DialogueOption {
   private String text;
   private String[] responces;
 
@@ -6,6 +6,7 @@ class DialogueOption { //<>//
   private int owidth, oheight;
 
   int countResponce = 0;
+  int currentTime = 0;
 
   private boolean isInResponce = false;
 
@@ -17,8 +18,7 @@ class DialogueOption { //<>//
     this.y = y;
     this.oheight = oheight;
 
-    textSize(oheight);
-    this.owidth = (int)textWidth(text);
+    this.owidth = width - x * 2;
   }
 
   public boolean getIsInResponce() {
@@ -30,28 +30,34 @@ class DialogueOption { //<>//
   }
 
   public void drawResponce() {
+    int time = millis() / 1000;
+    if (currentTime == 0) {
+      currentTime = time;
+    }
+
     if (countResponce == responces.length) {
-      countResponce = 0;
+      countResponce = 0; //<>// //<>//
+      currentTime = 0;
       isInResponce = false;
     } else {
       textAlign(CENTER, CENTER);
       text(responces[countResponce], width / 2, height / 2);
     }
-    if (frameCount % 90 == 0 && responces.length > 1) {
+
+    if (time - currentTime == 2) {
+      currentTime = time;
       countResponce++;
     }
   }
 
   public boolean isGoodbye() {
     if (responces[0] == "LEAVE") {
-      isInResponce = false;
       return true;
     }
     return false;
   }
 
   public boolean mouseClicked() {
-    println(mouseX > x && mouseX < x + owidth);
     if ((mouseX > x && mouseX < x + owidth)
       && (mouseY > y && mouseY < y + oheight)) {
       isInResponce = true;

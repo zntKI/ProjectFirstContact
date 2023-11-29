@@ -1,4 +1,4 @@
-class Player extends GameObject { //<>//
+class Player extends GameObject { //<>// //<>//
 
   private int moveSpeed = 8;
   private int moveOffset = moveSpeed;

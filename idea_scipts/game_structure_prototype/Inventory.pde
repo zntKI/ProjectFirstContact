@@ -14,12 +14,16 @@ class Inventory {
     return itemsSize;
   }
   
-  public ArrayList<Collectable> getCollection() {
-    return inventoryItems;
-  }
-  
   public Collectable getCurrentItemGrabbed() {
     return lastGrabbedItem;
+  }
+  
+  public String getItemsIdentifiers() {
+    String idenitifierConcat = "";
+    for (Collectable object : inventoryItems) {
+      idenitifierConcat += object.getIdentifier();
+    }
+    return idenitifierConcat;
   }
   
   public boolean canPickUpItem() {
@@ -29,7 +33,7 @@ class Inventory {
     return false;
   }
 
-  public Collectable draw() { //<>//
+  public Collectable draw() { //<>// //<>//
     Collectable collectableGrabbed = null;
     for (Collectable object : inventoryItems) {
       if (object.getIsGrabbed()) {
@@ -42,13 +46,13 @@ class Inventory {
     return collectableGrabbed;
   }
 
-  public void addToInventory(Collectable item) { //<>//
+  public void addToInventory(Collectable item) { //<>// //<>//
     inventoryItems.add(item);
   }
   
   public void removeFromInventory(Collectable item){
     int count = 0;
-    for (int i = inventoryItems.indexOf(item) + 1; i < inventoryItems.size(); i++) { //<>//
+    for (int i = inventoryItems.indexOf(item) + 1; i < inventoryItems.size(); i++) { //<>// //<>//
       inventoryItems.get(i).updatePosInventory(item.getX() + count * (itemsSize + spaceBetweenItems), itemsSize);
       count++;
     }

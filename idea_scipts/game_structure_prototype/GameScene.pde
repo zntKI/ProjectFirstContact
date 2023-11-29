@@ -1,4 +1,4 @@
-class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
+class GameScene extends Scene {  //<>//
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
@@ -32,7 +32,7 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
 
   CursorType cursorType;
   
-  private int dialogueTextSize = 30;
+  private int dialogueTextSize = 20;
   private PFont textFont;
 
   Inventory inventory;
@@ -150,7 +150,7 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
     }
     player.draw();
     if (clickableInDialogue != null) {
-      clickableInDialogue.draw(dialogue, textFont, inventory.getCollection());
+      clickableInDialogue.draw(dialogue, textFont);
       if (clickableInDialogue.getIsInResponce()) {
         clickableInDialogue.drawResponce();
       }
@@ -233,7 +233,6 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
 
       pXTemp = player.getX();
       mouseXTemp = mouseX;
-      println(mouseXTemp);
       int circleSide = mouseXTemp > screenCentrePointRight ? screenCentrePointRight
         : screenCentrePointLeft;
       distance = abs(mouseXTemp - circleSide);
@@ -295,12 +294,15 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
     for (Clickable object : clickables) {
       if (object.mouseClicked(playerX, clickRange)) {
         shouldTakeMoveInput = false;
+        object.updateOptionsPos(inventory.getItemsIdentifiers());
         break;
       } else if (object.getIsInDialogue()) {
         object.mouseClickedOptions();
-      } else if (!object.getIsInDialogue()) {
+      } //<>//
+      if (!object.getIsInDialogue()) {
         shouldTakeMoveInput = true;
       }
+      println(object.getIsInDialogue());
     }
 
     for (int i = 0; i < collectables.size(); i++) {
