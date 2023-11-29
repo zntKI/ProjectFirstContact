@@ -1,7 +1,8 @@
-class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
+class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
+  private NormalBackground inventoryList;
   private TrainBackground trainImage;
   private Player player;
 
@@ -34,11 +35,12 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
 
   SoundManager soundManager;
 
-  public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String trainImageFile, Player player, CursorType cursorType, Inventory inventory, SoundManager soundManager) {
+  public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, NormalBackground inventoryList, String trainImageFile, Player player, CursorType cursorType, Inventory inventory, SoundManager soundManager) {
     super(sceneName);
     this.bgSky = bgSky;
     this.bgMountain = bgMountain;
     this.tracksImage = tracksImage;
+    this.inventoryList = inventoryList;
     this.trainImage = new TrainBackground(trainImageFile, 4);
     this.player = player;
 
@@ -112,6 +114,7 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
 
     bgSky.draw();
     bgMountain.draw();
+    inventoryList.draw();
     tracksImage.draw();
     trainImage.draw();
 
@@ -138,10 +141,10 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
     }
     player.draw();
     if (collectableGrabbed != null) {
-      collectableGrabbed.draw();
+      collectableGrabbed.draw(); //<>// //<>// //<>// //<>//
     }
   }
- //<>//
+
 
   private void updateMovement() {
     //TODO: make the player turn when changing directions(more art!, also tell the artist to make the backgrounds of width 2 * 1920, not 3 * 1920, and make the images the actual width and height of the subject in them(fix the train))

@@ -13,7 +13,7 @@ abstract class Interactable extends GameObject {
   }
   
   protected boolean isAbleToBeClicked(int pX, int clickRange) {
-    if (abs(x - pX) < clickRange) //<>//
+    if (abs(x - pX) < clickRange) //<>// //<>// //<>// //<>//
       return true;
     return false;
   }
