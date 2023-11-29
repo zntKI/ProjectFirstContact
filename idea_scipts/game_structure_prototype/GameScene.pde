@@ -47,7 +47,7 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
     this.tracksImage = tracksImage;
     this.inventoryList = loadImage(inventoryListFilePath);
     this.dialogue = loadImage(dialogueFilePath);
-    this.trainImage = new TrainBackground(trainImageFile, 4);
+    this.trainImage = new TrainBackground(trainImageFile, 8);
     this.player = player;
 
     clickables = new ArrayList<Clickable>();

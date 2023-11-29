@@ -1,6 +1,6 @@
 class Player extends GameObject { //<>//
 
-  private int moveSpeed = 6;
+  private int moveSpeed = 8;
   private int moveOffset = moveSpeed;
   private int tempMoveOffsetIfZero = moveOffset;
 
