@@ -21,7 +21,7 @@ class SceneManager {
         player.updatePosEndOfScreen(false);
       }
     } else if (playerX >= width - 100) {
-      if (scenes.goToNext()) { //<>// //<>// //<>// //<>//
+      if (scenes.goToNext()) { //<>//
         player.updatePosEndOfScreen(true);
       }
     }

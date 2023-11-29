@@ -1,10 +1,11 @@
-class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
-  private NormalBackground inventoryList;
   private TrainBackground trainImage;
   private Player player;
+  private PImage inventoryList;
+  private PImage dialogue;
 
   private ArrayList<Clickable> clickables;
   private ArrayList<Collectable> collectables;
@@ -30,17 +31,22 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>// //<>// //<>//
   int clickRange = 200;
 
   CursorType cursorType;
+  
+  private int dialogueTextSize = 30;
+  private PFont textFont;
 
   Inventory inventory;
 
   SoundManager soundManager;
 
-  public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, NormalBackground inventoryList, String trainImageFile, Player player, CursorType cursorType, Inventory inventory, SoundManager soundManager) {
+  public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String inventoryListFilePath,
+  String dialogueFilePath, String trainImageFile, Player player, CursorType cursorType, String textFontFilePath, Inventory inventory, SoundManager soundManager) {
     super(sceneName);
     this.bgSky = bgSky;
     this.bgMountain = bgMountain;
     this.tracksImage = tracksImage;
-    this.inventoryList = inventoryList;
+    this.inventoryList = loadImage(inventoryListFilePath);
+    this.dialogue = loadImage(dialogueFilePath);
     this.trainImage = new TrainBackground(trainImageFile, 4);
     this.player = player;
 
@@ -49,6 +55,7 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>// //<>// //<>//
     objectives = new ArrayList<Objective>();
 
     this.cursorType = cursorType;
+    this.textFont = createFont(textFontFilePath, dialogueTextSize);
 
     this.inventory = inventory;
 
@@ -114,7 +121,7 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 
     bgSky.draw();
     bgMountain.draw();
-    inventoryList.draw();
+    image(inventoryList, 0, 0);
     tracksImage.draw();
     trainImage.draw();
 
@@ -134,14 +141,18 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 
     for (Objective object : objectives) {
       object.draw();
-    }
+    } //<>//
 
     if (clickableInDialogue != null) {
-      clickableInDialogue.draw();
+      fill(0, 128);
+      rect(0, 0, width, height);
     }
     player.draw();
+    if (clickableInDialogue != null) {
+      clickableInDialogue.draw(dialogue, textFont);
+    }
     if (collectableGrabbed != null) {
-      collectableGrabbed.draw(); //<>// //<>// //<>// //<>//
+      collectableGrabbed.draw();
     }
   }
 
