@@ -128,7 +128,7 @@ void setup() {
   "Please don't shoot! It's in the fourth cabin beneath the right table.", "LEAVE"});
   LinkedHashMap<String, String> bartenderHash = new LinkedHashMap<String, String>();
   bartenderHash.put("I would like to order a donut", "Coll: Money");
-  bartenderHash.put("I would like to order a donut", "Obj: Glass");
+  bartenderHash.put("I came to return the keys.", "Obj: Glass");
   bartenderHash.put("You look very handsome", "");
   bartenderHash.put("Can I borrow the key of the cleaning locker?", "");
   bartenderHash.put("Do you not get bored just sitting here?", "");
@@ -142,7 +142,7 @@ void setup() {
   scene05.addClickable(kid3);
   scene05.addClickable(bartender);
   Collectable broom = new Collectable("Broom", screenWidth * 3/4, screenHeight * 3/4, "data/collectables/broom.png");
-  Collectable donut = new Collectable("Broom", screenWidth - 100, screenHeight * 3/4, "data/collectables/donut.png");
+  Collectable donut = new Collectable("Donut", screenWidth - 100, screenHeight * 3/4, "data/collectables/donut.png");
   Collectable sandwich = new Collectable("Sandwich", screenWidth - 50, screenHeight * 3/4, "data/collectables/sandwich.png");
   scene05.addCollectable(broom);
   scene05.addCollectable(donut);

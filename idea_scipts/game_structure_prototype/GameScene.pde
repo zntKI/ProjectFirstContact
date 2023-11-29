@@ -146,10 +146,14 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
     if (clickableInDialogue != null) {
       fill(0, 128);
       rect(0, 0, width, height);
+      clickableInDialogue.draw();
     }
     player.draw();
     if (clickableInDialogue != null) {
-      clickableInDialogue.draw(dialogue, textFont);
+      clickableInDialogue.draw(dialogue, textFont, inventory.getCollection());
+      if (clickableInDialogue.getIsInResponce()) {
+        clickableInDialogue.drawResponce();
+      }
     }
     if (collectableGrabbed != null) {
       collectableGrabbed.draw();
@@ -292,6 +296,10 @@ class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
       if (object.mouseClicked(playerX, clickRange)) {
         shouldTakeMoveInput = false;
         break;
+      } else if (object.getIsInDialogue()) {
+        object.mouseClickedOptions();
+      } else if (!object.getIsInDialogue()) {
+        shouldTakeMoveInput = true;
       }
     }
 

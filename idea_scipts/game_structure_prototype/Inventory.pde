@@ -14,6 +14,10 @@ class Inventory {
     return itemsSize;
   }
   
+  public ArrayList<Collectable> getCollection() {
+    return inventoryItems;
+  }
+  
   public Collectable getCurrentItemGrabbed() {
     return lastGrabbedItem;
   }

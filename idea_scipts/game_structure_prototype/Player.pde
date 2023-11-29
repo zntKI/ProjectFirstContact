@@ -1,6 +1,6 @@
 class Player extends GameObject { //<>//
 
-  private int moveSpeed = 4;
+  private int moveSpeed = 6;
   private int moveOffset = moveSpeed;
   private int tempMoveOffsetIfZero = moveOffset;
 
@@ -57,7 +57,7 @@ class Player extends GameObject { //<>//
     }
     imageMode(CORNER);
 
-    if (frameCount % 15 == 0) {
+    if (frameCount % 10 == 0) {
       countFrame = countFrame + 1 > spriteArraysLength - 1 ? 0 : countFrame + 1;
     }
   }
