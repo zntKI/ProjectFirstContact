@@ -13,15 +13,17 @@ class SceneManager {
   public void addScene(Scene scene) {
     scenes.addNode(scene);
   }
-  
+
   public Scene updateState() {
     int playerX = player.getX();
     if (playerX <= 100) {
-      scenes.goToPrevious();
-      player.updatePosEndOfScreen(false);
+      if (scenes.goToPrevious()) {
+        player.updatePosEndOfScreen(false);
+      }
     } else if (playerX >= width - 100) {
-      scenes.goToNext();
-      player.updatePosEndOfScreen(true);
+      if (scenes.goToNext()) { //<>//
+        player.updatePosEndOfScreen(true);
+      }
     }
     return scenes.getCurrentScene();
   }

@@ -5,6 +5,7 @@ class Player extends GameObject { //<>//
   private int tempMoveOffsetIfZero = moveOffset;
 
   private boolean isMoving = false;
+  private boolean shouldDisableMovementWhenChangingScenes = false;
 
   private boolean isLookingLeft = false;
 
@@ -30,6 +31,10 @@ class Player extends GameObject { //<>//
 
   public int getX() {
     return x;
+  }
+  
+  public boolean getShouldDisableMovementWhenChangingScenes() {
+    return shouldDisableMovementWhenChangingScenes;
   }
 
   @Override
@@ -59,6 +64,8 @@ class Player extends GameObject { //<>//
   
   public void updatePosEndOfScreen(boolean left) {
     x = left ? 0 + 200 : width - 200;
+    shouldDisableMovementWhenChangingScenes = true;
+    updateIsMoving(false);
   }
 
   //Movement code down:

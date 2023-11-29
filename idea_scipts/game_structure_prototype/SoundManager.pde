@@ -5,10 +5,10 @@ class SoundManager{
   
   SoundManager(PApplet parent, String backgroundMusic, String trainSound, String pickup){
     this.backgroundMusic = new SoundFile(parent, backgroundMusic);
-    this.backgroundMusic.loop();
+    //this.backgroundMusic.loop();
     this.trainSound = new SoundFile(parent, trainSound);
     this.trainSound.amp(0.15);
-    this.trainSound.loop();
+    //this.trainSound.loop();
     this.pickup = new SoundFile(parent, pickup);
     this.pickup.amp(0.9);
   }

@@ -1,4 +1,4 @@
-class GameScene extends Scene { //<>//
+class GameScene extends Scene { //<>// //<>// //<>// //<>// //<>//
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
@@ -21,7 +21,11 @@ class GameScene extends Scene { //<>//
   private int accBgOffset;
 
   private boolean shouldTakeMoveInput = true;
-  
+
+  int startFrames = 0;
+  int endFrames = startFrames + 60;
+  int countFrames = 0;
+
   int clickRange = 200;
 
   CursorType cursorType;
@@ -83,9 +87,21 @@ class GameScene extends Scene { //<>//
   }
 
   public void updateScene() {
+    //if (player.shouldDisableMovementWhenChangingScenes && countFrames == 0) {
+    //  startFrames = frameCount;
+    //  endFrames = startFrames + 30;
+    //  countFrames = startFrames;
+    //  player.updateIsMoving(false);
+    //} else if (player.shouldDisableMovementWhenChangingScenes && countFrames < endFrames) {
+    //  countFrames++;
+    //} else if (player.shouldDisableMovementWhenChangingScenes && countFrames == endFrames) {
+    //  player.shouldDisableMovementWhenChangingScenes = false;
+    //  countFrames = 0;
+    //  player.updateIsMoving(true);
+    //}
     updateMovement();
   }
-  
+
   public void updateTrainCoordinates(boolean left) {
     trainImage.updatePosEndScreen(left);
   }
@@ -125,7 +141,7 @@ class GameScene extends Scene { //<>//
       collectableGrabbed.draw();
     }
   }
-
+ //<>//
 
   private void updateMovement() {
     //TODO: make the player turn when changing directions(more art!, also tell the artist to make the backgrounds of width 2 * 1920, not 3 * 1920, and make the images the actual width and height of the subject in them(fix the train))
@@ -137,7 +153,7 @@ class GameScene extends Scene { //<>//
     bgMountain.updatePos(false);
     tracksImage.updatePos(false);
 
-    if (shouldTakeMoveInput) {
+    if (shouldTakeMoveInput && !player.shouldDisableMovementWhenChangingScenes) {
       if (trainImage.hasReachedTrainBoundaries()) {
         int playerX = player.getX();
         int trainX = trainImage.getX();
@@ -199,6 +215,7 @@ class GameScene extends Scene { //<>//
 
       pXTemp = player.getX();
       mouseXTemp = mouseX;
+      println(mouseXTemp);
       int circleSide = mouseXTemp > screenCentrePointRight ? screenCentrePointRight
         : screenCentrePointLeft;
       distance = abs(mouseXTemp - circleSide);
@@ -247,13 +264,18 @@ class GameScene extends Scene { //<>//
   }
 
   public void mousePressed() {
+    if (player.shouldDisableMovementWhenChangingScenes) {
+      player.shouldDisableMovementWhenChangingScenes = false;
+      player.updateIsMoving(true);
+    }
+
     cursor(cursorType.getCursorImage(0));
   }
 
   public void mouseClicked() {
     int playerX = player.getX();
     for (Clickable object : clickables) {
-      if (object.mouseClicked(playerX, clickRange)) { //<>//
+      if (object.mouseClicked(playerX, clickRange)) {
         shouldTakeMoveInput = false;
         break;
       }

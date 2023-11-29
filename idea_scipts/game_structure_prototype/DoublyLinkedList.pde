@@ -32,29 +32,37 @@ class DoublyLinkedList {
       tail = newNode;
       //tail's next point to null
       tail.next = null;
-      
+
       current = newNode;
     }
   }
-  
+
   public Scene getCurrentScene() {
     return current.scene;
   }
-  
-  public void goToPrevious() {
-    current = current.previous;
-    if (current.scene instanceof GameScene) {
-      ((GameScene)current.scene).updateTrainCoordinates(false);
+
+  public boolean goToPrevious() {
+    if (current.previous != null) {
+      current = current.previous;
+      if (current.scene instanceof GameScene) {
+        ((GameScene)current.scene).updateTrainCoordinates(false);
+      }
+      return true;
     }
+    return false;
   }
-  
-  public void goToNext() {
-    current = current.next;
-    if (current.scene instanceof GameScene) {
-      ((GameScene)current.scene).updateTrainCoordinates(true);
+
+  public boolean goToNext() {
+    if (current.next != null) {
+      current = current.next;
+      if (current.scene instanceof GameScene) {
+        ((GameScene)current.scene).updateTrainCoordinates(true);
+      }
+      return true;
     }
+    return false;
   }
-  
+
   public Scene getScene(String sceneName) {
     Node currentNode = head;
     while (currentNode != null) {
