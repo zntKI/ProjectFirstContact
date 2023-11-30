@@ -46,13 +46,13 @@ class Inventory {
     return collectableGrabbed;
   }
 
-  public void addToInventory(Collectable item) { //<>// //<>//
+  public void addToInventory(Collectable item) {
     inventoryItems.add(item);
   }
   
   public void removeFromInventory(Collectable item){
     int count = 0;
-    for (int i = inventoryItems.indexOf(item) + 1; i < inventoryItems.size(); i++) { //<>// //<>//
+    for (int i = inventoryItems.indexOf(item) + 1; i < inventoryItems.size(); i++) { //<>//
       inventoryItems.get(i).updatePosInventory(item.getX() + count * (itemsSize + spaceBetweenItems), itemsSize);
       count++;
     }

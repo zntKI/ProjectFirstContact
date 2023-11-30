@@ -1,4 +1,4 @@
-class Clickable extends Interactable { //<>// //<>// //<>//
+class Clickable extends Interactable { //<>// //<>// //<>// //<>//
   ArrayList<String> dialogueOptions;
   ArrayList<String> conditions;
   ArrayList<String> responces;
@@ -19,6 +19,7 @@ class Clickable extends Interactable { //<>// //<>// //<>//
   private int dialogueOptionsAreaY;
 
   private boolean isInDialogue = false;
+  private boolean firstTimeNotInResponce = false;
   private boolean isInResponce = false;
 
   public Clickable (String identifier, int x, int y, String gameObjectImageFile, LinkedHashMap<String, String> dialogueOptionsWithConditions, String[] responces) {
@@ -72,6 +73,10 @@ class Clickable extends Interactable { //<>// //<>// //<>//
 
   public String getItemToDeleteFromInvId() {
     return itemToDeleteFromInventoryId;
+  }
+  
+  public void updateItemToDeleteFromInv() {
+    itemToDeleteFromInventoryId = "";
   }
 
   public void removeFromItemsToDrop() {
@@ -139,7 +144,7 @@ class Clickable extends Interactable { //<>// //<>// //<>//
   }
 
   public void drawResponce() {
-    String optionTextToRemove = ""; //<>//
+    String optionTextToRemove = "";
     for (int i = 0; i < currentDialogueOptionButtons.size(); i++) {
       DialogueOption option = currentDialogueOptionButtons.get(i);
       if (option.getIsInResponce()) {
@@ -154,18 +159,6 @@ class Clickable extends Interactable { //<>// //<>// //<>//
             if (dialogueOptions.get(i).contains(optionTextStart)) {
               optionText = dialogueOptions.get(i);
             }
-          }
-          if (optionText.contains("_")) {
-            String identifier = optionText.substring(optionText.indexOf('_') + 1);
-            for (Collectable collectable : itemsToDrop) {
-              String originalId = collectable.getIdentifier();
-              if (identifier.equals(originalId)) {
-                droppedItem = collectable;
-                optionTextToRemove = optionText;
-                break;
-              }
-            }
-            break;
           }
           if (this.identifier.equals("Officer") && optionText.contains("_Gun")) {
             for (int j = 0; j < dialogueOptions.size(); j++) {
@@ -184,6 +177,51 @@ class Clickable extends Interactable { //<>// //<>// //<>//
                 itemToDeleteFromInventoryId = "Donut";
               }
             }
+          } else if (this.identifier.equals("Bartender") && optionText.contains("_Donut")) {
+            for (int j = 0; j < dialogueOptions.size(); j++) {
+              if (dialogueOptions.get(j).equals(optionText)) {
+                for (Collectable collectable : itemsToDrop) {
+                  if (collectable.getIdentifier().equals("Donut")) {
+                    droppedItem = collectable;
+                    break;
+                  }
+                }
+                currentDialogueOptionButtons.remove(j);
+                dialogueOptions.remove(j);
+                conditions.remove(j);
+                responces.remove(j);
+
+                itemToDeleteFromInventoryId = "Money";
+              }
+            }
+          } else if (this.identifier.equals("Bartender") && optionText.contains("_Sandwich")) {
+            for (int j = 0; j < dialogueOptions.size(); j++) {
+              if (dialogueOptions.get(j).equals(optionText)) {
+                for (Collectable collectable : itemsToDrop) {
+                  if (collectable.getIdentifier().equals("Sandwich")) {
+                    droppedItem = collectable;
+                    break;
+                  }
+                }
+                currentDialogueOptionButtons.remove(j);
+                dialogueOptions.remove(j);
+                conditions.remove(j);
+                responces.remove(j);
+
+                itemToDeleteFromInventoryId = "Key";
+              }
+            }
+          } else if (optionText.contains("_")) {
+            String identifier = optionText.substring(optionText.indexOf('_') + 1);
+            for (Collectable collectable : itemsToDrop) {
+              String originalId = collectable.getIdentifier();
+              if (identifier.equals(originalId)) {
+                droppedItem = collectable;
+                optionTextToRemove = optionText;
+                break;
+              }
+            }
+            break;
           }
           option.firstTimeNotInResponce = false;
         }
@@ -204,7 +242,8 @@ class Clickable extends Interactable { //<>// //<>// //<>//
 
   @Override
     public boolean mouseClicked(int playerX, int clickRange) {
-    if (mouseIsHovering && isAbleToBeClicked(playerX, clickRange)) {
+    if ((mouseX > x - owidth / 2 && mouseX < x + owidth / 2) //<>//
+      && (mouseY > y - oheight / 2 && mouseY < y + oheight / 2) && isAbleToBeClicked(playerX, clickRange)) {
       isInDialogue = true;
       return true;
     }
@@ -215,8 +254,9 @@ class Clickable extends Interactable { //<>// //<>// //<>//
     for (int i = 0; i < currentDialogueOptionButtons.size(); i++) {
       DialogueOption option = currentDialogueOptionButtons.get(i);
       if (option.mouseClicked()) {
-        if (option.isGoodbye()) {
+        if (option.isGoodbye()) { //<>//
           isInDialogue = false;
+          firstTimeNotInResponce = true;
           isInResponce = false;
         } else {
           isInResponce = true;

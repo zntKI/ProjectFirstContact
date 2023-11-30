@@ -144,8 +144,7 @@ void setup() {
   scene05.addClickable(kid3);
   scene05.addClickable(bartender);
   Collectable broom = new Collectable("Broom", screenWidth * 3/4, screenHeight * 3/4, "data/collectables/broom.png");
-  scene05.addCollectable(broom);
-  Objective locker = new Objective("Locker", screenWidth * 3/4, screenHeight * 3/4, "data/objectives/locker1.png", "Key", this, "");
+  Objective locker = new Objective("Locker", screenWidth * 3/4, screenHeight * 3/4, "data/objectives/locker1.png", "Key", this, "", broom);
   Objective glass = new Objective("Glass", screenWidth * 3/4 + 200, screenHeight * 3/4, "data/objectives/glass.png", "Broom", this, "");
   scene05.addObjective(locker);
   scene05.addObjective(glass);
@@ -155,7 +154,7 @@ void setup() {
   sceneManager.addScene(scene03);
   sceneManager.addScene(scene04);
   sceneManager.addScene(scene05);
-  currScene = sceneManager.goToScene("Wagon04");
+  currScene = sceneManager.goToScene("Wagon05");
 }
 
 void draw() {

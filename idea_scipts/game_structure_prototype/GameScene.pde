@@ -1,4 +1,4 @@
-class GameScene extends Scene { //<>// //<>// //<>//
+class GameScene extends Scene { //<>//
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
@@ -106,6 +106,7 @@ class GameScene extends Scene { //<>// //<>// //<>//
       String itemIdToRemoveFromId = object.getItemToDeleteFromInvId();
       if (!itemIdToRemoveFromId.equals("")) {
         inventory.removeFromInventory(itemIdToRemoveFromId);
+        object.updateItemToDeleteFromInv();
       }
     }
     updateMovement();
@@ -292,15 +293,16 @@ class GameScene extends Scene { //<>// //<>// //<>//
   public void mouseClicked() {
     int playerX = player.getX();
     for (Clickable object : clickables) {
-      if (object.mouseClicked(playerX, clickRange)) {
+      if (object.mouseClicked(playerX, clickRange)) { //<>//
         shouldTakeMoveInput = false;
         object.updateOptionsPos(inventory.getItemsIdentifiers());
         break;
       } else if (object.getIsInDialogue()) {
         object.mouseClickedOptions();
-      }
-      if (!object.getIsInDialogue()) {
+      } 
+      if (object.firstTimeNotInResponce) {
         shouldTakeMoveInput = true;
+        object.firstTimeNotInResponce = false;
       }
     }
 
@@ -324,9 +326,16 @@ class GameScene extends Scene { //<>// //<>// //<>//
         break;
       if (object.mouseClicked(playerX, clickRange) && itemToCheck.getIdentifier() == object.getCollectableIdentifier()) {
         object.playSound();
-        removeCollectable(itemToCheck);
-        inventory.removeFromInventory(itemToCheck);
-        removeObjective(object);
+        //removeCollectable(itemToCheck);
+        if (!itemToCheck.getIdentifier().equals("Key")) {
+          inventory.removeFromInventory(itemToCheck);
+          removeObjective(object);
+        } else {
+          //Change sprite
+          
+          //Show broom
+          addCollectable(object.getItemToDrop());
+        }
       }
     }
   }

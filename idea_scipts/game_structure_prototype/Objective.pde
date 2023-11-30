@@ -3,14 +3,26 @@ class Objective extends Interactable {
   
   SoundFile interactSound;
   
+  Collectable itemToDrop = null;
+  
   public Objective (String identifier, int x, int y, String gameObjectImageFile, String collectableIdentifier, PApplet parent, String interactSound) {
     super(identifier, x, y, gameObjectImageFile);
     this.collectableIdentifier = collectableIdentifier;
     this.interactSound = new SoundFile(parent, interactSound);
   }
   
+  public Objective (String identifier, int x, int y, String gameObjectImageFile, String collectableIdentifier, PApplet parent, String interactSound
+                    , Collectable itemToDrop) {
+    this(identifier, x, y, gameObjectImageFile, collectableIdentifier, parent, interactSound);
+    this.itemToDrop = itemToDrop;
+  }
+  
   public String getCollectableIdentifier() {
     return collectableIdentifier;
+  }
+  
+  public Collectable getItemToDrop() {
+    return itemToDrop;
   }
   
   public void draw() {
@@ -20,7 +32,7 @@ class Objective extends Interactable {
   }
   
   public void playSound() {
-    interactSound.play();
+    //interactSound.play();
   }
   
   @Override
