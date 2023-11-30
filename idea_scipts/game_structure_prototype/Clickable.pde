@@ -17,6 +17,9 @@ class Clickable extends Interactable { //<>// //<>// //<>// //<>//
   private int spaceInFrontOfText = 150;
   private int dialogueOptionsAreaHeight;
   private int dialogueOptionsAreaY;
+  //TODO: make the dialogue bar more nice by doing extra calculations
+  //TODO: make text that is hovered different color
+  //TODO: make the dialogues appear above the characters that are saying them
 
   private boolean isInDialogue = false;
   private boolean firstTimeNotInResponce = false;

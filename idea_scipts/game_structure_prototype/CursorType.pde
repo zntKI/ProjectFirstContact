@@ -7,6 +7,8 @@ public class CursorType {
   private PImage handCursorImage;
   private PImage dialogueCursorImage;
   
+  //TODO: Add a point cursor type
+  
   public CursorType () {
     normalCursorImage = loadImage(normalFilePath);
     normalCursorImage.resize(32, 0);

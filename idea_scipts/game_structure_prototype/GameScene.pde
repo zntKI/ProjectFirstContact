@@ -172,6 +172,8 @@ class GameScene extends Scene { //<>//
     bgMountain.updatePos(false);
     tracksImage.updatePos(false);
 
+    //TODO: Try to fix the movement!!!
+    
     if (shouldTakeMoveInput && !player.shouldDisableMovementWhenChangingScenes) {
       if (trainImage.hasReachedTrainBoundaries()) {
         int playerX = player.getX();
@@ -291,6 +293,8 @@ class GameScene extends Scene { //<>//
   }
 
   public void mouseClicked() {
+    //TODO: make it impossible for the player to "interact" with more than one Interactable at a time
+    
     int playerX = player.getX();
     for (Clickable object : clickables) {
       if (object.mouseClicked(playerX, clickRange)) { //<>//

@@ -2,6 +2,8 @@ class TrainBackground extends Background {
   private ArrayList<Clickable> clickables;
   private ArrayList<Collectable> collectables;
   private ArrayList<Objective> objectives;
+  
+  //TODO: make arrows that show that you can switch wagons
 
   public TrainBackground (String imageFilePath, int moveSpeed) {
     super(imageFilePath, moveSpeed);

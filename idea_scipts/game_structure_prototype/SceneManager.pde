@@ -14,6 +14,7 @@ class SceneManager {
     scenes.addNode(scene);
   }
 
+  //TODO: Make the player stop at the end and the start of the train OR Make the train loopable(LoopDoublyLinkedList)
   public Scene updateState() {
     int playerX = player.getX();
     if (playerX <= 100) {

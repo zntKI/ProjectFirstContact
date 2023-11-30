@@ -31,6 +31,7 @@ class Objective extends Interactable {
     imageMode(CORNER);
   }
   
+  //TODO: Insert the sounds
   public void playSound() {
     //interactSound.play();
   }
