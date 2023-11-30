@@ -214,6 +214,23 @@ class Clickable extends Interactable { //<>// //<>// //<>// //<>//
                 itemToDeleteFromInventoryId = "Key";
               }
             }
+          } else if (this.identifier.equals("Lumberjack") && optionText.contains("_Plank")) {
+            for (int j = 0; j < dialogueOptions.size(); j++) {
+              if (dialogueOptions.get(j).equals(optionText)) {
+                for (Collectable collectable : itemsToDrop) {
+                  if (collectable.getIdentifier().equals("Plank")) {
+                    droppedItem = collectable;
+                    break;
+                  }
+                }
+                currentDialogueOptionButtons.remove(j);
+                dialogueOptions.remove(j);
+                conditions.remove(j);
+                responces.remove(j);
+
+                itemToDeleteFromInventoryId = "Sandwich";
+              }
+            }
           } else if (optionText.contains("_")) {
             String identifier = optionText.substring(optionText.indexOf('_') + 1);
             for (Collectable collectable : itemsToDrop) {
@@ -245,7 +262,7 @@ class Clickable extends Interactable { //<>// //<>// //<>// //<>//
 
   @Override
     public boolean mouseClicked(int playerX, int clickRange) {
-    if ((mouseX > x - owidth / 2 && mouseX < x + owidth / 2) //<>//
+    if ((mouseX > x - owidth / 2 && mouseX < x + owidth / 2)
       && (mouseY > y - oheight / 2 && mouseY < y + oheight / 2) && isAbleToBeClicked(playerX, clickRange)) {
       isInDialogue = true;
       return true;
@@ -257,7 +274,7 @@ class Clickable extends Interactable { //<>// //<>// //<>// //<>//
     for (int i = 0; i < currentDialogueOptionButtons.size(); i++) {
       DialogueOption option = currentDialogueOptionButtons.get(i);
       if (option.mouseClicked()) {
-        if (option.isGoodbye()) { //<>//
+        if (option.isGoodbye()) {
           isInDialogue = false;
           firstTimeNotInResponce = true;
           isInResponce = false;

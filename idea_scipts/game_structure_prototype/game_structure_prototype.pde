@@ -61,7 +61,7 @@ void setup() {
   Objective foodTrolley = new Objective("FoodTrolley", screenWidth * 3/4, screenHeight * 3/4, "data/objectives/food-trolley.png", "WoodenPlank", this, "");
   scene01.addObjective(foodTrolley);
 
-  GameScene scene02 = new GameScene("Wagon02", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
+  GameScene scene02 = new GameScene("Wagon02", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train02FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
   LinkedHashMap<String, String> officerHash = new LinkedHashMap<String, String>();
   officerHash.put("-> Officer, I need your help with something. I need to shoot down a dangerous bird.", "");
   officerHash.put("-> How much money do you make?", "");
@@ -73,8 +73,8 @@ void setup() {
   "Enough to buy food.\nYou know I could really eat a donut right now.", "Yes!\nGimme, gimme\n*Turns around, eating the donut\nand you steal his gun*", "LEAVE"}, officerItemsToDrop);
   scene02.addClickable(officer);
 
-  GameScene scene03 = new GameScene("Wagon03", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train02FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
-  Objective bird = new Objective("Bird", screenWidth * 1/2, screenHeight * 1/2 + 100, "data/objectives/bird.png", "Gun", this, "data/sound/Pistol_Sound_short.mp3");
+  GameScene scene03 = new GameScene("Wagon03", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
+  Objective bird = new Objective("Bird", screenWidth * 1/2 + 950, screenHeight * 1/2 + 100, "data/objectives/bird.png", "Gun", this, "data/sound/Pistol_Sound_short.mp3");
   scene03.addObjective(bird);
 
   GameScene scene04 = new GameScene("Wagon04", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
@@ -95,13 +95,11 @@ void setup() {
   lumberjackHash.put("-> Why do all lumberjacks wear the same jacket?", "");
   lumberjackHash.put("-> Goodbye", "");
   ArrayList<Collectable> lumbItemsToDrop = new ArrayList<Collectable>();
-  //lumb.add(new Collectable("Plank", 0, 0, "data/collectables/plank.png"));
+  lumbItemsToDrop.add(new Collectable("Plank", 0, 0, "data/collectables/wonky_plank.png"));
   Clickable lumberjack = new Clickable("Lumberjack", screenWidth * 3/4, screenHeight * 3/4, "data/clickables/lumberjack-l.png", lumberjackHash, new String[]{ "I do, but I cannot hand it to you for free.\nI would want to trade it for some food however.", "That sandwich looks delicious,\nhere you go.",
   "No, I don't like donuts.\nI like sandwiches the most.", "They probably have something in the cleaning locker near the bar.", "Because they look cool, just like me.\nI bet you wish you had one.", "LEAVE"}, lumbItemsToDrop);
   scene04.addClickable(oldLady);
   scene04.addClickable(lumberjack);
-  //Collectable woodenPlanks = new Collectable("WoodenPlanks", screenWidth * 3/4 - 200, screenHeight * 3/4, "data/collectables/money.png");
-  //scene04.addCollectable(woodenPlanks);
 
   GameScene scene05 = new GameScene("Wagon05", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train03FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
   LinkedHashMap<String, String> kid1Hash = new LinkedHashMap<String, String>();

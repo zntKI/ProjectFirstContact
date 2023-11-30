@@ -124,6 +124,7 @@ class GameScene extends Scene { //<>//
     bgMountain.draw();
     image(inventoryList, 0, 0);
     tracksImage.draw();
+    
     trainImage.draw();
 
     Collectable collectableGrabbed = inventory.draw();
@@ -297,7 +298,7 @@ class GameScene extends Scene { //<>//
     
     int playerX = player.getX();
     for (Clickable object : clickables) {
-      if (object.mouseClicked(playerX, clickRange)) { //<>//
+      if (object.mouseClicked(playerX, clickRange)) {
         shouldTakeMoveInput = false;
         object.updateOptionsPos(inventory.getItemsIdentifiers());
         break;
@@ -331,14 +332,16 @@ class GameScene extends Scene { //<>//
       if (object.mouseClicked(playerX, clickRange) && itemToCheck.getIdentifier() == object.getCollectableIdentifier()) {
         object.playSound();
         //removeCollectable(itemToCheck);
-        if (!itemToCheck.getIdentifier().equals("Key")) {
+        if (!itemToCheck.getIdentifier().equals("Key") && !itemToCheck.getIdentifier().equals("Gun")) {
           inventory.removeFromInventory(itemToCheck);
           removeObjective(object);
-        } else {
+        } else if(itemToCheck.getIdentifier().equals("Key")){
           //Change sprite
           
           //Show broom
           addCollectable(object.getItemToDrop());
+        } else if(itemToCheck.getIdentifier().equals("Gun")){
+          removeObjective(object);
         }
       }
     }
