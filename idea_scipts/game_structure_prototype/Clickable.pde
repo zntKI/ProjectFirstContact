@@ -1,11 +1,14 @@
-class Clickable extends Interactable { //<>//
+class Clickable extends Interactable { //<>// //<>// //<>//
   ArrayList<String> dialogueOptions;
   ArrayList<String> conditions;
-  String[] responces;
+  ArrayList<String> responces;
 
   ArrayList<DialogueOption> currentDialogueOptionButtons;
-  
+
   ArrayList<Collectable> itemsToDrop;
+  Collectable droppedItem = null;
+
+  String itemToDeleteFromInventoryId = "";
 
   //Variables for text
   private int textSize = 20;
@@ -31,17 +34,26 @@ class Clickable extends Interactable { //<>//
 
     currentDialogueOptionButtons = new ArrayList<DialogueOption>();
     for (int i = 0; i < dialogueOptionsWithConditions.size(); i++) {
-      currentDialogueOptionButtons.add(new DialogueOption(dialogueOptions.get(i), spaceInFrontOfText,
-        dialogueOptionsAreaY + spaceBeforeAndAfterText + (i * textSize) + (i * spaceBetweenText), textSize, responces[i]));
+      String option = dialogueOptions.get(i);
+      if (option.contains("_")) {
+        currentDialogueOptionButtons.add(new DialogueOption(option.substring(0, option.indexOf("_")), spaceInFrontOfText,
+          dialogueOptionsAreaY + spaceBeforeAndAfterText + (i * textSize) + (i * spaceBetweenText), textSize, responces[i]));
+      } else {
+        currentDialogueOptionButtons.add(new DialogueOption(option, spaceInFrontOfText,
+          dialogueOptionsAreaY + spaceBeforeAndAfterText + (i * textSize) + (i * spaceBetweenText), textSize, responces[i]));
+      }
     }
 
-    this.responces = responces;
+    this.responces = new ArrayList<String>();
+    for (int i = 0; i < responces.length; i++) {
+      this.responces.add(responces[i]);
+    }
 
     this.currentDialogueOptionButtons = new ArrayList<DialogueOption>();
   }
-  
+
   public Clickable (String identifier, int x, int y, String gameObjectImageFile, LinkedHashMap<String, String> dialogueOptionsWithConditions, String[] responces,
-                    ArrayList<Collectable> itemsToDrop) {
+    ArrayList<Collectable> itemsToDrop) {
     this(identifier, x, y, gameObjectImageFile, dialogueOptionsWithConditions, responces);
     this.itemsToDrop = itemsToDrop;
   }
@@ -52,6 +64,19 @@ class Clickable extends Interactable { //<>//
 
   public boolean getIsInResponce() {
     return isInResponce;
+  }
+
+  public Collectable getDroppedItem() {
+    return droppedItem;
+  }
+
+  public String getItemToDeleteFromInvId() {
+    return itemToDeleteFromInventoryId;
+  }
+
+  public void removeFromItemsToDrop() {
+    itemsToDrop.remove(droppedItem);
+    droppedItem = null;
   }
 
   @Override
@@ -75,13 +100,19 @@ class Clickable extends Interactable { //<>//
   public void updateOptionsPos(String inventoryItemsIdentifiers) {
     currentDialogueOptionButtons = new ArrayList<DialogueOption>();
     int count = 0;
-    
+
     if (inventoryItemsIdentifiers == "") {
       for (int i = 0; i < dialogueOptions.size(); i++) {
         String condition = conditions.get(i);
         if (!condition.contains("Coll")) {
-          currentDialogueOptionButtons.add(new DialogueOption(dialogueOptions.get(i), spaceInFrontOfText,
-            dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces[i]));
+          String option = dialogueOptions.get(i);
+          if (option.contains("_")) {
+            currentDialogueOptionButtons.add(new DialogueOption(option.substring(0, option.indexOf("_")), spaceInFrontOfText,
+              dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
+          } else {
+            currentDialogueOptionButtons.add(new DialogueOption(option, spaceInFrontOfText,
+              dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
+          }
 
           count++;
         }
@@ -90,31 +121,84 @@ class Clickable extends Interactable { //<>//
       for (int i = 0; i < dialogueOptions.size(); i++) {
         String condition = conditions.get(i);
         if ((condition.contains("Coll") && inventoryItemsIdentifiers.contains(condition.substring(condition.indexOf(':') + 2))) || condition == "") {
-          currentDialogueOptionButtons.add(new DialogueOption(dialogueOptions.get(i), spaceInFrontOfText,
-            dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces[i]));
+          String option = dialogueOptions.get(i);
+          if (option.contains("_")) {
+            currentDialogueOptionButtons.add(new DialogueOption(option.substring(0, option.indexOf("_")), spaceInFrontOfText,
+              dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
+          } else {
+            currentDialogueOptionButtons.add(new DialogueOption(option, spaceInFrontOfText,
+              dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
+          }
 
           count++;
         }
       }
     }
-    
+
     count = 0;
   }
 
   public void drawResponce() {
-    boolean flag = false;
-    for (DialogueOption option : currentDialogueOptionButtons) {
+    String optionTextToRemove = ""; //<>//
+    for (int i = 0; i < currentDialogueOptionButtons.size(); i++) {
+      DialogueOption option = currentDialogueOptionButtons.get(i);
       if (option.getIsInResponce()) {
         option.drawResponce();
-        flag = true;
         break;
       } else {
-        flag = false;
+        if (option.firstTimeNotInResponce) {
+          isInResponce = false;
+          String optionTextStart = option.getText().substring(0, 5);
+          String optionText = "";
+          for (int j = 0; j < dialogueOptions.size(); j++) {
+            if (dialogueOptions.get(i).contains(optionTextStart)) {
+              optionText = dialogueOptions.get(i);
+            }
+          }
+          if (optionText.contains("_")) {
+            String identifier = optionText.substring(optionText.indexOf('_') + 1);
+            for (Collectable collectable : itemsToDrop) {
+              String originalId = collectable.getIdentifier();
+              if (identifier.equals(originalId)) {
+                droppedItem = collectable;
+                optionTextToRemove = optionText;
+                break;
+              }
+            }
+            break;
+          }
+          if (this.identifier.equals("Officer") && optionText.contains("_Gun")) {
+            for (int j = 0; j < dialogueOptions.size(); j++) {
+              if (dialogueOptions.get(j).equals(optionText)) {
+                for (Collectable collectable : itemsToDrop) {
+                  if (collectable.getIdentifier().equals("Gun")) {
+                    droppedItem = collectable;
+                    break;
+                  }
+                }
+                currentDialogueOptionButtons.remove(j);
+                dialogueOptions.remove(j);
+                conditions.remove(j);
+                responces.remove(j);
+
+                itemToDeleteFromInventoryId = "Donut";
+              }
+            }
+          }
+          option.firstTimeNotInResponce = false;
+        }
       }
     }
-    
-    if (!flag) {
-      isInResponce = false;
+
+    if (!optionTextToRemove.equals("")) {
+      for (int i = 0; i < dialogueOptions.size(); i++) {
+        if (dialogueOptions.get(i).equals(optionTextToRemove)) {
+          currentDialogueOptionButtons.remove(i);
+          dialogueOptions.remove(i);
+          conditions.remove(i);
+          responces.remove(i);
+        }
+      }
     }
   }
 
@@ -128,9 +212,10 @@ class Clickable extends Interactable { //<>//
   }
 
   public void mouseClickedOptions() {
-    for (DialogueOption option : currentDialogueOptionButtons) {
+    for (int i = 0; i < currentDialogueOptionButtons.size(); i++) {
+      DialogueOption option = currentDialogueOptionButtons.get(i);
       if (option.mouseClicked()) {
-        if (option.isGoodbye()) { //<>//
+        if (option.isGoodbye()) {
           isInDialogue = false;
           isInResponce = false;
         } else {

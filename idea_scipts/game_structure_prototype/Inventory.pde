@@ -59,6 +59,27 @@ class Inventory {
     inventoryItems.remove(item);
     lastGrabbedItem = null;
   }
+  
+  public void removeFromInventory(String itemId){
+    Collectable item = null;
+    for (Collectable collectable : inventoryItems) {
+      if (collectable.getIdentifier().equals(itemId)) {
+        item = collectable;
+        break;
+      }
+    }
+    if (item == null) {
+      println("Smth went wrong with the Donut and Officer");
+      return;
+    }
+    int count = 0;
+    for (int i = inventoryItems.indexOf(item) + 1; i < inventoryItems.size(); i++) { //<>//
+      inventoryItems.get(i).updatePosInventory(item.getX() + count * (itemsSize + spaceBetweenItems), itemsSize);
+      count++;
+    }
+    inventoryItems.remove(item);
+    lastGrabbedItem = null;
+  }
 
   public int getXPosForNext() {
     return spaceBetweenItems * (inventoryItems.size() + 1) + itemsSize * inventoryItems.size() + itemsSize / 2;

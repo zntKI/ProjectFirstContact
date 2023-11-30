@@ -1,6 +1,6 @@
 import processing.sound.*;
 import java.util.LinkedHashMap;
-
+//https://forum.processing.org/two/discussion/20474/could-not-run-the-sketch-target-vm-failed-to-initialize-empty-sketch#latest
 int screenWidth = 1920;
 int screenHeight = 1080;
 
@@ -65,12 +65,12 @@ void setup() {
   LinkedHashMap<String, String> officerHash = new LinkedHashMap<String, String>();
   officerHash.put("Officer, I need your help with something. I need to shoot down a dangerous bird.", "");
   officerHash.put("How much money do you make?", "");
-  officerHash.put("Is there a chance you would want a donut?", "Coll: Donut");
+  officerHash.put("Is there a chance you would want a donut?_Gun", "Coll: Donut");
   officerHash.put("Goodbye", "");
   ArrayList<Collectable> officerItemsToDrop = new ArrayList<Collectable>();
   officerItemsToDrop.add(new Collectable("Gun", screenWidth * 1/4, screenHeight * 3/4, "data/collectables/gun.png"));
   Clickable officer = new Clickable("Officer", screenWidth * 1/4, screenHeight * 3/4, "data/clickables/officer-l.png", officerHash, new String[]{ "Please stop with this non-sense. I won't borrow you a gun, no matter the reason",
-  "Enough to buy food. You know I could really eat a donut right now.", "Yes!\nGimme, gimme", "LEAVE"}, officerItemsToDrop);
+  "Enough to buy food. You know I could really eat a donut right now.", "Yes!\nGimme, gimme\n*Turns around, eating the donut\nand you steal his gun*", "LEAVE"}, officerItemsToDrop);
   scene02.addClickable(officer);
 
   GameScene scene03 = new GameScene("Wagon03", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train02FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
@@ -79,12 +79,12 @@ void setup() {
 
   GameScene scene04 = new GameScene("Wagon04", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
   LinkedHashMap<String, String> oldLadyHash = new LinkedHashMap<String, String>();
-  oldLadyHash.put("Hello miss, I've lost my wallet, could you please help me with 5$? I will return them in the morning.", "");
+  oldLadyHash.put("Hello miss, I've lost my wallet, could you please help me with 5$? I will return them in the morning._Money", "");
   oldLadyHash.put("Do you enjoy riding trains?", "");
   oldLadyHash.put("Goodbye", "");
   ArrayList<Collectable> oldladyItemsToDrop = new ArrayList<Collectable>();
   oldladyItemsToDrop.add(new Collectable("Money", screenWidth * 1/4 + 100, screenHeight * 3/4, "data/collectables/money.png"));
-  Clickable oldLady = new Clickable("OldLady", screenWidth * 1/4, screenHeight * 3/4, "data/clickables/granny-l.png", oldLadyHash, new String[]{ "Of course dear, here you go._Money",
+  Clickable oldLady = new Clickable("OldLady", screenWidth * 1/4, screenHeight * 3/4, "data/clickables/granny-l.png", oldLadyHash, new String[]{ "Of course dear, here you go.",
   "Yes, I am enjoying this train ride just as much as savouring a cup of warm tea on a rainy day.\nThe rhythmic clatter of the wheels and the gentle sway of the carriage create a soothing symphony. It reminds me of a time when life moved a bit slower, much like the landscapes passing by outside the window – a panorama of rolling hills and quaint villages.", "LEAVE"},
   oldladyItemsToDrop);
   LinkedHashMap<String, String> lumberjackHash = new LinkedHashMap<String, String>();
@@ -112,7 +112,7 @@ void setup() {
   "Please don't shoot! My brother with the blue shirt stole it", "LEAVE" });
   LinkedHashMap<String, String> kid2Hash = new LinkedHashMap<String, String>();
   kid2Hash.put("Hello there, have you seen a set of keys around here?", "");
-  kid2Hash.put("Tell me where the key is, otherwise, I will have to shoot you!", "Coll: Gun");
+  kid2Hash.put("Tell me where the key is, otherwise, I will have to shoot you!_Key", "Coll: Gun");
   kid2Hash.put("Goodbye", "");
   ArrayList<Collectable> kid2ItemsToDrop = new ArrayList<Collectable>();
   kid2ItemsToDrop.add(new Collectable("Key", screenWidth - 100, screenHeight * 3/4, "data/collectables/key.png"));
@@ -126,8 +126,8 @@ void setup() {
   Clickable kid3 = new Clickable("Kid3", 0 + 300, screenHeight * 3/4, "data/clickables/kid3-r.png", kid3Hash, new String[]{ "You look weird, go away::If you do not tell me, I will have to send the Boogeyman after you.::The Boogeyman?::It's a horrible monster that appears at night and will try to hurt you while you sleep::Please don't! Ask my brother with the blue shirt he knows more.",
   "Who cares! We can do what we want!", "Please don't shoot! My brother with the blue shirt stole it.", "LEAVE"});
   LinkedHashMap<String, String> bartenderHash = new LinkedHashMap<String, String>();
-  bartenderHash.put("-> I would like to order a donut", "Coll: Money");
-  bartenderHash.put("-> I came to return the keys.", "Coll: Key");
+  bartenderHash.put("-> I would like to order a donut_Donut", "Coll: Money");
+  bartenderHash.put("-> I came to return the keys._Sandwich", "Coll: Key");
   bartenderHash.put("-> You look very handsome", "");
   bartenderHash.put("-> Can I borrow the key of the cleaning locker?", "");
   bartenderHash.put("-> Do you not get bored just sitting here?", "");
@@ -136,7 +136,7 @@ void setup() {
   bartenderItemsToDrop.add(new Collectable("Donut", screenWidth - 100, screenHeight * 3/4, "data/collectables/donut.png"));
   bartenderItemsToDrop.add(new Collectable("Sandwich", screenWidth - 50, screenHeight * 3/4, "data/collectables/sandwich.png"));
   Clickable bartender = new Clickable("Bartender", screenWidth - 200, screenHeight * 3/4, "data/clickables/bartender-l.png",
-    bartenderHash, new String[]{ "Of course, that will be 4.50$._Donut", "Thank you very much, whenever you need a snack, I can give you one for free._Sandwich",
+    bartenderHash, new String[]{ "Of course, that will be 4.50$.", "Thank you very much, whenever you need a snack, I can give you one for free.",
     "Well thank you sir!", "I don't think I can help you with that::It's urgent I promise there are glass shards on the floor::Some kid stole it, I believe he had a striped shirt.",
     "I am doing my job and I am actually being paid good money for it.::I wish I could get payed for doing nothing most of the time::Excuse me?::Nothing", "LEAVE"}, bartenderItemsToDrop);
   scene05.addClickable(kid1);
@@ -155,7 +155,7 @@ void setup() {
   sceneManager.addScene(scene03);
   sceneManager.addScene(scene04);
   sceneManager.addScene(scene05);
-  currScene = sceneManager.goToScene("Wagon02");
+  currScene = sceneManager.goToScene("Wagon04");
 }
 
 void draw() {

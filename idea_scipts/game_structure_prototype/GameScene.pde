@@ -1,4 +1,4 @@
-class GameScene extends Scene {  //<>//
+class GameScene extends Scene { //<>// //<>// //<>//
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
@@ -31,7 +31,7 @@ class GameScene extends Scene {  //<>//
   int clickRange = 200;
 
   CursorType cursorType;
-  
+
   private int dialogueTextSize = 20;
   private PFont textFont;
 
@@ -40,7 +40,7 @@ class GameScene extends Scene {  //<>//
   SoundManager soundManager;
 
   public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String inventoryListFilePath,
-  String dialogueFilePath, String trainImageFile, Player player, CursorType cursorType, String textFontFilePath, Inventory inventory, SoundManager soundManager) {
+    String dialogueFilePath, String trainImageFile, Player player, CursorType cursorType, String textFontFilePath, Inventory inventory, SoundManager soundManager) {
     super(sceneName);
     this.bgSky = bgSky;
     this.bgMountain = bgMountain;
@@ -96,18 +96,18 @@ class GameScene extends Scene {  //<>//
   }
 
   public void updateScene() {
-    //if (player.shouldDisableMovementWhenChangingScenes && countFrames == 0) {
-    //  startFrames = frameCount;
-    //  endFrames = startFrames + 30;
-    //  countFrames = startFrames;
-    //  player.updateIsMoving(false);
-    //} else if (player.shouldDisableMovementWhenChangingScenes && countFrames < endFrames) {
-    //  countFrames++;
-    //} else if (player.shouldDisableMovementWhenChangingScenes && countFrames == endFrames) {
-    //  player.shouldDisableMovementWhenChangingScenes = false;
-    //  countFrames = 0;
-    //  player.updateIsMoving(true);
-    //}
+    for (Clickable object : clickables) {
+      Collectable droppedItem = object.getDroppedItem();
+      if (droppedItem != null) {
+        droppedItem.updatePosInventory(inventory.getXPosForNext(), inventory.getItemsSize());
+        inventory.addToInventory(object.droppedItem);
+        object.removeFromItemsToDrop();
+      }
+      String itemIdToRemoveFromId = object.getItemToDeleteFromInvId();
+      if (!itemIdToRemoveFromId.equals("")) {
+        inventory.removeFromInventory(itemIdToRemoveFromId);
+      }
+    }
     updateMovement();
   }
 
@@ -141,7 +141,7 @@ class GameScene extends Scene {  //<>//
 
     for (Objective object : objectives) {
       object.draw();
-    } //<>//
+    }
 
     if (clickableInDialogue != null) {
       fill(0, 128);
@@ -298,11 +298,10 @@ class GameScene extends Scene {  //<>//
         break;
       } else if (object.getIsInDialogue()) {
         object.mouseClickedOptions();
-      } //<>//
+      }
       if (!object.getIsInDialogue()) {
         shouldTakeMoveInput = true;
       }
-      println(object.getIsInDialogue());
     }
 
     for (int i = 0; i < collectables.size(); i++) {

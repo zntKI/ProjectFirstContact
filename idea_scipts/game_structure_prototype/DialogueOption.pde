@@ -1,14 +1,15 @@
-class DialogueOption {
+class DialogueOption { //<>//
   private String text;
   private String[] responces;
 
   private int x, y;
   private int owidth, oheight;
 
-  int countResponce = 0;
-  int currentTime = 0;
+  private int countResponce = 0;
+  private int currentTime = 0;
 
   private boolean isInResponce = false;
+  private boolean firstTimeNotInResponce = false;
 
   public DialogueOption(String text, int x, int y, int oheight, String responce) {
     this.text = text;
@@ -17,12 +18,15 @@ class DialogueOption {
     this.x = x;
     this.y = y;
     this.oheight = oheight;
-
     this.owidth = width - x * 2;
   }
 
   public boolean getIsInResponce() {
     return isInResponce;
+  }
+
+  public String getText() {
+    return text;
   }
 
   public void draw() {
@@ -36,9 +40,10 @@ class DialogueOption {
     }
 
     if (countResponce == responces.length) {
-      countResponce = 0; //<>// //<>//
+      countResponce = 0;
       currentTime = 0;
       isInResponce = false;
+      firstTimeNotInResponce = true;
     } else {
       textAlign(CENTER, CENTER);
       text(responces[countResponce], width / 2, height / 2);
