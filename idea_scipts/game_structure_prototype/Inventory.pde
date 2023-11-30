@@ -1,8 +1,10 @@
-class Inventory {
+class Inventory { //<>//
   private ArrayList<Collectable> inventoryItems;
 
-  private int itemsSize = 100;
-  private int spaceBetweenItems = itemsSize / 5;
+  private int itemsSize = 70;
+  private int itemsY = 70;
+  private int startX = 70;
+  private int spaceBetweenItems = 20;
 
   private Collectable lastGrabbedItem = null;
 
@@ -14,10 +16,14 @@ class Inventory {
     return itemsSize;
   }
   
+  public int getItemsY() {
+    return itemsY;
+  }
+
   public Collectable getCurrentItemGrabbed() {
     return lastGrabbedItem;
   }
-  
+
   public String getItemsIdentifiers() {
     String idenitifierConcat = "";
     for (Collectable object : inventoryItems) {
@@ -25,7 +31,7 @@ class Inventory {
     }
     return idenitifierConcat;
   }
-  
+
   public boolean canPickUpItem() {
     if (inventoryItems.size() == 0 || lastGrabbedItem == null) {
       return true;
@@ -33,7 +39,7 @@ class Inventory {
     return false;
   }
 
-  public Collectable draw() { //<>// //<>//
+  public Collectable draw() { //<>//
     Collectable collectableGrabbed = null;
     for (Collectable object : inventoryItems) {
       if (object.getIsGrabbed()) {
@@ -42,29 +48,30 @@ class Inventory {
       }
       object.draw();
     }
-    
+
     return collectableGrabbed;
   }
 
   public void addToInventory(Collectable item) {
     inventoryItems.add(item);
   }
-  
-  public void removeFromInventory(Collectable item){
+
+  public void removeFromInventory(Collectable item) {
     int count = 0;
     for (int i = inventoryItems.indexOf(item) + 1; i < inventoryItems.size(); i++) { //<>//
-      inventoryItems.get(i).updatePosInventory(item.getX() + count * (itemsSize + spaceBetweenItems), itemsSize);
+      inventoryItems.get(i).updatePosInventory(item.getX() + count * (itemsSize + spaceBetweenItems), itemsY, itemsSize);
       count++;
     }
     inventoryItems.remove(item);
     lastGrabbedItem = null;
   }
-  
-  public void removeFromInventory(String itemId){
+
+  public void removeFromInventory(String itemId) {
     Collectable item = null;
     for (Collectable collectable : inventoryItems) {
       if (collectable.getIdentifier().equals(itemId)) {
         item = collectable;
+        removeFromInventory(item);
         break;
       }
     }
@@ -72,17 +79,10 @@ class Inventory {
       println("Smth went wrong with the Donut and Officer");
       return;
     }
-    int count = 0;
-    for (int i = inventoryItems.indexOf(item) + 1; i < inventoryItems.size(); i++) { //<>//
-      inventoryItems.get(i).updatePosInventory(item.getX() + count * (itemsSize + spaceBetweenItems), itemsSize);
-      count++;
-    }
-    inventoryItems.remove(item);
-    lastGrabbedItem = null;
   }
 
   public int getXPosForNext() {
-    return spaceBetweenItems * (inventoryItems.size() + 1) + itemsSize * inventoryItems.size() + itemsSize / 2;
+    return startX + spaceBetweenItems * inventoryItems.size() + itemsSize * inventoryItems.size() + itemsSize / 2;
   }
 
   public void mouseClicked() {
@@ -101,7 +101,7 @@ class Inventory {
       }
     }
   }
-  
+
   public boolean mouseMoved() {
     for (Collectable object : inventoryItems) {
       if (object.mouseMoved() || object.getIsGrabbed()) {

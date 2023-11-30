@@ -99,7 +99,7 @@ class GameScene extends Scene { //<>//
     for (Clickable object : clickables) {
       Collectable droppedItem = object.getDroppedItem();
       if (droppedItem != null) {
-        droppedItem.updatePosInventory(inventory.getXPosForNext(), inventory.getItemsSize());
+        droppedItem.updatePosInventory(inventory.getXPosForNext(), inventory.getItemsY(), inventory.getItemsSize());
         inventory.addToInventory(object.droppedItem);
         object.removeFromItemsToDrop();
       }
@@ -310,7 +310,7 @@ class GameScene extends Scene { //<>//
       Collectable object = collectables.get(i);
       if (object.mouseClicked(playerX, clickRange) && inventory.canPickUpItem()) {
         removeCollectable(object);
-        object.updatePosInventory(inventory.getXPosForNext(), inventory.getItemsSize());
+        object.updatePosInventory(inventory.getXPosForNext(), inventory.getItemsY(), inventory.getItemsSize());
         inventory.addToInventory(object);
         soundManager.playPickup();
         break;

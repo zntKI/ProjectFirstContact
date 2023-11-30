@@ -46,9 +46,9 @@ class Collectable extends Interactable {
     return false;
   }
 
-  public void updatePosInventory(int x, int size) {
+  public void updatePosInventory(int x, int y, int size) {
     this.x = x;
-    this.y = size / 2;
+    this.y = y;
     this.owidth = size;
     this.oheight = owidth;
   }

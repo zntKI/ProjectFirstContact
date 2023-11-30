@@ -74,7 +74,7 @@ void setup() {
   scene02.addClickable(officer);
 
   GameScene scene03 = new GameScene("Wagon03", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train02FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
-  Objective bird = new Objective("Bird", screenWidth * 1/2, screenHeight * 1/2, "data/objectives/bird.png", "Gun", this, "data/sound/Pistol_Sound_short.mp3");
+  Objective bird = new Objective("Bird", screenWidth * 1/2, screenHeight * 1/2 + 100, "data/objectives/bird.png", "Gun", this, "data/sound/Pistol_Sound_short.mp3");
   scene03.addObjective(bird);
 
   GameScene scene04 = new GameScene("Wagon04", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
@@ -154,7 +154,7 @@ void setup() {
   sceneManager.addScene(scene03);
   sceneManager.addScene(scene04);
   sceneManager.addScene(scene05);
-  currScene = sceneManager.goToScene("Wagon05");
+  currScene = sceneManager.goToScene("Wagon03");
 }
 
 void draw() {
