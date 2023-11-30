@@ -1,4 +1,4 @@
-class Clickable extends Interactable { //<>// //<>// //<>// //<>//
+class Clickable extends Interactable { //<>// //<>// //<>// //<>// //<>//
   ArrayList<String> dialogueOptions;
   ArrayList<String> conditions;
   ArrayList<String> responces;
@@ -77,7 +77,7 @@ class Clickable extends Interactable { //<>// //<>// //<>// //<>//
   public String getItemToDeleteFromInvId() {
     return itemToDeleteFromInventoryId;
   }
-  
+
   public void updateItemToDeleteFromInv() {
     itemToDeleteFromInventoryId = "";
   }
@@ -114,13 +114,8 @@ class Clickable extends Interactable { //<>// //<>// //<>// //<>//
         String condition = conditions.get(i);
         if (!condition.contains("Coll")) {
           String option = dialogueOptions.get(i);
-          if (option.contains("_")) {
-            currentDialogueOptionButtons.add(new DialogueOption(option.substring(0, option.indexOf("_")), spaceInFrontOfText,
-              dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
-          } else {
-            currentDialogueOptionButtons.add(new DialogueOption(option, spaceInFrontOfText,
-              dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
-          }
+          currentDialogueOptionButtons.add(new DialogueOption(option, spaceInFrontOfText,
+            dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
 
           count++;
         }
@@ -130,13 +125,8 @@ class Clickable extends Interactable { //<>// //<>// //<>// //<>//
         String condition = conditions.get(i);
         if ((condition.contains("Coll") && inventoryItemsIdentifiers.contains(condition.substring(condition.indexOf(':') + 2))) || condition == "") {
           String option = dialogueOptions.get(i);
-          if (option.contains("_")) {
-            currentDialogueOptionButtons.add(new DialogueOption(option.substring(0, option.indexOf("_")), spaceInFrontOfText,
-              dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
-          } else {
-            currentDialogueOptionButtons.add(new DialogueOption(option, spaceInFrontOfText,
-              dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
-          }
+          currentDialogueOptionButtons.add(new DialogueOption(option, spaceInFrontOfText,
+            dialogueOptionsAreaY + spaceBeforeAndAfterText + (count * textSize) + (count * spaceBetweenText), textSize, responces.get(i)));
 
           count++;
         }
@@ -147,7 +137,6 @@ class Clickable extends Interactable { //<>// //<>// //<>// //<>//
   }
 
   public void drawResponce() {
-    String optionTextToRemove = "";
     for (int i = 0; i < currentDialogueOptionButtons.size(); i++) {
       DialogueOption option = currentDialogueOptionButtons.get(i);
       if (option.getIsInResponce()) {
@@ -156,105 +145,34 @@ class Clickable extends Interactable { //<>// //<>// //<>// //<>//
       } else {
         if (option.firstTimeNotInResponce) {
           isInResponce = false;
-          String optionTextStart = option.getText().substring(0, 5);
-          String optionText = "";
-          for (int j = 0; j < dialogueOptions.size(); j++) {
-            if (dialogueOptions.get(i).contains(optionTextStart)) {
-              optionText = dialogueOptions.get(i);
+          String optionText = option.getText();
+          if (optionText.contains("_")) {
+            String identifier = "";
+            if (optionText.contains("_N")) {
+              int startIndex = optionText.indexOf('_') + 1;
+              int endIndex = optionText.indexOf('_', startIndex);
+              identifier = optionText.substring(startIndex, endIndex);
+            } else {
+              identifier = optionText.substring(optionText.indexOf('_') + 1);
             }
-          }
-          if (this.identifier.equals("Officer") && optionText.contains("_Gun")) {
-            for (int j = 0; j < dialogueOptions.size(); j++) {
-              if (dialogueOptions.get(j).equals(optionText)) {
-                for (Collectable collectable : itemsToDrop) {
-                  if (collectable.getIdentifier().equals("Gun")) {
-                    droppedItem = collectable;
-                    break;
-                  }
-                }
-                currentDialogueOptionButtons.remove(j);
-                dialogueOptions.remove(j);
-                conditions.remove(j);
-                responces.remove(j);
-
-                itemToDeleteFromInventoryId = "Donut";
-              }
-            }
-          } else if (this.identifier.equals("Bartender") && optionText.contains("_Donut")) {
-            for (int j = 0; j < dialogueOptions.size(); j++) {
-              if (dialogueOptions.get(j).equals(optionText)) {
-                for (Collectable collectable : itemsToDrop) {
-                  if (collectable.getIdentifier().equals("Donut")) {
-                    droppedItem = collectable;
-                    break;
-                  }
-                }
-                currentDialogueOptionButtons.remove(j);
-                dialogueOptions.remove(j);
-                conditions.remove(j);
-                responces.remove(j);
-
-                itemToDeleteFromInventoryId = "Money";
-              }
-            }
-          } else if (this.identifier.equals("Bartender") && optionText.contains("_Sandwich")) {
-            for (int j = 0; j < dialogueOptions.size(); j++) {
-              if (dialogueOptions.get(j).equals(optionText)) {
-                for (Collectable collectable : itemsToDrop) {
-                  if (collectable.getIdentifier().equals("Sandwich")) {
-                    droppedItem = collectable;
-                    break;
-                  }
-                }
-                currentDialogueOptionButtons.remove(j);
-                dialogueOptions.remove(j);
-                conditions.remove(j);
-                responces.remove(j);
-
-                itemToDeleteFromInventoryId = "Key";
-              }
-            }
-          } else if (this.identifier.equals("Lumberjack") && optionText.contains("_Plank")) {
-            for (int j = 0; j < dialogueOptions.size(); j++) {
-              if (dialogueOptions.get(j).equals(optionText)) {
-                for (Collectable collectable : itemsToDrop) {
-                  if (collectable.getIdentifier().equals("Plank")) {
-                    droppedItem = collectable;
-                    break;
-                  }
-                }
-                currentDialogueOptionButtons.remove(j);
-                dialogueOptions.remove(j);
-                conditions.remove(j);
-                responces.remove(j);
-
-                itemToDeleteFromInventoryId = "Sandwich";
-              }
-            }
-          } else if (optionText.contains("_")) {
-            String identifier = optionText.substring(optionText.indexOf('_') + 1);
             for (Collectable collectable : itemsToDrop) {
               String originalId = collectable.getIdentifier();
               if (identifier.equals(originalId)) {
                 droppedItem = collectable;
-                optionTextToRemove = optionText;
+
+                String condition = conditions.get(i);
+                if (!condition.equals("") && optionText.charAt(optionText.length() - 1) != 'N')
+                  itemToDeleteFromInventoryId = condition.substring(condition.indexOf(": ") + 2);
+                currentDialogueOptionButtons.remove(i);
+                dialogueOptions.remove(i);
+                conditions.remove(i);
+                responces.remove(i);
                 break;
               }
             }
             break;
           }
           option.firstTimeNotInResponce = false;
-        }
-      }
-    }
-
-    if (!optionTextToRemove.equals("")) {
-      for (int i = 0; i < dialogueOptions.size(); i++) {
-        if (dialogueOptions.get(i).equals(optionTextToRemove)) {
-          currentDialogueOptionButtons.remove(i);
-          dialogueOptions.remove(i);
-          conditions.remove(i);
-          responces.remove(i);
         }
       }
     }

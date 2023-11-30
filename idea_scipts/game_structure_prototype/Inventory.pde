@@ -67,9 +67,10 @@ class Inventory {
   }
 
   public void removeFromInventory(String itemId) {
-    Collectable item = null;
+    Collectable item = null; //<>//
     for (Collectable collectable : inventoryItems) {
-      if (collectable.getIdentifier().equals(itemId)) {
+      String originalId = collectable.getIdentifier();
+      if (originalId.equals(itemId)) {
         item = collectable;
         removeFromInventory(item);
         break;

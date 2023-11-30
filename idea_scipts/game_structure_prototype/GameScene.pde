@@ -309,6 +309,7 @@ class GameScene extends Scene {
     for (Clickable object : clickables) {
       if (object.mouseClicked(playerX, clickRange)) {
         shouldTakeMoveInput = false;
+        player.updateIsMoving(false);
         object.updateOptionsPos(inventory.getItemsIdentifiers());
         break;
       } else if (object.getIsInDialogue()) {
@@ -347,13 +348,7 @@ class GameScene extends Scene {
         if (!itemToCheck.getIdentifier().equals("Key") && !itemToCheck.getIdentifier().equals("Gun")) {
           inventory.removeFromInventory(itemToCheck);
           removeObjective(object);
-        } /*else if (itemToCheck.getIdentifier().equals("Plank")) {
-          image = loadImage("data/collectables/wonky_plank.png");
-          imageX = object.x + object.owidth / 2;
-          imageY = object.y + object.oheight / 2;
-          imageWidth = 50;
-          imageHeight = 50;
-        }*/ else if (itemToCheck.getIdentifier().equals("Key")) {
+        } else if (itemToCheck.getIdentifier().equals("Key")) {
           //Change sprite
 
           //Show broom

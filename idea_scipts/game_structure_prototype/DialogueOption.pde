@@ -7,6 +7,7 @@ class DialogueOption { //<>//
 
   private int countResponce = 0;
   private int currentTime = 0;
+  private int readTime = 0;
 
   private boolean isInResponce = false;
   private boolean firstTimeNotInResponce = false;
@@ -30,13 +31,22 @@ class DialogueOption { //<>//
   }
 
   public void draw() {
-    text(text, x, y);
+    if (text.contains("_")) {
+      text(text.substring(0, text.indexOf("_")), x, y);
+    } else {
+      text(text, x, y);
+      ;
+    }
   }
 
   public void drawResponce() {
     int time = millis() / 1000;
     if (currentTime == 0) {
       currentTime = time;
+
+      int currentResponceLength = responces[countResponce].length();
+      readTime = currentResponceLength < 20 ? 1 : (currentResponceLength >= 20 && currentResponceLength < 60 ? 2
+        : (currentResponceLength >= 60 && currentResponceLength < 110 ? 3 : 10));
     }
 
     if (countResponce == responces.length) {
@@ -49,9 +59,15 @@ class DialogueOption { //<>//
       text(responces[countResponce], width / 2, height / 2);
     }
 
-    if (time - currentTime == 2) {
+    if (time - currentTime == readTime) {
       currentTime = time;
       countResponce++;
+
+      if (countResponce != responces.length) {
+        int currentResponceLength = responces[countResponce].length();
+        readTime = currentResponceLength < 20 ? 1 : (currentResponceLength >= 20 && currentResponceLength < 60 ? 2
+          : (currentResponceLength >= 60 && currentResponceLength < 110 ? 3 : 10));
+      }
     }
   }
 
