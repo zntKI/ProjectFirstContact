@@ -1,4 +1,4 @@
-class GameScene extends Scene { //<>//
+class GameScene extends Scene {
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
@@ -38,6 +38,10 @@ class GameScene extends Scene { //<>//
   Inventory inventory;
 
   SoundManager soundManager;
+  
+  PImage image;
+  int imageX, imageY;
+  int imageWidth, imageHeight;
 
   public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String inventoryListFilePath,
     String dialogueFilePath, String trainImageFile, Player player, CursorType cursorType, String textFontFilePath, Inventory inventory, SoundManager soundManager) {
@@ -124,7 +128,7 @@ class GameScene extends Scene { //<>//
     bgMountain.draw();
     image(inventoryList, 0, 0);
     tracksImage.draw();
-    
+
     trainImage.draw();
 
     Collectable collectableGrabbed = inventory.draw();
@@ -160,6 +164,11 @@ class GameScene extends Scene { //<>//
     if (collectableGrabbed != null) {
       collectableGrabbed.draw();
     }
+    if (image != null) {
+      imageMode(CENTER);
+      image(image, imageX, imageY, imageWidth, imageHeight);
+      imageMode(CORNER);
+    }
   }
 
 
@@ -174,7 +183,7 @@ class GameScene extends Scene { //<>//
     tracksImage.updatePos(false);
 
     //TODO: Try to fix the movement!!!
-    
+
     if (shouldTakeMoveInput && !player.shouldDisableMovementWhenChangingScenes) {
       if (trainImage.hasReachedTrainBoundaries()) {
         int playerX = player.getX();
@@ -295,7 +304,7 @@ class GameScene extends Scene { //<>//
 
   public void mouseClicked() {
     //TODO: make it impossible for the player to "interact" with more than one Interactable at a time
-    
+
     int playerX = player.getX();
     for (Clickable object : clickables) {
       if (object.mouseClicked(playerX, clickRange)) {
@@ -304,7 +313,7 @@ class GameScene extends Scene { //<>//
         break;
       } else if (object.getIsInDialogue()) {
         object.mouseClickedOptions();
-      } 
+      }
       if (object.firstTimeNotInResponce) {
         shouldTakeMoveInput = true;
         object.firstTimeNotInResponce = false;
@@ -313,6 +322,9 @@ class GameScene extends Scene { //<>//
 
     for (int i = 0; i < collectables.size(); i++) {
       Collectable object = collectables.get(i);
+      if (object.getIdentifier() == "Plank") {
+        continue;
+      }
       if (object.mouseClicked(playerX, clickRange) && inventory.canPickUpItem()) {
         removeCollectable(object);
         object.updatePosInventory(inventory.getXPosForNext(), inventory.getItemsY(), inventory.getItemsSize());
@@ -330,17 +342,23 @@ class GameScene extends Scene { //<>//
       if (itemToCheck == null)
         break;
       if (object.mouseClicked(playerX, clickRange) && itemToCheck.getIdentifier() == object.getCollectableIdentifier()) {
-        object.playSound();
+        object.playSound(); //<>//
         //removeCollectable(itemToCheck);
         if (!itemToCheck.getIdentifier().equals("Key") && !itemToCheck.getIdentifier().equals("Gun")) {
           inventory.removeFromInventory(itemToCheck);
           removeObjective(object);
-        } else if(itemToCheck.getIdentifier().equals("Key")){
+        } /*else if (itemToCheck.getIdentifier().equals("Plank")) {
+          image = loadImage("data/collectables/wonky_plank.png");
+          imageX = object.x + object.owidth / 2;
+          imageY = object.y + object.oheight / 2;
+          imageWidth = 50;
+          imageHeight = 50;
+        }*/ else if (itemToCheck.getIdentifier().equals("Key")) {
           //Change sprite
-          
+
           //Show broom
           addCollectable(object.getItemToDrop());
-        } else if(itemToCheck.getIdentifier().equals("Gun")){
+        } else if (itemToCheck.getIdentifier().equals("Gun")) {
           removeObjective(object);
         }
       }

@@ -1,4 +1,4 @@
-class Inventory { //<>//
+class Inventory {
   private ArrayList<Collectable> inventoryItems;
 
   private int itemsSize = 70;

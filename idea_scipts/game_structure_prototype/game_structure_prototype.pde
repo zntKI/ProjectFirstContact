@@ -58,7 +58,7 @@ void setup() {
   Clickable horseGuy = new Clickable("HorseGuy", screenWidth * 1/4, screenHeight * 3/4, "data/clickables/horse.png", horseguyHash, new String[]{"No?\nAre you okay man?",
   "I need to go somewhere.\nJust like you?", "LEAVE"});
   scene01.addClickable(horseGuy);
-  Objective foodTrolley = new Objective("FoodTrolley", screenWidth * 3/4, screenHeight * 3/4, "data/objectives/food-trolley.png", "WoodenPlank", this, "");
+  Objective foodTrolley = new Objective("FoodTrolley", screenWidth * 3/4, screenHeight * 3/4, "data/objectives/food-trolley.png", "Plank", this, "");
   scene01.addObjective(foodTrolley);
 
   GameScene scene02 = new GameScene("Wagon02", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train02FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
@@ -89,7 +89,7 @@ void setup() {
   oldladyItemsToDrop);
   LinkedHashMap<String, String> lumberjackHash = new LinkedHashMap<String, String>();
   lumberjackHash.put("-> Do you have a wooden plank?", "");
-  lumberjackHash.put("-> I am willing to trade this sandwich for a wooden plank, how about it?", "Coll: Sandwich");
+  lumberjackHash.put("-> I am willing to trade this sandwich for a wooden plank, how about it?_Plank", "Coll: Sandwich");
   lumberjackHash.put("-> I am willing to trade this donut for a wooden plank", "Coll: Donut");
   lumberjackHash.put("-> Do you know where I can find something to clean up glass.", "");
   lumberjackHash.put("-> Why do all lumberjacks wear the same jacket?", "");
