@@ -28,7 +28,7 @@ class GameScene extends Scene {
   int endFrames = startFrames + 60;
   int countFrames = 0;
 
-  int clickRange = 200;
+  int clickRange = 350;
 
   CursorType cursorType;
 
@@ -141,11 +141,10 @@ class GameScene extends Scene {
       }
       object.draw();
     }
-    for (Collectable object : collectables) {
+    for (Objective object : objectives) {
       object.draw();
     }
-
-    for (Objective object : objectives) {
+    for (Collectable object : collectables) {
       object.draw();
     }
 
@@ -344,17 +343,15 @@ class GameScene extends Scene {
         break;
       if (object.mouseClicked(playerX, clickRange) && itemToCheck.getIdentifier() == object.getCollectableIdentifier()) {
         object.playSound(); //<>//
-        //removeCollectable(itemToCheck);
-        if (!itemToCheck.getIdentifier().equals("Key") && !itemToCheck.getIdentifier().equals("Gun")) {
+        if (!itemToCheck.getIdentifier().equals("Key") && !itemToCheck.getIdentifier().equals("Gun") && !itemToCheck.getIdentifier().equals("Plank")) {
           inventory.removeFromInventory(itemToCheck);
           removeObjective(object);
         } else if (itemToCheck.getIdentifier().equals("Key")) {
-          //Change sprite
-
-          //Show broom
-          addCollectable(object.getItemToDrop());
+          addCollectable(object.makeChangesForLocker());
         } else if (itemToCheck.getIdentifier().equals("Gun")) {
           removeObjective(object);
+        } else if (itemToCheck.getIdentifier().equals("Plank")) {
+          inventory.removeFromInventory(itemToCheck);
         }
       }
     }
