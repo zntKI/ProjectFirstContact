@@ -176,19 +176,17 @@ void loadGameScenes() {
   sceneManager.addScene(scene02);
   sceneManager.addScene(scene03);
   sceneManager.addScene(scene04);
-  
-  
+
+
   MovieScene movieEndTrolleyScene = new MovieScene("FoodTrolley", "trolley.mp4", this);
   MovieScene movieEndGlassScene = new MovieScene("Glass", "glass.mp4", this);
   MovieScene movieEndBirdScene = new MovieScene("Bird", "bird.mp4", this);
-  
+
   ArrayList<Button> buttonsStartMenu = new ArrayList<Button>();
-  Button buttonStart = new Button("Start", 1180, 1775, 480, 595);
   Button buttonQuit = new Button("Quit", 1180, 1775, 705, 820);
-  buttonsStartMenu.add(buttonStart);
   buttonsStartMenu.add(buttonQuit);
-  StaticScene endMenuScene = new StaticScene("EndMenu", "data/bgs/start_screen.png", buttonsStartMenu);
-  
+  StaticScene endMenuScene = new StaticScene("EndMenu", "data/bgs/end_screen.png", buttonsStartMenu);
+
   sceneManager.addScene(movieEndTrolleyScene);
   sceneManager.addScene(movieEndGlassScene);
   sceneManager.addScene(movieEndBirdScene);
@@ -203,7 +201,17 @@ void draw() {
     sceneManager.shouldLoadGameScenes = false;
   }
 
+  if (sceneManager.framesRemaining <= 0)
+    soundManager.backgroundMusic.stop();
+
   currScene.draw();
+  if (currScene.sceneName == "EndMenu") {
+    //textAlign(LEFT, TOP);
+    textSize(100);
+    //textFont(titleFont);
+    fill(#ffaa5e);
+    text("Score: " + (sceneManager.countEventsDone * 100 + 240 - (sceneManager.framesRemaining / 60)), 1180, 1775);
+  }
   if (currScene instanceof GameScene) {
     String name = ((GameScene)currScene).updateScene(sceneManager.countEventsDone);
     if (name != "") {

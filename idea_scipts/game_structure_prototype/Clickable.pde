@@ -1,4 +1,4 @@
-class Clickable extends Interactable {  //<>// //<>// //<>//
+class Clickable extends Interactable { //<>// //<>//
   ArrayList<String> dialogueOptions;
   ArrayList<String> conditions;
   ArrayList<String> responces;
@@ -93,6 +93,20 @@ class Clickable extends Interactable {  //<>// //<>// //<>//
     image(gameObjectImage, x, y, owidth, oheight);
     imageMode(CORNER);
   }
+
+  //public void draw(String invItems) {
+  //  imageMode(CENTER);
+  //  image(gameObjectImage, x, y, owidth, oheight);
+  //  for (int i = 0; i < conditions.size(); i++) {
+  //    if (!conditions.get(i).equals("")) {
+  //      String str = conditions.get(i).substring(conditions.get(i).indexOf(":") + 1);
+  //      if (!invItems.equals("") && invItems.contains(str)) {
+  //        rect(x, y - 100, owidth, 50);
+  //      }
+  //    }
+  //  }
+  //  imageMode(CORNER);
+  //}
 
   public void draw(PImage dialogueImage, PFont textFont) {
     image(dialogueImage, 0, dialogueOptionsAreaY, width, dialogueOptionsAreaHeight);

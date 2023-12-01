@@ -5,7 +5,7 @@ class SceneManager {
   private DoublyLinkedList scenes;
   private Player player;
 
-  int framesRemaining = 5400;
+  int framesRemaining = 100;
   int countEventsDone = 0;
   ArrayList<String> eventsNames = new ArrayList<String>();
 
@@ -22,8 +22,12 @@ class SceneManager {
 
   //TODO: Make the player stop at the end and the start of the train OR Make the train loopable(LoopDoublyLinkedList)
   public Scene updateState(Scene currentScene) {
+    if (countEventsDone == 3) {
+      goToScene("EndMenu");
+    }
     if (framesRemaining <= 0) {
-      if (currentScene instanceof GameScene || (currentScene instanceof MovieScene && (((MovieScene)currentScene).checkIfEnded() || ((MovieScene)currentScene).checkIfStopped()))) { //<>//
+      if (currentScene instanceof GameScene || (currentScene instanceof MovieScene && //<>//
+      (((MovieScene)currentScene).checkIfEnded() || ((MovieScene)currentScene).checkIfStopped()))) {
         Scene sceneTemp = scenes.findEvent(eventsNames);
         if (sceneTemp.sceneName != "EndMenu") {
           eventsNames.add(sceneTemp.sceneName);
