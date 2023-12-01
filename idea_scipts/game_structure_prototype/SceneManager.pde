@@ -4,7 +4,11 @@ import java.util.HashMap;
 class SceneManager {
   private DoublyLinkedList scenes;
   private Player player;
-  
+
+  int framesRemaining = 5400;
+  int countEventsDone = 0;
+  ArrayList<String> eventsNames = new ArrayList<String>();
+
   public boolean shouldLoadGameScenes = false;
 
   public SceneManager(Player player) {
@@ -18,6 +22,15 @@ class SceneManager {
 
   //TODO: Make the player stop at the end and the start of the train OR Make the train loopable(LoopDoublyLinkedList)
   public Scene updateState(Scene currentScene) {
+    if (framesRemaining <= 0) {
+      if (currentScene instanceof GameScene || (currentScene instanceof MovieScene && (((MovieScene)currentScene).checkIfEnded() || ((MovieScene)currentScene).checkIfStopped()))) { //<>//
+        Scene sceneTemp = scenes.findEvent(eventsNames);
+        if (sceneTemp.sceneName != "EndMenu") {
+          eventsNames.add(sceneTemp.sceneName);
+        }
+        return sceneTemp;
+      }
+    }
     if (currentScene instanceof StaticScene) {
       String sceneState = ((StaticScene)currentScene).getState();
       if (sceneState == "Start") {
@@ -29,8 +42,8 @@ class SceneManager {
         return currentScene;
       }
     } else if (currentScene instanceof MovieScene) {
-      if (((MovieScene)currentScene).checkIfEnded()) {
-        if (scenes.goToNext()) { //<>//
+      if (((MovieScene)currentScene).checkIfEnded() || ((MovieScene)currentScene).checkIfStopped()) {
+        if (scenes.goToNext()) {
           return scenes.getCurrentScene();
         } else {
           shouldLoadGameScenes = true;

@@ -18,6 +18,7 @@ NormalBackground bgMountain;
 NormalBackground tracksImage;
 
 String textFontFilePath = "data/fonts/pixelmix.ttf";
+String titleFontFilePath = "data/fonts/Fipps-Regular.otf";
 
 String[] playerSpritesIdleLeft = new String[] { "data/player/idle-l1.png", "data/player/idle-l2.png", "data/player/idle-l3.png", "data/player/idle-l4.png" };
 String[] playerSpritesIdleRight = new String[] { "data/player/idle-r1.png", "data/player/idle-r2.png", "data/player/idle-r3.png", "data/player/idle-r4.png" };
@@ -61,17 +62,17 @@ void loadGameScenes() {
   bgSky = new NormalBackground(bgSkyFilePath, 1);
   bgMountain = new NormalBackground(bgMountainsFilePath, 5, 150);
   tracksImage = new NormalBackground(tracksFilePath, 30);
-  
+
   inventory = new Inventory();
   soundManager = new SoundManager(this, "data/sound/dreamexpdemo.wav", "data/sound/firstcontacttrain.wav", "data/sound/firstcontactclick.wav");
   cursorType = new CursorType();
-  
-  
-  GameScene scene01 = new GameScene("Wagon02", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
+
+
+  GameScene scene01 = new GameScene("Wagon02", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, titleFontFilePath, inventory, soundManager);
   Objective bird = new Objective("Bird", screenWidth * 1/2 + 950, screenHeight * 1/2 + 100, "data/objectives/bird.png", "Gun", this, "data/sound/Pistol_Sound_short.mp3");
   scene01.addObjective(bird);
 
-  GameScene scene02 = new GameScene("Wagon02", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train02FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
+  GameScene scene02 = new GameScene("Wagon02", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train02FilePath, player, cursorType, textFontFilePath, titleFontFilePath, inventory, soundManager);
   LinkedHashMap<String, String> horseguyHash = new LinkedHashMap<String, String>();
   horseguyHash.put("-> Have you ever thought that you could get killed by a food trolley?", "");
   horseguyHash.put("-> Why are you boarding a train? You are a horse.", "");
@@ -98,7 +99,7 @@ void loadGameScenes() {
   scene02.addObjective(foodTrolley);
 
 
-  GameScene scene03 = new GameScene("Wagon03", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
+  GameScene scene03 = new GameScene("Wagon03", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, titleFontFilePath, inventory, soundManager);
   LinkedHashMap<String, String> oldLadyHash = new LinkedHashMap<String, String>();
   oldLadyHash.put("-> Hello miss, I've lost my wallet, could you please help me with 5$? I will return them in the morning._Money", "");
   oldLadyHash.put("-> Do you enjoy riding trains?", "");
@@ -125,7 +126,7 @@ void loadGameScenes() {
   scene03.addClickable(oldLady);
   scene03.addClickable(lumberjack);
 
-  GameScene scene04 = new GameScene("Wagon04", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train03FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
+  GameScene scene04 = new GameScene("Wagon04", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train03FilePath, player, cursorType, textFontFilePath, titleFontFilePath, inventory, soundManager);
   LinkedHashMap<String, String> kid1Hash = new LinkedHashMap<String, String>();
   kid1Hash.put("-> Hello there, have you seen a set of keys around here?", "");
   kid1Hash.put("-> Tell me where the key is, otherwise, I will have to shoot you!", "Coll: Gun");
@@ -169,13 +170,31 @@ void loadGameScenes() {
   Objective glass = new Objective("Glass", screenWidth * 3/4 + 100, screenHeight * 3/4 + 30, "data/objectives/glass.png", "Broom", this, "data/sound/glass_sound.mp3");
   scene04.addObjective(locker);
   scene04.addObjective(glass);
-  
-  
-  sceneManager.addScene(scene01); //<>//
+
+
+  sceneManager.addScene(scene01);
   sceneManager.addScene(scene02);
   sceneManager.addScene(scene03);
   sceneManager.addScene(scene04);
+  
+  
+  MovieScene movieEndTrolleyScene = new MovieScene("FoodTrolley", "trolley.mp4", this);
+  MovieScene movieEndGlassScene = new MovieScene("Glass", "glass.mp4", this);
+  MovieScene movieEndBirdScene = new MovieScene("Bird", "bird.mp4", this);
+  
+  ArrayList<Button> buttonsStartMenu = new ArrayList<Button>();
+  Button buttonStart = new Button("Start", 1180, 1775, 480, 595);
+  Button buttonQuit = new Button("Quit", 1180, 1775, 705, 820);
+  buttonsStartMenu.add(buttonStart);
+  buttonsStartMenu.add(buttonQuit);
+  StaticScene endMenuScene = new StaticScene("EndMenu", "data/bgs/start_screen.png", buttonsStartMenu);
+  
+  sceneManager.addScene(movieEndTrolleyScene);
+  sceneManager.addScene(movieEndGlassScene);
+  sceneManager.addScene(movieEndBirdScene);
+  sceneManager.addScene(endMenuScene);
 }
+
 
 void draw() {
   currScene = sceneManager.updateState(currScene);
@@ -186,7 +205,14 @@ void draw() {
 
   currScene.draw();
   if (currScene instanceof GameScene) {
-    ((GameScene)currScene).updateScene();
+    String name = ((GameScene)currScene).updateScene(sceneManager.countEventsDone);
+    if (name != "") {
+      sceneManager.countEventsDone++;
+      sceneManager.eventsNames.add(name);
+    }
+    if (sceneManager.framesRemaining > 0) {
+      sceneManager.framesRemaining--;
+    }
   }
 }
 
@@ -218,10 +244,18 @@ void mouseReleased() {
   }
 }
 
+void keyPressed() {
+  if (key == ' ') {
+    if (currScene instanceof MovieScene) {
+      ((MovieScene)currScene).keyPressed();
+    }
+  }
+}
+
 void movieEvent(Movie m) {
   if (currScene instanceof MovieScene) {
     ((MovieScene)currScene).movieEvent(m);
-  } else {
-    println("Error: trying to play a movie from not a MovieScene");
-  }
+  } /*else {
+   println("Error: trying to play a movie from not a MovieScene");
+   }*/
 }

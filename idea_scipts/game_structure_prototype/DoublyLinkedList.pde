@@ -14,7 +14,7 @@ class DoublyLinkedList {
 
   public void addNode(Scene scene) {
     //Create a new node
-    Node newNode = new Node(scene); //<>//
+    Node newNode = new Node(scene);
 
     //if list is empty, head and tail points to newNode
     if (head == null) {
@@ -23,7 +23,7 @@ class DoublyLinkedList {
       head.previous = null;
       //tail's next will be null
       tail.next = null;
-      
+
       current = newNode;
     } else {
       //add newNode to the end of list. tail->next set to newNode
@@ -34,7 +34,6 @@ class DoublyLinkedList {
       tail = newNode;
       //tail's next point to null
       tail.next = null;
-
     }
   }
 
@@ -54,7 +53,7 @@ class DoublyLinkedList {
   }
 
   public boolean goToNext() {
-    if (current.next != null) { //<>//
+    if (current.next != null) {
       current = current.next;
       if (current.scene instanceof GameScene) {
         ((GameScene)current.scene).updateTrainCoordinates(true);
@@ -62,6 +61,32 @@ class DoublyLinkedList {
       return true;
     }
     return false;
+  }
+
+  public Scene findEvent(ArrayList<String> eventsNames) {
+    int count = 0; //<>//
+    Node currentNode = getNode("FoodTrolley");
+    while (eventsNames.contains(currentNode.scene.getSceneName())) {
+      if (count > 2) {
+        current = currentNode;
+        return current.scene;
+      }
+      currentNode = currentNode.next;
+      count++;
+    }
+    current = currentNode;
+    return current.scene;
+  }
+  
+  private Node getNode(String sceneName) {
+    Node currentNode = head;
+    while (currentNode != null) {
+      if (currentNode.scene.getSceneName() == sceneName) {
+        return currentNode;
+      }
+      currentNode = currentNode.next;
+    }
+    return null;
   }
 
   public Scene getScene(String sceneName) {

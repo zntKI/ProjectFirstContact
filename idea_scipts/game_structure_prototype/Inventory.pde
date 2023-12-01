@@ -39,7 +39,7 @@ class Inventory {
     return false;
   }
 
-  public Collectable draw() { //<>//
+  public Collectable draw() { //<>// //<>// //<>//
     Collectable collectableGrabbed = null;
     for (Collectable object : inventoryItems) {
       if (object.getIsGrabbed()) {

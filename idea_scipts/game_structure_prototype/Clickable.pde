@@ -1,4 +1,4 @@
-class Clickable extends Interactable {  //<>//
+class Clickable extends Interactable {  //<>// //<>// //<>//
   ArrayList<String> dialogueOptions;
   ArrayList<String> conditions;
   ArrayList<String> responces;

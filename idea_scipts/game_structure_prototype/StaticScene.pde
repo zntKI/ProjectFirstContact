@@ -1,4 +1,4 @@
-class StaticScene extends Scene { //<>//
+class StaticScene extends Scene { //<>// //<>// //<>//
   PImage image;
   ArrayList<Button> buttons;
 
@@ -43,7 +43,7 @@ class Button {
     this.x2 = x2;
     this.y2 = y2;
   }
- //<>//
+ //<>// //<>// //<>//
   public String mouseClicked() {
     if ((mouseX > x1 && mouseX < x2) && (mouseY > y1 && mouseY < y2)) {
       return text;

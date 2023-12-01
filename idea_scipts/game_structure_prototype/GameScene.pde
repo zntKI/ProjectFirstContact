@@ -1,4 +1,4 @@
-class GameScene extends Scene {
+class GameScene extends Scene { //<>//
   private NormalBackground bgSky;
   private NormalBackground bgMountain;
   private NormalBackground tracksImage;
@@ -29,22 +29,26 @@ class GameScene extends Scene {
   int countFrames = 0;
 
   int clickRange = 350;
-
   CursorType cursorType;
 
   private int dialogueTextSize = 20;
   private PFont textFont;
+  private PFont titleFont;
 
   Inventory inventory;
-
   SoundManager soundManager;
+
+  boolean eventIsDone = false;
+  String nameEventDone = "";
   
-  PImage image;
-  int imageX, imageY;
-  int imageWidth, imageHeight;
+  int countEventsToDisplay = 0;
+
+  //PImage image;
+  //int imageX, imageY;
+  //int imageWidth, imageHeight;
 
   public GameScene (String sceneName, NormalBackground bgSky, NormalBackground bgMountain, NormalBackground tracksImage, String inventoryListFilePath,
-    String dialogueFilePath, String trainImageFile, Player player, CursorType cursorType, String textFontFilePath, Inventory inventory, SoundManager soundManager) {
+    String dialogueFilePath, String trainImageFile, Player player, CursorType cursorType, String textFontFilePath, String titleFontFilePath, Inventory inventory, SoundManager soundManager) {
     super(sceneName);
     this.bgSky = bgSky;
     this.bgMountain = bgMountain;
@@ -60,6 +64,7 @@ class GameScene extends Scene {
 
     this.cursorType = cursorType;
     this.textFont = createFont(textFontFilePath, dialogueTextSize);
+    this.titleFont = createFont(titleFontFilePath, 25);
 
     this.inventory = inventory;
 
@@ -99,7 +104,9 @@ class GameScene extends Scene {
     trainImage.removeObjective(object);
   }
 
-  public void updateScene() {
+  public String updateScene(int countEventsDone) {
+    this.countEventsToDisplay = countEventsDone;
+    
     for (Clickable object : clickables) {
       Collectable droppedItem = object.getDroppedItem();
       if (droppedItem != null) {
@@ -114,6 +121,11 @@ class GameScene extends Scene {
       }
     }
     updateMovement();
+    if (eventIsDone) {
+      eventIsDone = false;
+      return nameEventDone;
+    }
+    return "";
   }
 
   public void updateTrainCoordinates(boolean left) {
@@ -130,6 +142,11 @@ class GameScene extends Scene {
     tracksImage.draw();
 
     trainImage.draw();
+    //Display "Events done: ?/3"
+    textAlign(RIGHT, TOP);
+    textFont(titleFont);
+    fill(#ffaa5e);
+    text("Events done: " + countEventsToDisplay + "/3", width - 75, 0 + 50);
 
     Collectable collectableGrabbed = inventory.draw();
 
@@ -163,11 +180,11 @@ class GameScene extends Scene {
     if (collectableGrabbed != null) {
       collectableGrabbed.draw();
     }
-    if (image != null) {
-      imageMode(CENTER);
-      image(image, imageX, imageY, imageWidth, imageHeight);
-      imageMode(CORNER);
-    }
+    //if (image != null) {
+    //  imageMode(CENTER);
+    //  image(image, imageX, imageY, imageWidth, imageHeight);
+    //  imageMode(CORNER);
+    //}
   }
 
 
@@ -342,7 +359,7 @@ class GameScene extends Scene {
       if (itemToCheck == null)
         break;
       if (object.mouseClicked(playerX, clickRange) && itemToCheck.getIdentifier() == object.getCollectableIdentifier()) {
-        object.playSound(); //<>//
+        object.playSound();
         if (!itemToCheck.getIdentifier().equals("Key") && !itemToCheck.getIdentifier().equals("Gun") && !itemToCheck.getIdentifier().equals("Plank")) {
           inventory.removeFromInventory(itemToCheck);
           removeObjective(object);
@@ -352,6 +369,11 @@ class GameScene extends Scene {
           removeObjective(object);
         } else if (itemToCheck.getIdentifier().equals("Plank")) {
           inventory.removeFromInventory(itemToCheck);
+        }
+        
+        if (object.getIdentifier().equals("Bird") || object.getIdentifier().equals("FoodTrolley") || object.getIdentifier().equals("Glass")) {
+          eventIsDone = true;
+          nameEventDone = object.getIdentifier();
         }
       }
     }

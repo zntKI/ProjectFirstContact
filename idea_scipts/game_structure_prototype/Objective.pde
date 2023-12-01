@@ -1,4 +1,4 @@
-class Objective extends Interactable { //<>//
+class Objective extends Interactable { //<>// //<>// //<>//
   PImage secondImage;
 
   String collectableIdentifier;
