@@ -1,5 +1,3 @@
-import processing.video.*;
-
 class MovieScene extends Scene {
   Movie videoToPlay;
 
@@ -12,6 +10,10 @@ class MovieScene extends Scene {
     public void draw() {
     videoToPlay.play();
     image(videoToPlay, 0, 0);
+  }
+  
+  public boolean checkIfEnded() {
+    return (int)videoToPlay.time() == (int)videoToPlay.duration();
   }
 
   public void movieEvent(Movie m) {

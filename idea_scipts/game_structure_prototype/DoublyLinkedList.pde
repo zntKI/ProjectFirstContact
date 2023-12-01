@@ -14,7 +14,7 @@ class DoublyLinkedList {
 
   public void addNode(Scene scene) {
     //Create a new node
-    Node newNode = new Node(scene);
+    Node newNode = new Node(scene); //<>//
 
     //if list is empty, head and tail points to newNode
     if (head == null) {
@@ -23,6 +23,8 @@ class DoublyLinkedList {
       head.previous = null;
       //tail's next will be null
       tail.next = null;
+      
+      current = newNode;
     } else {
       //add newNode to the end of list. tail->next set to newNode
       tail.next = newNode;
@@ -33,7 +35,6 @@ class DoublyLinkedList {
       //tail's next point to null
       tail.next = null;
 
-      current = newNode;
     }
   }
 
@@ -53,7 +54,7 @@ class DoublyLinkedList {
   }
 
   public boolean goToNext() {
-    if (current.next != null) {
+    if (current.next != null) { //<>//
       current = current.next;
       if (current.scene instanceof GameScene) {
         ((GameScene)current.scene).updateTrainCoordinates(true);

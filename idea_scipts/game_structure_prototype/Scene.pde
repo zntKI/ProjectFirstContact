@@ -4,6 +4,10 @@ abstract class Scene {
   protected Scene(String sceneName) {
     this.sceneName = sceneName;
   }
+  
+  public String sceneName() {
+    return sceneName;
+  }
 
   protected abstract void draw();
 

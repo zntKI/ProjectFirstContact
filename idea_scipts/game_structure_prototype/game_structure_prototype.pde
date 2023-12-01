@@ -1,4 +1,5 @@
-import processing.sound.*;
+import processing.sound.*; //<>//
+import processing.video.*;
 import java.util.LinkedHashMap;
 //https://forum.processing.org/two/discussion/20474/could-not-run-the-sketch-target-vm-failed-to-initialize-empty-sketch#latest
 int screenWidth = 1920;
@@ -39,17 +40,33 @@ void settings() {
 }
 
 void setup() {
+  ArrayList<Button> buttonsStartMenu = new ArrayList<Button>();
+  Button buttonStart = new Button("Start", 1180, 1775, 480, 595);
+  Button buttonQuit = new Button("Quit", 1180, 1775, 705, 820);
+  buttonsStartMenu.add(buttonStart);
+  buttonsStartMenu.add(buttonQuit);
+  StaticScene startMenuScene = new StaticScene("StartMenu", "data/bgs/start_screen.png", buttonsStartMenu);
+
+  MovieScene movieStartScene = new MovieScene("Movie01", "start_cutscene.mp4", this);
+
+  player = new Player("Player", screenWidth / 2, screenHeight * 3/4, playerSpritesIdleLeft, playerSpritesIdleRight, playerSpritesWalkLeft, playerSpritesWalkRight);
+  sceneManager = new SceneManager(player);
+
+  sceneManager.addScene(startMenuScene);
+  sceneManager.addScene(movieStartScene);
+  currScene = sceneManager.goToScene("StartMenu");
+}
+
+void loadGameScenes() {
   bgSky = new NormalBackground(bgSkyFilePath, 1);
   bgMountain = new NormalBackground(bgMountainsFilePath, 5, 150);
   tracksImage = new NormalBackground(tracksFilePath, 30);
-
-  player = new Player("Player", screenWidth / 2, screenHeight * 3/4, playerSpritesIdleLeft, playerSpritesIdleRight, playerSpritesWalkLeft, playerSpritesWalkRight);
+  
   inventory = new Inventory();
   soundManager = new SoundManager(this, "data/sound/dreamexpdemo.wav", "data/sound/firstcontacttrain.wav", "data/sound/firstcontactclick.wav");
   cursorType = new CursorType();
-
-  sceneManager = new SceneManager(player);
-
+  
+  
   GameScene scene01 = new GameScene("Wagon02", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
   Objective bird = new Objective("Bird", screenWidth * 1/2 + 950, screenHeight * 1/2 + 100, "data/objectives/bird.png", "Gun", this, "data/sound/Pistol_Sound_short.mp3");
   scene01.addObjective(bird);
@@ -62,7 +79,7 @@ void setup() {
   horseguyHash.put("-> How would you stop a food trolley from rolling on its own?", "");
   horseguyHash.put("-> Goodbye", "");
   Clickable horseGuy = new Clickable("HorseGuy", screenWidth * 1/4, screenHeight * 3/4, "data/clickables/horse.png", horseguyHash, new String[]{"No?\nAre you okay man?",
-  "I need to go somewhere.\nJust like you?", "No, not from me.\nYou could try asking the old lady?", "Probably by placing a wooden plank infront of it.", "LEAVE"});
+    "I need to go somewhere.\nJust like you?", "No, not from me.\nYou could try asking the old lady?", "Probably by placing a wooden plank infront of it.", "LEAVE"});
   scene02.addClickable(horseGuy);
   Objective foodTrolley = new Objective("FoodTrolley", screenWidth * 3/4 - 300, screenHeight * 3/4, "data/objectives/food-trolley.png", "Plank");
   LinkedHashMap<String, String> officerHash = new LinkedHashMap<String, String>();
@@ -75,11 +92,11 @@ void setup() {
   ArrayList<Collectable> officerItemsToDrop = new ArrayList<Collectable>();
   officerItemsToDrop.add(new Collectable("Gun", screenWidth * 1/4, screenHeight * 3/4, "data/collectables/gun.png"));
   Clickable officer = new Clickable("Officer", screenWidth * 3/4, screenHeight * 3/4, "data/clickables/officer-l.png", officerHash, new String[]{ "Please stop with this non-sense.\nI won't borrow you a gun,\nno matter the reason",
-  "Enough to buy food.\nYou know I could really eat a donut right now.", "Yea, they have a broom in the cleaning locker.", "Yes!\nGimme, gimme\n*Turns around, eating the donut\nand you steal his gun*",
-  "I've lost my gun,\ndo you perhaps know where it is?::No, sorry", "LEAVE"}, officerItemsToDrop);
+    "Enough to buy food.\nYou know I could really eat a donut right now.", "Yea, they have a broom in the cleaning locker.", "Yes!\nGimme, gimme\n*Turns around, eating the donut\nand you steal his gun*",
+    "I've lost my gun,\ndo you perhaps know where it is?::No, sorry", "LEAVE"}, officerItemsToDrop);
   scene02.addClickable(officer);
   scene02.addObjective(foodTrolley);
- 
+
 
   GameScene scene03 = new GameScene("Wagon03", bgSky, bgMountain, tracksImage, inventoryListFilePath, dialogueFilePath, train01FilePath, player, cursorType, textFontFilePath, inventory, soundManager);
   LinkedHashMap<String, String> oldLadyHash = new LinkedHashMap<String, String>();
@@ -91,9 +108,9 @@ void setup() {
   ArrayList<Collectable> oldladyItemsToDrop = new ArrayList<Collectable>();
   oldladyItemsToDrop.add(new Collectable("Money", screenWidth * 1/4 + 100, screenHeight * 3/4, "data/collectables/money.png"));
   Clickable oldLady = new Clickable("OldLady", screenWidth * 1/4, screenHeight * 3/4, "data/clickables/granny-l.png", oldLadyHash, new String[]{ "Of course dear, here you go.",
-  "Yes, I am enjoying this train ride\njust as much as savouring a cup of warm tea on a rainy day.\nThe rhythmic clatter of the wheels and\nthe gentle sway of the carriage create a soothing symphony.\nIt reminds me of a time when life moved a bit slower,\nmuch like the landscapes passing by outside the\nwindow – a panorama of rolling hills and quaint villages.",
-  "Yes, it was quite dangerous.::-What do you mean?::It had no brakes.\nMaybe you can ask the lumberjack for some wood to place in front of it?", "No dear, I can't give it all away", "LEAVE"},
-  oldladyItemsToDrop);
+    "Yes, I am enjoying this train ride\njust as much as savouring a cup of warm tea on a rainy day.\nThe rhythmic clatter of the wheels and\nthe gentle sway of the carriage create a soothing symphony.\nIt reminds me of a time when life moved a bit slower,\nmuch like the landscapes passing by outside the\nwindow – a panorama of rolling hills and quaint villages.",
+    "Yes, it was quite dangerous.::-What do you mean?::It had no brakes.\nMaybe you can ask the lumberjack for some wood to place in front of it?", "No dear, I can't give it all away", "LEAVE"},
+    oldladyItemsToDrop);
   LinkedHashMap<String, String> lumberjackHash = new LinkedHashMap<String, String>();
   lumberjackHash.put("-> Can I have a wooden plank?", "");
   lumberjackHash.put("-> I am willing to trade this sandwich for a wooden plank, how about it?_Plank", "Coll: Sandwich");
@@ -104,7 +121,7 @@ void setup() {
   ArrayList<Collectable> lumbItemsToDrop = new ArrayList<Collectable>();
   lumbItemsToDrop.add(new Collectable("Plank", 0, 0, "data/collectables/wonky_plank.png"));
   Clickable lumberjack = new Clickable("Lumberjack", screenWidth * 3/4, screenHeight * 3/4, "data/clickables/lumberjack-l.png", lumberjackHash, new String[]{ "I do have one, but I cannot hand it to you for free.\nI would want to trade it for some food however.", "That sandwich looks delicious,\nhere you go.",
-  "No, I don't like donuts.\nI like sandwiches the most.", "They probably have something in the cleaning locker near the bar.", "Because they look cool, just like me.\nI bet you wish you had one.", "LEAVE"}, lumbItemsToDrop);
+    "No, I don't like donuts.\nI like sandwiches the most.", "They probably have something in the cleaning locker near the bar.", "Because they look cool, just like me.\nI bet you wish you had one.", "LEAVE"}, lumbItemsToDrop);
   scene03.addClickable(oldLady);
   scene03.addClickable(lumberjack);
 
@@ -114,7 +131,7 @@ void setup() {
   kid1Hash.put("-> Tell me where the key is, otherwise, I will have to shoot you!", "Coll: Gun");
   kid1Hash.put("-> Goodbye", "");
   Clickable kid1 = new Clickable("Kid1", 0 + 100, screenHeight * 3/4, "data/clickables/kid2-r.png", kid1Hash, new String[]{ "Maybe I did, who knows?::If you do not tell me,\nI will have to send the Boogeyman after you.::Okay, okay,\nmy brother stole them.",
-  "Please don't shoot!\nMy brother with the blue shirt stole it", "LEAVE" });
+    "Please don't shoot!\nMy brother with the blue shirt stole it", "LEAVE" });
   LinkedHashMap<String, String> kid2Hash = new LinkedHashMap<String, String>();
   kid2Hash.put("-> Hello, can you give me the keys.", "");
   kid2Hash.put("-> Tell me where the key is, otherwise, I will have to shoot you!_Key_N", "Coll: Gun");
@@ -122,14 +139,14 @@ void setup() {
   ArrayList<Collectable> kid2ItemsToDrop = new ArrayList<Collectable>();
   kid2ItemsToDrop.add(new Collectable("Key", screenWidth - 100, screenHeight * 3/4, "data/collectables/key.png"));
   Clickable kid2 = new Clickable("Kid2", 0 + 200, screenHeight * 3/4, "data/clickables/kid1-l.png", kid2Hash, new String[]{ "No!\nWhy would I give them to someone like you.\nYour not scary at all.",
-  "Please don't shoot!\nHere you go:", "LEAVE"}, kid2ItemsToDrop);
+    "Please don't shoot!\nHere you go:", "LEAVE"}, kid2ItemsToDrop);
   LinkedHashMap<String, String> kid3Hash = new LinkedHashMap<String, String>();
   kid3Hash.put("-> Hello there, can you give me the keys?", "");
   kid3Hash.put("-> Where are your parents?", "");
   kid3Hash.put("-> Tell me where the key is, otherwise, I will have to shoot you!", "Coll: Gun");
   kid3Hash.put("-> Goodbye", "");
   Clickable kid3 = new Clickable("Kid3", 0 + 300, screenHeight * 3/4, "data/clickables/kid3-r.png", kid3Hash, new String[]{ "I don't have them and you are weird,\ngo away!",
-  "Who cares!\nWe can do what we want!", "Please don't shoot!\nMy brother with the blue shirt stole it.", "LEAVE"});
+    "Who cares!\nWe can do what we want!", "Please don't shoot!\nMy brother with the blue shirt stole it.", "LEAVE"});
   LinkedHashMap<String, String> bartenderHash = new LinkedHashMap<String, String>();
   bartenderHash.put("-> I would like to order a donut_Donut", "Coll: Money");
   bartenderHash.put("-> I came to return the keys._Sandwich", "Coll: Key");
@@ -152,16 +169,20 @@ void setup() {
   Objective glass = new Objective("Glass", screenWidth * 3/4 + 100, screenHeight * 3/4 + 30, "data/objectives/glass.png", "Broom", this, "data/sound/glass_sound.mp3");
   scene04.addObjective(locker);
   scene04.addObjective(glass);
-
-  sceneManager.addScene(scene01);
+  
+  
+  sceneManager.addScene(scene01); //<>//
   sceneManager.addScene(scene02);
   sceneManager.addScene(scene03);
   sceneManager.addScene(scene04);
-  currScene = sceneManager.goToScene("Wagon03");
 }
 
 void draw() {
-  currScene = sceneManager.updateState();
+  currScene = sceneManager.updateState(currScene);
+  if (sceneManager.shouldLoadGameScenes) {
+    loadGameScenes();
+    sceneManager.shouldLoadGameScenes = false;
+  }
 
   currScene.draw();
   if (currScene instanceof GameScene) {
@@ -185,6 +206,8 @@ void mouseClicked() {
   if (mouseButton == LEFT) {
     if (currScene instanceof GameScene) {
       ((GameScene)currScene).mouseClicked();
+    } else if (currScene instanceof StaticScene) {
+      ((StaticScene)currScene).mouseClicked();
     }
   }
 }
