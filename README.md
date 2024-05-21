@@ -1,4 +1,4 @@
-# Dream Express
+# Dream Express (Still in development)
 
 A 2D point and click game, product of a group project, in which Engineers, Designers and Artist come together to develop a game in 2 weeks.
 
